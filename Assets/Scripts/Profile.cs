@@ -49,7 +49,7 @@ public class Profile
         return elo[category - 1]; // Adjust for zero-based indexing
     }
 
-    public void UpdateElo(int category, string difficulty)
+    public void AddElo(int category, string difficulty)
     {
         if (category < 1 || category > 5)
         {
@@ -68,6 +68,34 @@ public class Profile
                 break;
             case "EASY":
                 elo[index] += 10;
+                break;
+            default:
+                Debug.LogError("Invalid difficulty type.");
+                return;
+        }
+        
+        Debug.Log($"Elo updated for {Username}: Category {category}, New Elo: {elo[index]}");
+    }
+
+    public void SubElo(int category, string difficulty)
+    {
+        if (category < 1 || category > 5)
+        {
+            Debug.LogError("Invalid category.");
+            return;
+        }
+
+        int index = category - 1;
+        switch (difficulty.ToUpper())
+        {
+            case "HARD":
+                elo[index] -= 10;
+                break;
+            case "MEDIUM":
+                elo[index] -= 20;
+                break;
+            case "EASY":
+                elo[index] -= 30;
                 break;
             default:
                 Debug.LogError("Invalid difficulty type.");
