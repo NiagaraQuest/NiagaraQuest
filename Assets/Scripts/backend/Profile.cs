@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 public class Profile
 {
     private static int idCounter = 0;
-    private int[] elo;
+    private int elo;
     
     public int Id { get; private set; }
     public string Username { get; private set; }
@@ -32,42 +32,26 @@ public class Profile
 
         Id = ++idCounter;
         Username = name;
-        elo = new int[5];
-
-        for (int i = 0; i < 5; i++)
-        {
-            elo[i] = 1000;
-        }
+        elo = 1000;
     }
 
-    public int GetEloByCategory(int category)
-    {
-        if (category < 1 || category > 5)
-        {
-            throw new ArgumentOutOfRangeException(nameof(category), "Category must be between 1 and 5.");
-        }
-        return elo[category - 1]; // Adjust for zero-based indexing
-    }
-
-    public void AddElo(int category, string difficulty)
+    public void AddElo(string difficulty)
     {
         if (category < 1 || category > 5)
         {
             Debug.LogError("Invalid category.");
             return;
         }
-
-        int index = category - 1;
         switch (difficulty.ToUpper())
         {
             case "HARD":
-                elo[index] += 30;
+                elo += 30;
                 break;
             case "MEDIUM":
-                elo[index] += 20;
+                elo += 20;
                 break;
             case "EASY":
-                elo[index] += 10;
+                elo += 10;
                 break;
             default:
                 Debug.LogError("Invalid difficulty type.");
