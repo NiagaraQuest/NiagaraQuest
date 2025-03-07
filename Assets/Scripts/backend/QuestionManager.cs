@@ -25,8 +25,8 @@ public class QuestionManager
     }
 
    public async Task<Question> GenerateQuestionForPlayer(Profile player)
-{
-    string qcmQuery = @"
+    {
+       string qcmQuery = @"
         SELECT * FROM QCMQuestion 
         WHERE NOT EXISTS 
             (SELECT 1 FROM PlayerQuestionHistory 
@@ -35,7 +35,7 @@ public class QuestionManager
         ORDER BY RANDOM() 
         LIMIT 1;";
 
-    string openQuery = @"
+      string openQuery = @"
         SELECT * FROM OpenQuestion 
         WHERE NOT EXISTS 
             (SELECT 1 FROM PlayerQuestionHistory 
@@ -44,27 +44,24 @@ public class QuestionManager
         ORDER BY RANDOM() 
         LIMIT 1;";
 
-    // Get one question from each category
-    QCMQuestion qcmQuestion = await dbManager.QueryFirstOrDefaultAsync<QCMQuestion>(qcmQuery, player.Id);
-    OpenQuestion openQuestion = await dbManager.QueryFirstOrDefaultAsync<OpenQuestion>(openQuery, player.Id);
+      QCMQuestion qcmQuestion = await dbManager.QueryFirstOrDefaultAsync<QCMQuestion>(qcmQuery, player.Id);
+      OpenQuestion openQuestion = await dbManager.QueryFirstOrDefaultAsync<OpenQuestion>(openQuery, player.Id);
 
-    // Combine results into a single list
-    List<Question> availableQuestions = new List<Question>();
-    if (qcmQuestion != null) availableQuestions.Add(qcmQuestion);
-    if (openQuestion != null) availableQuestions.Add(openQuestion);
+      List<Question> availableQuestions = new List<Question>();
+      if (qcmQuestion != null) availableQuestions.Add(qcmQuestion);
+      if (openQuestion != null) availableQuestions.Add(openQuestion);
 
-    if (availableQuestions.Count == 0)
-    {
+      if (availableQuestions.Count == 0)
+      {
         Debug.Log("No more new questions for this player.");
         return null;
+      }
+
+      Question selectedQuestion = availableQuestions[UnityEngine.Random.Range(0, availableQuestions.Count)];
+
+      await SaveQuestionAppearance(player, selectedQuestion);
+      return selectedQuestion;
     }
-
-    // Randomly select a question
-    Question selectedQuestion = availableQuestions[UnityEngine.Random.Range(0, availableQuestions.Count)];
-
-    await SaveQuestionAppearance(player, selectedQuestion);
-    return selectedQuestion;
-}
 
     private async Task SaveQuestionAppearance(Profile player, Question question)
     {
