@@ -15,7 +15,7 @@ public class Profile
         string pattern = @"^[a-zA-Z][a-zA-Z0-9_]{2,15}$";
         return Regex.IsMatch(username, pattern);
     }
-
+    public Profile() { }
     public Profile(string name)
     {
         if (idCounter >= 10)
@@ -35,13 +35,9 @@ public class Profile
         elo = 1000;
     }
 
+    
     public void AddElo(string difficulty)
     {
-        if (category < 1 || category > 5)
-        {
-            Debug.LogError("Invalid category.");
-            return;
-        }
         switch (difficulty.ToUpper())
         {
             case "HARD":
@@ -58,34 +54,27 @@ public class Profile
                 return;
         }
         
-        Debug.Log($"Elo updated for {Username}: Category {category}, New Elo: {elo[index]}");
+        Debug.Log($"Elo updated for {Username}:New Elo: {elo}");
     }
 
-    public void SubElo(int category, string difficulty)
+    public void SubElo( string difficulty)
     {
-        if (category < 1 || category > 5)
-        {
-            Debug.LogError("Invalid category.");
-            return;
-        }
-
-        int index = category - 1;
         switch (difficulty.ToUpper())
         {
             case "HARD":
-                elo[index] -= 10;
+                elo -= 10;
                 break;
             case "MEDIUM":
-                elo[index] -= 20;
+                elo -= 20;
                 break;
             case "EASY":
-                elo[index] -= 30;
+                elo -= 30;
                 break;
             default:
                 Debug.LogError("Invalid difficulty type.");
                 return;
         }
         
-        Debug.Log($"Elo updated for {Username}: Category {category}, New Elo: {elo[index]}");
+        Debug.Log($"Elo updated for {Username}: New Elo: {elo}");
     }
 }
