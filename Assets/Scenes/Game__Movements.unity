@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 64976311}
   m_Layer: 0
   m_Name: Pyro49
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -603,7 +603,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: a4764377746479249b6bdb6513e0cf5b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -939,7 +939,7 @@ GameObject:
   - component: {fileID: 124554370}
   m_Layer: 0
   m_Name: Geo32
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1341,7 +1341,7 @@ GameObject:
   - component: {fileID: 223432593}
   m_Layer: 0
   m_Name: Pyro31
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1470,7 +1470,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: c143a3ea32d47354ab22ba397528e2e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1675,7 +1675,7 @@ GameObject:
   - component: {fileID: 247963466}
   m_Layer: 0
   m_Name: Hydro46
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2332,7 +2332,7 @@ GameObject:
   - component: {fileID: 345680729}
   m_Layer: 0
   m_Name: Pyro47
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2671,6 +2671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 414621273}
   - component: {fileID: 414621274}
+  - component: {fileID: 414621275}
   m_Layer: 0
   m_Name: Hydro33
   m_TagString: Intersection
@@ -2705,6 +2706,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d3ccbb203cfac4b979d3d9d1fdf67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &414621275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414621272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 414621272}
+    paths:
+    - fromPath: {fileID: 1321647450}
+      toPaths:
+      - toPath: {fileID: 600345986}
+        moveForward: 0
+      - toPath: {fileID: 1387116344}
+        moveForward: 0
+  - intersectionPoint: {fileID: 414621272}
+    paths:
+    - fromPath: {fileID: 1817235643}
+      toPaths:
+      - toPath: {fileID: 600345986}
+        moveForward: 0
+      - toPath: {fileID: 1387116344}
+        moveForward: 0
 --- !u!1 &424147748
 GameObject:
   m_ObjectHideFlags: 0
@@ -2936,6 +2966,7 @@ GameObject:
   m_Component:
   - component: {fileID: 453032792}
   - component: {fileID: 453032793}
+  - component: {fileID: 453032794}
   m_Layer: 0
   m_Name: Pyro26
   m_TagString: Intersection
@@ -2970,6 +3001,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d3ccbb203cfac4b979d3d9d1fdf67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &453032794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453032791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 453032791}
+    paths:
+    - fromPath: {fileID: 1171605969}
+      toPaths:
+      - toPath: {fileID: 1215987045}
+        moveForward: 0
+      - toPath: {fileID: 1463823558}
+        moveForward: 0
+  - intersectionPoint: {fileID: 453032791}
+    paths:
+    - fromPath: {fileID: 1592991033}
+      toPaths:
+      - toPath: {fileID: 1215987045}
+        moveForward: 0
+      - toPath: {fileID: 1463823558}
+        moveForward: 0
 --- !u!1 &456027752
 GameObject:
   m_ObjectHideFlags: 0
@@ -3036,7 +3096,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: ddbf5dc40486ea94787c89c4582951a5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3619,7 +3679,7 @@ GameObject:
   - component: {fileID: 565796171}
   m_Layer: 0
   m_Name: Geo48
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3726,7 +3786,7 @@ GameObject:
   - component: {fileID: 600345988}
   m_Layer: 0
   m_Name: Anemo47
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3801,7 +3861,7 @@ GameObject:
   - component: {fileID: 615547370}
   m_Layer: 0
   m_Name: Anemo32
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4230,6 +4290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 691417445}
   - component: {fileID: 691417446}
+  - component: {fileID: 691417447}
   m_Layer: 0
   m_Name: Hydro26
   m_TagString: Intersection
@@ -4264,6 +4325,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d3ccbb203cfac4b979d3d9d1fdf67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &691417447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691417444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 691417444}
+    paths:
+    - fromPath: {fileID: 809272827}
+      toPaths:
+      - toPath: {fileID: 1122163571}
+        moveForward: 0
+      - toPath: {fileID: 990764831}
+        moveForward: 0
+  - intersectionPoint: {fileID: 691417444}
+    paths:
+    - fromPath: {fileID: 1556519441}
+      toPaths:
+      - toPath: {fileID: 1122163571}
+        moveForward: 0
+      - toPath: {fileID: 990764831}
+        moveForward: 0
 --- !u!1 &710462973
 GameObject:
   m_ObjectHideFlags: 0
@@ -4273,6 +4363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 710462974}
+  - component: {fileID: 710462975}
   m_Layer: 0
   m_Name: Geo47
   m_TagString: Intersection
@@ -4295,6 +4386,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1238142922}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &710462975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710462973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 710462973}
+    paths:
+    - fromPath: {fileID: 565796170}
+      toPaths:
+      - toPath: {fileID: 1611316761}
+        moveForward: 0
+      - toPath: {fileID: 615547368}
+        moveForward: 0
+  - intersectionPoint: {fileID: 710462973}
+    paths:
+    - fromPath: {fileID: 1676757089}
+      toPaths:
+      - toPath: {fileID: 1611316761}
+        moveForward: 0
+      - toPath: {fileID: 615547368}
+        moveForward: 0
 --- !u!1 &728584065
 GameObject:
   m_ObjectHideFlags: 0
@@ -4499,9 +4619,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 744728076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a70ddd747b3ef544c9c8a9ff6530f9c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 744728076}
+    paths:
+    - fromPath: {fileID: 2021757559}
+      toPaths:
+      - toPath: {fileID: 345680727}
+        moveForward: 0
+      - toPath: {fileID: 64976309}
+        moveForward: 0
+  - intersectionPoint: {fileID: 744728076}
+    paths:
+    - fromPath: {fileID: 124554369}
+      toPaths:
+      - toPath: {fileID: 345680727}
+        moveForward: 0
+      - toPath: {fileID: 64976309}
+        moveForward: 0
 --- !u!1 &745217850
 GameObject:
   m_ObjectHideFlags: 0
@@ -4890,7 +5027,7 @@ GameObject:
   - component: {fileID: 809272829}
   m_Layer: 0
   m_Name: Hydro25
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5400,6 +5537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 847127837}
   - component: {fileID: 847127838}
+  - component: {fileID: 847127839}
   m_Layer: 0
   m_Name: Anemo36
   m_TagString: Intersection
@@ -5434,6 +5572,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d3ccbb203cfac4b979d3d9d1fdf67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &847127839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847127836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 847127836}
+    paths:
+    - fromPath: {fileID: 990764831}
+      toPaths:
+      - toPath: {fileID: 1556519441}
+        moveForward: 0
+      - toPath: {fileID: 809272827}
+        moveForward: 0
+  - intersectionPoint: {fileID: 847127836}
+    paths:
+    - fromPath: {fileID: 1122163571}
+      toPaths:
+      - toPath: {fileID: 1556519441}
+        moveForward: 0
+      - toPath: {fileID: 809272827}
+        moveForward: 0
 --- !u!1 &848077305
 GameObject:
   m_ObjectHideFlags: 0
@@ -6112,7 +6279,7 @@ GameObject:
   - component: {fileID: 990764833}
   m_Layer: 0
   m_Name: Anemo35
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6156,7 +6323,7 @@ GameObject:
   - component: {fileID: 998987730}
   m_Layer: 0
   m_Name: Hydro47
-  m_TagString: Untagged
+  m_TagString: Intersection
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6185,9 +6352,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 998987728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2d3ccbb203cfac4b979d3d9d1fdf67b, type: 3}
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 998987728}
+    paths:
+    - fromPath: {fileID: 247963464}
+      toPaths:
+      - toPath: {fileID: 1940016537}
+        moveForward: 0
+      - toPath: {fileID: 223432591}
+        moveForward: 0
+  - intersectionPoint: {fileID: 998987728}
+    paths:
+    - fromPath: {fileID: 1704777114}
+      toPaths:
+      - toPath: {fileID: 1940016537}
+        moveForward: 0
+      - toPath: {fileID: 223432591}
+        moveForward: 0
 --- !u!1 &1026817317
 GameObject:
   m_ObjectHideFlags: 0
@@ -6564,7 +6748,7 @@ GameObject:
   - component: {fileID: 1122163573}
   m_Layer: 0
   m_Name: Anemo37
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6876,7 +7060,7 @@ GameObject:
   - component: {fileID: 1171605971}
   m_Layer: 0
   m_Name: Pyro27
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7096,7 +7280,7 @@ GameObject:
   - component: {fileID: 1215987047}
   m_Layer: 0
   m_Name: Hydro39
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7535,7 +7719,7 @@ GameObject:
   - component: {fileID: 1321647452}
   m_Layer: 0
   m_Name: Hydro34
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7773,7 +7957,7 @@ GameObject:
   - component: {fileID: 1387116346}
   m_Layer: 0
   m_Name: Anemo49
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7997,7 +8181,7 @@ GameObject:
   - component: {fileID: 1415307117}
   m_Layer: 0
   m_Name: Pyro32
-  m_TagString: Untagged
+  m_TagString: Intersection
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8026,9 +8210,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1415307115}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2d3ccbb203cfac4b979d3d9d1fdf67b, type: 3}
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 1415307115}
+    paths:
+    - fromPath: {fileID: 223432591}
+      toPaths:
+      - toPath: {fileID: 247963464}
+        moveForward: 0
+      - toPath: {fileID: 1704777114}
+        moveForward: 0
+  - intersectionPoint: {fileID: 1415307115}
+    paths:
+    - fromPath: {fileID: 1940016537}
+      toPaths:
+      - toPath: {fileID: 247963464}
+        moveForward: 0
+      - toPath: {fileID: 1704777114}
+        moveForward: 0
 --- !u!1 &1425279761
 GameObject:
   m_ObjectHideFlags: 0
@@ -8279,7 +8480,7 @@ GameObject:
   - component: {fileID: 1463823560}
   m_Layer: 0
   m_Name: Hydro37
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8665,7 +8866,7 @@ GameObject:
   - component: {fileID: 1556519443}
   m_Layer: 0
   m_Name: Hydro27
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8753,7 +8954,7 @@ GameObject:
   - component: {fileID: 1592991035}
   m_Layer: 0
   m_Name: Pyro25
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8879,7 +9080,7 @@ GameObject:
   - component: {fileID: 1611316763}
   m_Layer: 0
   m_Name: Anemo30
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9125,7 +9326,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 33b0f30274c522644be6213e9f265b6e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9287,7 +9488,7 @@ GameObject:
   - component: {fileID: 1676757090}
   m_Layer: 0
   m_Name: Geo46
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9348,9 +9549,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1683387221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a70ddd747b3ef544c9c8a9ff6530f9c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 1683387221}
+    paths:
+    - fromPath: {fileID: 345680727}
+      toPaths:
+      - toPath: {fileID: 124554369}
+        moveForward: 0
+      - toPath: {fileID: 2021757559}
+        moveForward: 0
+  - intersectionPoint: {fileID: 1683387221}
+    paths:
+    - fromPath: {fileID: 64976309}
+      toPaths:
+      - toPath: {fileID: 124554369}
+        moveForward: 0
+      - toPath: {fileID: 2021757559}
+        moveForward: 0
 --- !u!1 &1702010091
 GameObject:
   m_ObjectHideFlags: 0
@@ -9407,7 +9625,7 @@ GameObject:
   - component: {fileID: 1704777116}
   m_Layer: 0
   m_Name: Hydro48
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9789,6 +10007,7 @@ Transform:
   - {fileID: 345680728}
   - {fileID: 1683387222}
   - {fileID: 64976310}
+  - {fileID: 1877823688}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1740623888
@@ -9920,6 +10139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1786932123}
   - component: {fileID: 1786932124}
+  - component: {fileID: 1786932125}
   m_Layer: 0
   m_Name: Hydro38
   m_TagString: Intersection
@@ -9954,6 +10174,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d3ccbb203cfac4b979d3d9d1fdf67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1786932125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786932122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 1786932122}
+    paths:
+    - fromPath: {fileID: 1463823558}
+      toPaths:
+      - toPath: {fileID: 1592991033}
+        moveForward: 0
+      - toPath: {fileID: 1171605969}
+        moveForward: 0
+  - intersectionPoint: {fileID: 1786932122}
+    paths:
+    - fromPath: {fileID: 1215987045}
+      toPaths:
+      - toPath: {fileID: 1592991033}
+        moveForward: 0
+      - toPath: {fileID: 1171605969}
+        moveForward: 0
 --- !u!1 &1811059823
 GameObject:
   m_ObjectHideFlags: 0
@@ -10028,7 +10277,7 @@ GameObject:
   - component: {fileID: 1817235645}
   m_Layer: 0
   m_Name: Hydro32
-  m_TagString: Untagged
+  m_TagString: backward
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10378,6 +10627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1864444335}
   - component: {fileID: 1864444336}
+  - component: {fileID: 1864444337}
   m_Layer: 0
   m_Name: Anemo48
   m_TagString: Intersection
@@ -10412,6 +10662,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d3ccbb203cfac4b979d3d9d1fdf67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1864444337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864444334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 1864444334}
+    paths:
+    - fromPath: {fileID: 600345986}
+      toPaths:
+      - toPath: {fileID: 1321647450}
+        moveForward: 0
+      - toPath: {fileID: 1817235643}
+        moveForward: 0
+  - intersectionPoint: {fileID: 1864444334}
+    paths:
+    - fromPath: {fileID: 1387116344}
+      toPaths:
+      - toPath: {fileID: 1321647450}
+        moveForward: 0
+      - toPath: {fileID: 1817235643}
+        moveForward: 0
 --- !u!1 &1866229983
 GameObject:
   m_ObjectHideFlags: 0
@@ -10529,6 +10808,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 88550e4f453dbd44b8a7200686cff8e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1877823687
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1877823688}
+  - component: {fileID: 1877823689}
+  m_Layer: 0
+  m_Name: Pyro50
+  m_TagString: forward
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1877823688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877823687}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.727, y: -8.91, z: 7.33}
+  m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1737506227}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1877823689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877823687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a70ddd747b3ef544c9c8a9ff6530f9c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1887591114
@@ -10784,7 +11107,7 @@ GameObject:
   - component: {fileID: 1940016539}
   m_Layer: 0
   m_Name: Pyro33
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11222,7 +11545,7 @@ GameObject:
   - component: {fileID: 2021757560}
   m_Layer: 0
   m_Name: Geo34
-  m_TagString: Untagged
+  m_TagString: forward
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11568,6 +11891,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139488862}
+  - component: {fileID: 2139488863}
   m_Layer: 0
   m_Name: Anemo31
   m_TagString: Intersection
@@ -11590,6 +11914,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1609578303}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2139488863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139488861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d9266222873a943bf235d57d0382f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intersectionList:
+  - intersectionPoint: {fileID: 2139488861}
+    paths:
+    - fromPath: {fileID: 1611316761}
+      toPaths:
+      - toPath: {fileID: 565796170}
+        moveForward: 0
+      - toPath: {fileID: 1676757089}
+        moveForward: 0
+  - intersectionPoint: {fileID: 2139488861}
+    paths:
+    - fromPath: {fileID: 615547368}
+      toPaths:
+      - toPath: {fileID: 565796170}
+        moveForward: 0
+      - toPath: {fileID: 1676757089}
+        moveForward: 0
 --- !u!1 &2145801619
 GameObject:
   m_ObjectHideFlags: 0

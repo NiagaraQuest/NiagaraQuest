@@ -72,8 +72,13 @@ public class WaypointScript : MonoBehaviour
     {
         if (!reachedIntersection)
         {
+            Debug.Log($"🔍 Premier tour ? currentWaypointIndex: {currentWaypointIndex}, steps: {steps}");
             remainingSteps = steps;
-            targetWaypointIndex = currentWaypointIndex + (movementDirection * steps); // 🎯 Déterminer la cible
+
+            // 🔥 Ajout d'un +1 pour corriger le premier tour
+            if (currentWaypointIndex == 0) remainingSteps += 1;
+
+            targetWaypointIndex = currentWaypointIndex + (movementDirection * remainingSteps);
             isMoving = true;
         }
     }

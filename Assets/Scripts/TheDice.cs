@@ -29,7 +29,7 @@ public class theDice : MonoBehaviour
         // Réinitialisation de l'état du dé
         hasStopped = false;
         rollvalue = 0; // Réinitialisation de la valeur
-       
+
         // Appliquer une force vers le haut pour lancer le dé
         rb.AddForce(Vector3.up * throwStrength, ForceMode.Impulse);
 
@@ -48,10 +48,10 @@ public class theDice : MonoBehaviour
     IEnumerator WaitForStop()
     {
         // Attendre un court instant avant de vérifier l'arrêt
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(1.5f);
 
         // Tant que le dé a encore une rotation significative, continuer à attendre
-        while (rb.angularVelocity.sqrMagnitude > 0.1f)
+        while (rb.linearVelocity.sqrMagnitude > 0.01f || rb.angularVelocity.sqrMagnitude > 0.01f)
         {
             yield return new WaitForFixedUpdate();
         }
@@ -65,46 +65,29 @@ public class theDice : MonoBehaviour
     // Méthode pour déterminer la face visible du dé lorsque celui-ci s'arrête
     public void CheckRoll()
     {
-        // Les dot products permettent de comparer l'orientation du dé à l'axe vertical
-        float yDot = Mathf.Round(Vector3.Dot(transform.up.normalized, Vector3.up));
-        float zDot = Mathf.Round(Vector3.Dot(transform.forward.normalized, Vector3.up));
-        float xDot = Mathf.Round(Vector3.Dot(transform.right.normalized, Vector3.up));
+        // Définir les dot products pour comparer l'orientation du dé avec l'axe vertical
+        float yDot = Vector3.Dot(transform.up, Vector3.up);
+        float zDot = Vector3.Dot(transform.forward, Vector3.up);
+        float xDot = Vector3.Dot(transform.right, Vector3.up);
 
-        // Vérification selon l'axe Y (haut/bas)
-        switch (yDot)
+        // Trouver l'axe le plus aligné avec l'axe vertical
+        if (Mathf.Abs(yDot) > Mathf.Abs(xDot) && Mathf.Abs(yDot) > Mathf.Abs(zDot))
         {
-            case 1:  // Face "haut"
-                rollvalue = 2;
-                break;
-            case -1: // Face "bas"
-                rollvalue = 5;
-                break;
+            rollvalue = (yDot > 0) ? 2 : 5; // Haut (2) / Bas (5)
+        }
+        else if (Mathf.Abs(xDot) > Mathf.Abs(yDot) && Mathf.Abs(xDot) > Mathf.Abs(zDot))
+        {
+            rollvalue = (xDot > 0) ? 4 : 3; // Gauche (4) / Droite (3)
+        }
+        else
+        {
+            rollvalue = (zDot > 0) ? 1 : 6; // Avant (1) / Arrière (6)
         }
 
-        // Vérification selon l'axe X (gauche/droite)
-        switch (xDot)
-        {
-            case 1:  // Face "gauche"
-                rollvalue = 4;
-                break;
-            case -1: // Face "droite"
-                rollvalue = 3;
-                break;
-        }
-
-        // Vérification selon l'axe Z (avant/arrière)
-        switch (zDot)
-        {
-            case 1:  // Face "avant"
-                rollvalue = 1;
-                break;
-            case -1: // Face "arrière"
-                rollvalue = 6;
-                break;
-        }
-
-       
+        Debug.Log("Valeur du dé : " + rollvalue);
     }
+
+
     // Méthode publique permettant à d'autres scripts de récupérer la valeur actuelle du dé
     public int GetRollValue()
     {
