@@ -4,62 +4,112 @@ using UnityEngine;
 public class IntersectionPoint : MonoBehaviour
 {
     [System.Serializable]
-    public class PathOptions
+    public class ToPathData
     {
-        public GameObject fromPath; // The path the player arrives from
-        public List<GameObject> toPaths = new List<GameObject>(); // Possible next paths
+        public GameObject toPath; // Destination path
+        public bool moveForward;  // ✅ True = Forward, False = Backward
     }
 
-    [Header("Define paths and their possible destinations")]
-    public List<PathOptions> intersectionPaths = new List<PathOptions>();
-
-    // Function to get possible paths based on the player's arrival path
-    public List<GameObject> GetAvailablePaths(GameObject arrivingFrom)
+    [System.Serializable]
+    public class PathMapping
     {
-        Debug.Log("🔎 Checking available paths for: " + (arrivingFrom != null ? arrivingFrom.name : "NULL"));
+        public GameObject fromPath; // Path the player arrives from
+        public List<ToPathData> toPaths = new List<ToPathData>(); // Possible destinations + move direction
+    }
 
-        if (intersectionPaths.Count == 0)
+    [System.Serializable]
+    public class IntersectionData
+    {
+        public GameObject intersectionPoint; // The intersection itself
+        public List<PathMapping> paths = new List<PathMapping>(); // The mapping for this intersection
+    }
+
+    [Header("Manually assign intersection paths")]
+    public List<IntersectionData> intersectionList = new List<IntersectionData>();
+
+    private Dictionary<GameObject, Dictionary<GameObject, List<ToPathData>>> intersectionMap =
+        new Dictionary<GameObject, Dictionary<GameObject, List<ToPathData>>>();
+
+    void Awake()
+    {
+        PopulateDictionary();
+    }
+
+    private void PopulateDictionary()
+    {
+        foreach (var intersection in intersectionList)
         {
-            Debug.LogError("❌ No intersection paths are assigned in the Inspector!");
-            return new List<GameObject>();
-        }
-
-        List<GameObject> availablePaths = new List<GameObject>(); // This will store the valid paths
-
-        foreach (PathOptions option in intersectionPaths)
-        {
-            if (option.fromPath == null)
+            if (intersection.intersectionPoint == null)
             {
-                Debug.LogError("⚠️ A 'fromPath' entry in intersectionPaths is NULL!");
+                Debug.LogError("❌ Intersection point is missing!");
                 continue;
             }
 
-            Debug.Log("📍 From Path: " + option.fromPath.name);
-
-            if (option.fromPath == arrivingFrom) // This is where it checks the reference
+            if (!intersectionMap.ContainsKey(intersection.intersectionPoint))
             {
-                Debug.Log("✅ Match Found! Adding paths...");
+                intersectionMap[intersection.intersectionPoint] = new Dictionary<GameObject, List<ToPathData>>();
+            }
 
-                if (option.toPaths == null || option.toPaths.Count == 0)
+            foreach (var mapping in intersection.paths)
+            {
+                if (mapping.fromPath == null || mapping.toPaths.Count == 0)
                 {
-                    Debug.LogError("⚠️ From path " + option.fromPath.name + " has NO assigned destinations!");
+                    Debug.LogWarning($"⚠️ Skipping entry with missing paths at {intersection.intersectionPoint.name}");
+                    continue;
                 }
-                else
+
+                intersectionMap[intersection.intersectionPoint][mapping.fromPath] = new List<ToPathData>(mapping.toPaths);
+            }
+        }
+    }
+
+    public List<GameObject> GetAvailablePaths(GameObject intersectionPoint, GameObject arrivingFrom)
+    {
+        if (intersectionMap.ContainsKey(intersectionPoint) && intersectionMap[intersectionPoint].ContainsKey(arrivingFrom))
+        {
+            List<GameObject> paths = new List<GameObject>();
+            foreach (var data in intersectionMap[intersectionPoint][arrivingFrom])
+            {
+                paths.Add(data.toPath); // Only return the path, not the direction
+            }
+            return paths;
+        }
+
+        Debug.LogWarning($"⚠️ No valid paths found for {intersectionPoint?.name} coming from {arrivingFrom?.name}");
+        return new List<GameObject>();
+    }
+
+    public bool GetPathDirection(GameObject intersectionPoint, GameObject arrivingFrom, GameObject selectedPath)
+    {
+        if (intersectionMap.ContainsKey(intersectionPoint) && intersectionMap[intersectionPoint].ContainsKey(arrivingFrom))
+        {
+            foreach (var data in intersectionMap[intersectionPoint][arrivingFrom])
+            {
+                if (data.toPath == selectedPath)
                 {
-                    foreach (GameObject path in option.toPaths)
-                    {
-                        Debug.Log("➡️ Adding path: " + path.name);
-                        availablePaths.Add(path);
-                    }
+                    return data.moveForward; // ✅ Return stored movement direction
                 }
             }
         }
 
-        Debug.Log("📌 Final available paths count: " + availablePaths.Count);
-        return availablePaths;
+        Debug.LogWarning($"⚠️ No movement direction found for {selectedPath?.name} at {intersectionPoint?.name}");
+        return true; // Default: move forward
     }
 
-
-
-
+    public void DebugIntersections()
+    {
+        foreach (var intersection in intersectionMap)
+        {
+            Debug.Log($"🔵 Intersection: {intersection.Key.name}");
+            foreach (var pathEntry in intersection.Value)
+            {
+                Debug.Log($"↪️ From: {pathEntry.Key.name}");
+                foreach (var toPathData in pathEntry.Value)
+                {
+                    string direction = toPathData.moveForward ? "Forward" : "Backward";
+                    Debug.Log($"➡️ To: {toPathData.toPath.name} ({direction})");
+                }
+            }
+        }
+    }
 }

@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public class IntersectionUIManager : MonoBehaviour
 {
-    public GameObject panelChoices; // The panel containing buttons for staying or switching paths
-    public GameObject panelPathOptions; // Panel that will contain dynamically created buttons
-    public Button buttonStayOnPath; // Stay on the same path
-    public Button buttonChangePath; // Button to switch paths
-    public Button buttonPrefab; // Prefab for dynamically generated buttons
+    public GameObject panelChoices; // Le premier menu avec Stay / Change Path
+    public GameObject panelPathOptions; // Le menu affichant les chemins disponibles
+    public Button buttonStayOnPath;
+    public Button buttonChangePath;
+    public Button buttonPrefab; // Bouton modèle pour générer les options
 
-    private WaypointScript playerScript; // Reference to player movement script
-    private List<GameObject> availablePaths = new List<GameObject>(); // List of available paths
+    private WaypointScript playerScript;
+    private List<GameObject> availablePaths = new List<GameObject>(); // Chemins disponibles
 
     void Start()
     {
@@ -30,7 +30,7 @@ public class IntersectionUIManager : MonoBehaviour
     void StayOnPath()
     {
         panelChoices.SetActive(false);
-        playerScript.ResumeMovement(null, true); // Continue moving forward
+        playerScript.ResumeMovement(null, true);
     }
 
     void ShowPathOptions()
@@ -52,13 +52,7 @@ public class IntersectionUIManager : MonoBehaviour
         IntersectionPoint intersection = currentWaypoint.GetComponent<IntersectionPoint>();
         if (intersection != null)
         {
-            availablePaths = intersection.GetAvailablePaths(playerScript.GetLastPath());
-
-            Debug.Log("✅ Chemins trouvés : " + availablePaths.Count);
-            foreach (var path in availablePaths)
-            {
-                Debug.Log("➡️ Chemin possible : " + path.name);
-            }
+            availablePaths = intersection.GetAvailablePaths(currentWaypoint, playerScript.GetLastPath());
 
             if (availablePaths.Count == 0)
             {
@@ -66,32 +60,25 @@ public class IntersectionUIManager : MonoBehaviour
                 return;
             }
 
+            // Suppression des anciens boutons
             foreach (Transform child in panelPathOptions.transform)
             {
                 Destroy(child.gameObject);
             }
 
+            // Génération des nouveaux boutons
             foreach (GameObject path in availablePaths)
             {
                 Button newButton = Instantiate(buttonPrefab, panelPathOptions.transform);
-                newButton.transform.localScale = Vector3.one; // Ensure correct scaling
-
-                LayoutElement layout = newButton.GetComponent<LayoutElement>();
-                if (layout == null)
-                {
-                    layout = newButton.gameObject.AddComponent<LayoutElement>();
-                }
-                layout.preferredHeight = 50; // Ensure spacing
+                newButton.transform.localScale = Vector3.one;
 
                 var textComponent = newButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
                 if (textComponent != null)
                 {
                     textComponent.text = path.name;
                 }
-                else
-                {
-                    Debug.LogError("⚠️ Aucun composant Text trouvé dans le bouton !");
-                }
+
+                // 🔥 FIXED: Passer un GameObject au lieu d'un string
                 newButton.onClick.AddListener(() => SelectPath(path));
             }
         }
@@ -107,4 +94,14 @@ public class IntersectionUIManager : MonoBehaviour
         playerScript.ResumeMovement(selectedPath, false);
     }
 }
+
+
+
+
+
+
+
+
+
+
 

@@ -1,7 +1,8 @@
+ï»¿
 using UnityEngine;
-using UnityEngine.UI; // Ajouté pour Button
-using TMPro; // Ajouté pour TextMeshProUGUI
-using System.Collections; // Ajouté pour IEnumerator
+using UnityEngine.UI;
+using TMPro;
+using System.Collections;
 
 public class DiceManager : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class DiceManager : MonoBehaviour
     [SerializeField] private theDice dice1;
     [SerializeField] private theDice dice2;
     [SerializeField] private Button rollButton;
-    [SerializeField] private WaypointScript playerMovement; // Référence au script de mouvement
 
     public int LastRollSum { get; private set; }
+    public GameManager gameManager; //  Reference to GameManager
 
     public void RollBothDiceAndShowSum()
     {
@@ -31,7 +32,6 @@ public class DiceManager : MonoBehaviour
         sumText.text = "Somme : " + LastRollSum;
         rollButton.interactable = true;
 
-        // Déplacer le joueur en fonction du résultat du dé
-        playerMovement.MovePlayer(LastRollSum);
+        gameManager.OnDiceRolled(); // âœ… Notify GameManager
     }
 }

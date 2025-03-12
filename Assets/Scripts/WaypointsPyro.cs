@@ -1,125 +1,149 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class WaypointScript : MonoBehaviour
 {
-    public GameObject path;
-    public IntersectionUIManager uiManager; // Reference to UI
-    private GameObject[] waypoints;
+    public Board gameBoard;
+    public IntersectionUIManager uiManager;
+    public string currentPath = "GeoPath"; // Default path
     public float speed = 2;
 
     private int currentWaypointIndex = 0;
     private int targetWaypointIndex = 0;
     private bool isMoving = false;
     private bool reachedIntersection = false;
-    private GameObject lastWaypointBeforeIntersection; // Stores last waypoint before reaching an intersection
+    private GameObject lastWaypointBeforeIntersection;
+    private int remainingSteps = 0; // ✅ Stocke les pas restants après une intersection
+    private int movementDirection = 1; // ✅ 1 pour forward, -1 pour backward
+
+    // ✅ Vérifie si le mouvement est terminé
+    public bool HasFinishedMoving => !isMoving && !reachedIntersection;
 
     void Start()
     {
-        if (path != null)
+        if (gameBoard != null)
         {
-            waypoints = new GameObject[path.transform.childCount];
-
-            for (int i = 0; i < path.transform.childCount; i++)
-            {
-                waypoints[i] = path.transform.GetChild(i).gameObject;
-            }
+            MoveToWaypoint(0); // Commencer au premier waypoint
         }
     }
 
     void Update()
     {
-        if (isMoving && !reachedIntersection && waypoints.Length > 0)
+        if (isMoving && !reachedIntersection)
         {
-            if (transform.position != waypoints[currentWaypointIndex].transform.position)
+            GameObject targetWaypoint = gameBoard.GetTile(currentPath, currentWaypointIndex);
+
+            if (targetWaypoint != null)
             {
-                transform.position = Vector3.MoveTowards(
-                    transform.position,
-                    waypoints[currentWaypointIndex].transform.position,
-                    speed * Time.deltaTime
-                );
-            }
-            else
-            {
-                if (waypoints[currentWaypointIndex].CompareTag("Intersection"))
+                if (transform.position != targetWaypoint.transform.position)
                 {
-                    reachedIntersection = true;
-                    isMoving = false;
-                    uiManager.ShowUI(this); // Show path selection UI
+                    transform.position = Vector3.MoveTowards(
+                        transform.position,
+                        targetWaypoint.transform.position,
+                        speed * Time.deltaTime
+                    );
                 }
                 else
                 {
-                    if (currentWaypointIndex < targetWaypointIndex)
+                    if (targetWaypoint.CompareTag("Intersection"))
                     {
-                        // Store the last waypoint before moving to the next
-                        lastWaypointBeforeIntersection = waypoints[currentWaypointIndex];
-                        currentWaypointIndex++;
+                        reachedIntersection = true;
+                        isMoving = false;
+                        uiManager.ShowUI(this); // Afficher le choix des chemins
                     }
                     else
                     {
-                        isMoving = false;
+                        lastWaypointBeforeIntersection = targetWaypoint;
+                        currentWaypointIndex += movementDirection;
+                        remainingSteps = Mathf.Max(0, remainingSteps - 1);
+
+                        if (currentWaypointIndex == targetWaypointIndex || remainingSteps <= 0)
+                        {
+                            isMoving = false;
+                        }
                     }
                 }
             }
         }
     }
 
+    // ✅ Déplace le joueur avec un vrai objectif
     public void MovePlayer(int steps)
     {
         if (!reachedIntersection)
         {
-            targetWaypointIndex = Mathf.Min(currentWaypointIndex + steps, waypoints.Length - 1);
+            remainingSteps = steps;
+            targetWaypointIndex = currentWaypointIndex + (movementDirection * steps); // 🎯 Déterminer la cible
             isMoving = true;
         }
     }
 
+    // ✅ Gère le changement de chemin et met à jour correctement le waypoint
     public void ResumeMovement(GameObject newPath, bool stayOnSamePath)
     {
         if (newPath != null)
         {
-            path = newPath;
-            waypoints = new GameObject[path.transform.childCount];
+            string newPathName = newPath.transform.parent?.name; // 🔥 Récupérer le chemin parent
+            int newWaypointIndex = gameBoard.GetWaypointIndex(newPathName, newPath); // 🔍 Obtenir l’index du waypoint
 
-            for (int i = 0; i < path.transform.childCount; i++)
+            if (gameBoard.PathExists(newPathName) && newWaypointIndex != -1) // ✅ Vérifier si c'est un chemin valide
             {
-                waypoints[i] = path.transform.GetChild(i).gameObject;
-            }
+                currentPath = newPathName;
+                currentWaypointIndex = newWaypointIndex;
+                targetWaypointIndex = currentWaypointIndex + (movementDirection * remainingSteps);
+                MoveToWaypoint(newWaypointIndex);
+                Debug.Log($"✅ Changement vers le chemin {newPathName} au waypoint {newWaypointIndex}");
 
-            currentWaypointIndex = 0;
+                // ✅ Déterminer la direction en fonction de l'étiquette du waypoint
+                if (newPath.CompareTag("backward"))
+                {
+                    movementDirection = -1;
+                }
+                else if (newPath.CompareTag("forward"))
+                {
+                    movementDirection = 1;
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"❌ Impossible de changer vers {newPathName}, chemin inconnu !");
+            }
         }
         else if (stayOnSamePath)
         {
-            if (currentWaypointIndex < waypoints.Length - 1)
-            {
-                currentWaypointIndex++; // Move to the next waypoint
-            }
+            currentWaypointIndex += movementDirection;
+            targetWaypointIndex = currentWaypointIndex + (movementDirection * remainingSteps);
+            MoveToWaypoint(currentWaypointIndex);
         }
 
         reachedIntersection = false;
         isMoving = true;
+
+        // ✅ Reprendre les pas restants après une intersection
+        if (remainingSteps > 0)
+        {
+            MovePlayer(remainingSteps);
+        }
     }
 
-    // Returns the exact waypoint before reaching an intersection
+    // ✅ Déplacer directement le joueur à un waypoint
+    private void MoveToWaypoint(int index)
+    {
+        GameObject waypoint = gameBoard.GetTile(currentPath, index);
+        if (waypoint != null)
+        {
+            transform.position = waypoint.transform.position;
+            currentWaypointIndex = index;
+        }
+    }
+
     public GameObject GetCurrentWaypoint()
     {
-        return waypoints[currentWaypointIndex];
+        return gameBoard.GetTile(currentPath, currentWaypointIndex);
     }
 
-    // Returns the last waypoint before reaching an intersection
     public GameObject GetLastPath()
     {
-        if (lastWaypointBeforeIntersection != null)
-        {
-            Debug.Log(" Last waypoint before intersection: " + lastWaypointBeforeIntersection.name);
-            return lastWaypointBeforeIntersection;
-        }
-        else
-        {
-            Debug.LogWarning(" Last waypoint is NULL! The player may not have moved yet.");
-            return null;
-        }
+        return lastWaypointBeforeIntersection;
     }
 }
-
-
-
-
