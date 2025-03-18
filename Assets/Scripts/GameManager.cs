@@ -22,9 +22,10 @@ public class GameManager : MonoBehaviour
         players.Clear();
 
         players.Add(GameObject.Find("PyroPlayer"));
+        players.Add(GameObject.Find("HydroPlayer"));
         players.Add(GameObject.Find("AnemoPlayer"));
         players.Add(GameObject.Find("GeoPlayer"));
-        players.Add(GameObject.Find("HydroPlayer"));
+
 
         if (players.Contains(null))
         {
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour
         }
 
         int moveSteps = diceManager.LastRollSum;
-        WaypointScript movementScript = selectedPlayer.GetComponent<WaypointScript>();
+        Player movementScript = selectedPlayer.GetComponent<Player>();
 
         if (movementScript != null)
         {
@@ -72,7 +73,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitForMovement(WaypointScript movementScript)
+    private IEnumerator WaitForMovement(Player movementScript)
     {
         yield return new WaitUntil(() => movementScript.HasFinishedMoving);
         NextTurn();

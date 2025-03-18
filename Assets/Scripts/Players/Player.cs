@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class WaypointScript : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public Board gameBoard;
     public IntersectionUIManager uiManager;

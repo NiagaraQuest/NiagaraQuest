@@ -10,7 +10,7 @@ public class IntersectionUIManager : MonoBehaviour
     public Button buttonChangePath;
     public Button buttonPrefab; // Bouton modèle pour générer les options
 
-    private WaypointScript playerScript;
+    private Player playerScript;
     private List<GameObject> availablePaths = new List<GameObject>(); // Chemins disponibles
 
     void Start()
@@ -21,7 +21,7 @@ public class IntersectionUIManager : MonoBehaviour
         buttonChangePath.onClick.AddListener(ShowPathOptions);
     }
 
-    public void ShowUI(WaypointScript player)
+    public void ShowUI(Player player)
     {
         playerScript = player;
         panelChoices.SetActive(true);
