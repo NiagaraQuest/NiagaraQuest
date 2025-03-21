@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class IntersectionPoint : MonoBehaviour
+public class IntersectionPoint : Tile
 {
     [System.Serializable]
     public class ToPathData
@@ -113,3 +113,4 @@ public class IntersectionPoint : MonoBehaviour
         }
     }
 }
+

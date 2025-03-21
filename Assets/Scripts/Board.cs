@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Mono.Cecil;
 
 public class Board : MonoBehaviour
 {
@@ -12,6 +13,11 @@ public class Board : MonoBehaviour
         AddPath("HydroPath");
         AddPath("GeoPath");
     }
+
+
+
+    //Recherche l’objet représentant un chemin.
+    // Récupère tous ses enfants(waypoints) et les stocke dans Paths.
 
     private void AddPath(string pathName)
     {
@@ -35,7 +41,8 @@ public class Board : MonoBehaviour
         }
     }
 
-    //  Retourne un waypoint spécifique
+    //  Retourne un waypoint d’un chemin en fonction de son index.
+
     public GameObject GetTile(string pathName, int index)
     {
         if (Paths.ContainsKey(pathName))
@@ -59,7 +66,8 @@ public class Board : MonoBehaviour
         return null;
     }
 
-    //  Retourne l'index d'un waypoint dans son chemin
+    // Trouve la position d’un waypoint spécifique dans un chemin.
+
     public int GetWaypointIndex(string pathName, GameObject waypoint)
     {
         if (Paths.ContainsKey(pathName))
@@ -70,7 +78,7 @@ public class Board : MonoBehaviour
     }
 
 
-    //  Retourne un chemin entier (utile pour vérifier s'il existe)
+    // Retourne la liste complète des waypoints d’un chemin (utile pour vérifier s'il existe)
     public List<GameObject> GetPath(string pathName)
     {
         if (Paths.ContainsKey(pathName))
@@ -84,7 +92,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    //  Vérifie si un chemin existe
+    // ✅ Vérifie si un chemin existe
     public bool PathExists(string pathName)
     {
         return Paths.ContainsKey(pathName);

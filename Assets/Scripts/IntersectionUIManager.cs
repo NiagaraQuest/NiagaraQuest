@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using static UnityEngine.UI.GridLayoutGroup;
+using System.IO;
+using UnityEditor;
 
 public class IntersectionUIManager : MonoBehaviour
 {
@@ -21,6 +24,9 @@ public class IntersectionUIManager : MonoBehaviour
         buttonChangePath.onClick.AddListener(ShowPathOptions);
     }
 
+
+
+    //Displays the path selection menu
     public void ShowUI(Player player)
     {
         playerScript = player;
@@ -94,11 +100,6 @@ public class IntersectionUIManager : MonoBehaviour
         playerScript.ResumeMovement(selectedPath, false);
     }
 }
-
-
-
-
-
 
 
 

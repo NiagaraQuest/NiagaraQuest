@@ -1,62 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using System.Threading.Tasks;
 
 public class GameManager : MonoBehaviour
 {
+    //Stocke tous les joueurs
     public List<GameObject> players = new List<GameObject>();
+
     public int currentPlayerIndex = 0;
     public Board gameBoard;
     public DiceManager diceManager;
 
     private GameObject selectedPlayer;
 
-    private bool _initialized;
+    // Vérifie que les joueurs existent et sélectionne le premier joueur.
 
-    async Task Start()
+    void Start()
     {
-        if (!_initialized){
-            Debug.Log("Starting Databese intitialization ...");
-
-            await DataBaseManager.Instance.Initialize();
-            await Sample();
-            _initialized = true;
-            Debug.Log("DataBase setup is complete!");
-        }
         InitializePlayers();
         StartGame();
     }
 
-    private async Task Sample(){
-        Profile profile = new Profile("Alilou");
-        await DataBaseManager.Instance.Insert(profile);
-        Debug.Log($"Created profile: {profile.Username} with ID: {profile.Id}");
-        OpenQuestion question = new OpenQuestion{
-            Category = "Mathematics",
-            Qst = "What is the value of pi in two decimal places?",
-            Answer = "3.14"
-        };
-        await DataBaseManager.Instance.Insert(question);
-        
-
-    }
-
+    //Finds all Player objects and stores them in players
     private void InitializePlayers()
     {
         players.Clear();
 
         players.Add(GameObject.Find("PyroPlayer"));
-        players.Add(GameObject.Find("HydroPlayer"));
         players.Add(GameObject.Find("AnemoPlayer"));
         players.Add(GameObject.Find("GeoPlayer"));
-
+        players.Add(GameObject.Find("HydroPlayer"));
 
         if (players.Contains(null))
         {
-            Debug.LogError("❌ Some players are missing from the scene!");
+            Debug.LogError(" Some players are missing from the scene!");
         }
     }
+
 
     public void StartGame()
     {
@@ -66,13 +46,15 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        //Sets the first player and starts their turn
+
         selectedPlayer = players[currentPlayerIndex];
-        Debug.Log(" Game Started! First player: " + selectedPlayer.name);
+        Debug.Log("🎮 Game Started! First player: " + selectedPlayer.name);
     }
 
     public void OnDiceRolled()
     {
-        Debug.Log(" Dice rolled! Moving player...");
+        Debug.Log("🎲 Dice rolled! Moving player...");
         MoveSelectedPlayer();
     }
 
@@ -85,22 +67,20 @@ public class GameManager : MonoBehaviour
         }
 
         int moveSteps = diceManager.LastRollSum;
-        Player movementScript = selectedPlayer.GetComponent<Player>();
+        Player movementScript = selectedPlayer.GetComponent<Player>(); // Get the Player script
 
         if (movementScript != null)
         {
             movementScript.MovePlayer(moveSteps);
-            StartCoroutine(WaitForMovement(movementScript));
-            QuestionTile spec = movementScript.GetComponent<QuestionTile>();
-            if (spec != null){
-                spec.AskQestion();
-            }
+            StartCoroutine(WaitForMovement(movementScript)); //  Wait for movement to complete
+        }
         else
         {
             Debug.LogError("❌ No WaypointScript found on " + selectedPlayer.name);
         }
     }
 
+    //Waits for the player to stop moving
     private IEnumerator WaitForMovement(Player movementScript)
     {
         yield return new WaitUntil(() => movementScript.HasFinishedMoving);
@@ -114,12 +94,4 @@ public class GameManager : MonoBehaviour
         Debug.Log($"🔄 Next turn: {selectedPlayer.name}");
     }
 }
-
-
-
-
-
-
-
-
 

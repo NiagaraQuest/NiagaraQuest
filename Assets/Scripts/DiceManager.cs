@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
@@ -12,7 +11,7 @@ public class DiceManager : MonoBehaviour
     [SerializeField] private Button rollButton;
 
     public int LastRollSum { get; private set; }
-    public GameManager gameManager; //  Reference to GameManager
+    public GameManager gameManager; // ✅ Reference to GameManager
 
     public void RollBothDiceAndShowSum()
     {
@@ -35,3 +34,4 @@ public class DiceManager : MonoBehaviour
         gameManager.OnDiceRolled(); // ✅ Notify GameManager
     }
 }
+

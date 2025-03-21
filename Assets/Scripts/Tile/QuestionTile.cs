@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class QuestionTile : Tile
 {
@@ -7,15 +7,19 @@ public class QuestionTile : Tile
 
     public QuestionType questionType;
     public Difficulty difficulty;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    public override void OnPlayerLands()
     {
-        
+        base.OnPlayerLands(); // ✅ Appelle l'affichage de la région depuis Tile
+
+        Debug.Log($"📝 Question: {question} (Catégorie: {questionType}, Difficulté: {difficulty})");
+
+        // Affichage UI
+        ShowQuestionUI();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void ShowQuestionUI()
     {
-        
+        Debug.Log($"📢 Affichage UI: {question}");
     }
 }
