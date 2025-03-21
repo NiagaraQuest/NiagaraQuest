@@ -2,6 +2,15 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    public enum Difficulty{
+        Easy;
+        Medium;
+        Hard;
+    }
+    public enum QuestionType{
+        Input;
+        Qcm;
+    }
     public enum TileType{
         Question;
         Card;

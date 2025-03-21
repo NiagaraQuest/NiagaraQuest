@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Threading.Tasks;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,10 +12,34 @@ public class GameManager : MonoBehaviour
 
     private GameObject selectedPlayer;
 
-    void Start()
+    private bool _initialized;
+
+    async Task Start()
     {
+        if (!_initialized){
+            Debug.Log("Starting Databese intitialization ...");
+
+            await DataBaseManager.Instance.Initialize();
+            await Sample();
+            _initialized = true;
+            Debug.Log("DataBase setup is complete!");
+        }
         InitializePlayers();
         StartGame();
+    }
+
+    private async Task Sample(){
+        Profile profile = new Profile("Alilou");
+        await DataBaseManager.Instance.Insert(profile);
+        Debug.Log($"Created profile: {profile.Username} with ID: {profile.Id}");
+        OpenQuestion question = new OpenQuestion{
+            Category = "Mathematics",
+            Qst = "What is the value of pi in two decimal places?",
+            Answer = "3.14"
+        };
+        await DataBaseManager.Instance.Insert(question);
+        
+
     }
 
     private void InitializePlayers()
@@ -66,7 +91,10 @@ public class GameManager : MonoBehaviour
         {
             movementScript.MovePlayer(moveSteps);
             StartCoroutine(WaitForMovement(movementScript));
-        }
+            QuestionTile spec = movementScript.GetComponent<QuestionTile>();
+            if (spec != null){
+                spec.AskQestion();
+            }
         else
         {
             Debug.LogError("❌ No WaypointScript found on " + selectedPlayer.name);
