@@ -1,3 +1,5 @@
+using SQLite;
+
 public class PlayerQuestionHistory
 {
     [PrimaryKey, AutoIncrement]

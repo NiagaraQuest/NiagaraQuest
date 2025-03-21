@@ -24,28 +24,43 @@ public class QuestionManager
         dbManager = DatabaseManager.Instance;
     }
 
-    public async Task<Question> GenerateQuestionForPlayer(Profile player)
+   public async Task<Question> GenerateQuestionForPlayer(Profile player)
     {
-        string query = @"
-            SELECT * FROM Question 
-            WHERE NOT EXISTS 
-                (SELECT 1 FROM PlayerQuestionHistory 
-                 WHERE PlayerQuestionHistory.QuestionId = Question.Id 
-                 AND PlayerQuestionHistory.PlayerId = ?) 
-            ORDER BY RANDOM() 
-            LIMIT 1;";
+       string qcmQuery = @"
+        SELECT * FROM QCMQuestion 
+        WHERE NOT EXISTS 
+            (SELECT 1 FROM PlayerQuestionHistory 
+             WHERE PlayerQuestionHistory.QuestionId = QCMQuestion.Id 
+             AND PlayerQuestionHistory.PlayerId = ?) 
+        ORDER BY RANDOM() 
+        LIMIT 1;";
 
-        var unseenQuestion = await dbManager.QueryFirstOrDefaultAsync<Question>(query, player.Id);
+      string openQuery = @"
+        SELECT * FROM OpenQuestion 
+        WHERE NOT EXISTS 
+            (SELECT 1 FROM PlayerQuestionHistory 
+             WHERE PlayerQuestionHistory.QuestionId = OpenQuestion.Id 
+             AND PlayerQuestionHistory.PlayerId = ?) 
+        ORDER BY RANDOM() 
+        LIMIT 1;";
 
-        if (unseenQuestion == null)
-        {
-            Debug.Log("No more new questions for this player.");
-            return null;
-        }
+      QCMQuestion qcmQuestion = await dbManager.QueryFirstOrDefaultAsync<QCMQuestion>(qcmQuery, player.Id);
+      OpenQuestion openQuestion = await dbManager.QueryFirstOrDefaultAsync<OpenQuestion>(openQuery, player.Id);
 
-        await SaveQuestionAppearance(player, unseenQuestion);
-        
-        return unseenQuestion;
+      List<Question> availableQuestions = new List<Question>();
+      if (qcmQuestion != null) availableQuestions.Add(qcmQuestion);
+      if (openQuestion != null) availableQuestions.Add(openQuestion);
+
+      if (availableQuestions.Count == 0)
+      {
+        Debug.Log("No more new questions for this player.");
+        return null;
+      }
+
+      Question selectedQuestion = availableQuestions[UnityEngine.Random.Range(0, availableQuestions.Count)];
+
+    //   await SaveQuestionAppearance(player, selectedQuestion);
+      return selectedQuestion;
     }
 
     private async Task SaveQuestionAppearance(Profile player, Question question)
