@@ -1,25 +1,35 @@
 ﻿using UnityEngine;
 
+
 public class QuestionTile : Tile
 {
-    public string question;
-    public string answer;
+    public OpenQuestion question;
+    private QuestionUIManager uiManager;
 
-    public QuestionType questionType;
-    public Difficulty difficulty;
+    void Start()
+    {
+        uiManager = FindFirstObjectByType<QuestionUIManager>(); // Find UI manager in scene
+    }
 
     public override void OnPlayerLands()
     {
-        base.OnPlayerLands(); // ✅ Appelle l'affichage de la région depuis Tile
-
-        Debug.Log($"📝 Question: {question} (Catégorie: {questionType}, Difficulté: {difficulty})");
-
-        // Affichage UI
-        ShowQuestionUI();
+        base.OnPlayerLands(); 
+        AskQuestion();
     }
 
-    private void ShowQuestionUI()
+    private void AskQuestion()
     {
-        Debug.Log($"📢 Affichage UI: {question}");
+        question = new OpenQuestion{
+            Category = "General",
+            Qst = "What is the capital of France?",
+            Answer = "Paris",
+        };
+        uiManager.ShowUI(question, this);
+    }
+
+    public void ContinueGame()
+    {
+        Debug.Log("✅ Player continues the game...");
+        
     }
 }

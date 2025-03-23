@@ -123,4 +123,43 @@ public class DatabaseManager
         
         throw new ArgumentException($"Unknown type {typeof(T).Name} - cannot determine appropriate database");
     }
+
+    public async Task<object> GetRandomQuestion()
+{
+    if (_questionConnection == null)
+    {
+        Debug.LogError("❌ Question database connection is not initialized!");
+        return null;
+    }
+
+    // List of question table names
+    string[] questionTables = new string[]
+    {
+        "QCMQuestion",
+        "OpenQuestion",
+        "FillTheGapsQuestion",
+        "TrueFalseQuestion",
+        "RankingQuestion"
+    };
+
+    // Choose a random table
+    string selectedTable = questionTables[UnityEngine.Random.Range(0, questionTables.Length)];
+    Debug.Log($"🎲 Selecting random question from {selectedTable}");
+
+    // Fetch a random question
+    string query = $"SELECT * FROM {selectedTable} ORDER BY RANDOM() LIMIT 1";
+
+    var result = await _questionConnection.QueryAsync<object>(query); // Fix: Use generic <object>
+
+    if (result != null && result.Count > 0)
+    {
+        return result[0]; // Return the first (random) result
+    }
+    else
+    {
+        Debug.LogWarning($"⚠️ No questions found in table {selectedTable}");
+        return null;
+    }
+}
+
 }
