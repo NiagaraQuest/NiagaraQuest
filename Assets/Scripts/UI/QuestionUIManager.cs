@@ -4,12 +4,32 @@ using TMPro;
 
 public class QuestionUIManager : MonoBehaviour
 {
-    public GameObject questionPanel; 
-    public TextMeshProUGUI questionText; 
+    public static QuestionUIManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+
+
+
+
+
+    public GameObject questionPanel;
+    public TextMeshProUGUI questionText;
     public TMP_InputField answerInput;
     public Button submitButton;
-    public GameObject resultPanel; 
-    public TextMeshProUGUI resultText; 
+    public GameObject resultPanel;
+    public TextMeshProUGUI resultText;
     public Button exitButton;
 
     private OpenQuestion currentQuestion;
@@ -32,7 +52,7 @@ public class QuestionUIManager : MonoBehaviour
         currentTile = tile;
 
         questionText.text = question.Qst; // Display question
-        answerInput.text = ""; 
+        answerInput.text = "";
         questionPanel.SetActive(true); // Show question panel
     }
 
@@ -41,16 +61,24 @@ public class QuestionUIManager : MonoBehaviour
         string playerAnswer = answerInput.text.Trim().ToLower();
         string correctAnswer = currentQuestion.Answer.Trim().ToLower();
 
+        bool isCorrect = (playerAnswer == correctAnswer);
+
         // Show result panel
         resultPanel.SetActive(true);
-        resultText.text = (playerAnswer == correctAnswer) ? "✅ Correct!" : "❌ Wrong!";
-        
+        resultText.text = isCorrect ? "✅ Correct!" : "❌ Wrong!";
+
         questionPanel.SetActive(false); // Hide question panel
+
+        // ✅ Apply the effect in GameManager (assuming difficulty is Easy)
+        GameManager.Instance.ApplyQuestionResult(GameManager.Instance.GetCurrentPlayer(), isCorrect , Tile.Difficulty.Easy);
     }
+
 
     void CloseResultPanel()
     {
         resultPanel.SetActive(false);
-        currentTile.ContinueGame(); // Allow the player to resume
+        questionPanel.SetActive(false);  // Ensure it is closed
+       // currentTile.penalityAndReward(resultText.text.Contains("✅")); // Apply the penalty/reward
+        //currentTile.ContinueGame(); // Resume game
     }
 }

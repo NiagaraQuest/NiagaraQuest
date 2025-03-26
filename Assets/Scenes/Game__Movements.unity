@@ -912,7 +912,11 @@ MonoBehaviour:
   uiManager: {fileID: 818430000}
   currentPath: 
   speed: 2
+  isMoving: 0
+  movementDirection: 1
+  TurnsToSkip: 0
   lives: 4
+  debugProfileName: 
 --- !u!1 &89349143
 GameObject:
   m_ObjectHideFlags: 0
@@ -2145,7 +2149,11 @@ MonoBehaviour:
   uiManager: {fileID: 818430000}
   currentPath: GeoPath
   speed: 2
+  isMoving: 0
+  movementDirection: 1
+  TurnsToSkip: 0
   lives: 4
+  debugProfileName: 
 --- !u!1 &233938174
 GameObject:
   m_ObjectHideFlags: 0
@@ -4360,7 +4368,12 @@ MonoBehaviour:
   uiManager: {fileID: 818430000}
   currentPath: 
   speed: 2
+  isMoving: 0
+  movementDirection: 1
+  TurnsToSkip: 0
   lives: 4
+  debugProfileName: 
+  useSecondChance: 0
 --- !u!1 &460038995
 GameObject:
   m_ObjectHideFlags: 0
@@ -12810,7 +12823,12 @@ MonoBehaviour:
   uiManager: {fileID: 818430000}
   currentPath: 
   speed: 2
+  isMoving: 0
+  movementDirection: 1
+  TurnsToSkip: 0
   lives: 4
+  debugProfileName: 
+  isBoostActive: 0
 --- !u!1 &1664171365
 GameObject:
   m_ObjectHideFlags: 0
@@ -16230,7 +16248,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2031781946}
   - component: {fileID: 2031781947}
-  - component: {fileID: 2031781948}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -16269,18 +16286,6 @@ MonoBehaviour:
   currentPlayerIndex: 0
   gameBoard: {fileID: 1953554474}
   diceManager: {fileID: 808641352}
---- !u!114 &2031781948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031781945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ef9c29e04b0c0b4cb240b8c93487b70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2052419213
 GameObject:
   m_ObjectHideFlags: 0

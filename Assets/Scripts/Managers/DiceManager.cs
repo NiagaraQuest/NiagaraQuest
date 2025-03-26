@@ -5,6 +5,28 @@ using System.Collections;
 
 public class DiceManager : MonoBehaviour
 {
+
+    public static DiceManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+
+
+
+
+
+
     [SerializeField] private TextMeshProUGUI sumText;
     [SerializeField] private theDice dice1;
     [SerializeField] private theDice dice2;

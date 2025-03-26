@@ -2,12 +2,16 @@
 
 public class AnemoPlayer : Player
 {
-    private bool isBoostActive = false; // Tracks if the boost is active
-
+    [Header("Anemo Player Settings")]
+    public bool isBoostActive = false; // Tracks if the boost is active
+   
     protected override void Start()
     {
         currentPath = "AnemoPath";
         base.Start();
+
+
+       
     }
 
     public override void MovePlayer(int steps)

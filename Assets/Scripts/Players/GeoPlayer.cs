@@ -2,12 +2,24 @@
 
 public class GeoPlayer : Player
 {
+    [Header("🛡️ GeoPlayer Settings")]
+    
     private bool shieldActive = false;
 
+   
     protected override void Start()
     {
         currentPath = "GeoPath";
         base.Start();
+
+        if (playerProfile == null)
+        {
+            Debug.LogError($"{gameObject.name} → ❌ Pas de profil assigné !");
+        }
+        else
+        {
+            Debug.Log($"✅ {gameObject.name} → Profil: {playerProfile.Username}");
+        }
 
         //  Activer le shield dès le départ 
         shieldActive = true;

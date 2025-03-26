@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Text.RegularExpressions;
-
+[System.Serializable]
 public class Profile
 {
     private static int idCounter = 0;

@@ -1,10 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 public class GameManager : MonoBehaviour
 {
-    //Stocke tous les joueurs
+    public static GameManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // Stocke tous les joueurs
     public List<GameObject> players = new List<GameObject>();
 
     public int currentPlayerIndex = 0;
@@ -13,15 +28,24 @@ public class GameManager : MonoBehaviour
 
     private GameObject selectedPlayer;
 
-    // Vérifie que les joueurs existent et sélectionne le premier joueur.
+    private Player currentQuestionPlayer;
+
+    
 
     void Start()
     {
         InitializePlayers();
+
+        Debug.Log($"📌 Nombre de joueurs détectés: {players?.Count ?? 0}");
+
+        AssignProfiles();
         StartGame();
     }
 
-    //Finds all Player objects and stores them in players
+
+   
+
+    // Finds all Player objects and stores them in players
     private void InitializePlayers()
     {
         players.Clear();
@@ -33,21 +57,56 @@ public class GameManager : MonoBehaviour
 
         if (players.Contains(null))
         {
-            Debug.LogError(" Some players are missing from the scene!");
+            Debug.LogError("❌ Some players are missing from the scene!");
         }
     }
+
+    // Assigns a Profile to each player
+    private void AssignProfiles()
+    {
+        if (players == null || players.Count == 0)
+        {
+            Debug.LogError("❌ Aucun joueur trouvé !");
+            return;
+        }
+
+        foreach (GameObject playerObject in players)
+        {
+            Player playerScript = playerObject.GetComponent<Player>();
+
+            if (playerScript != null)
+            {
+                if (playerScript.playerProfile == null)
+                {
+                    playerScript.playerProfile = new Profile();
+                }
+
+                if (string.IsNullOrEmpty(playerScript.playerProfile.Username))
+                {
+                    playerScript.playerProfile.Username = "Joueur_" + UnityEngine.Random.Range(100, 999);
+                }
+
+                // ✅ Debug log for profile
+                Debug.Log($"✅ {playerObject.name} → Profil assigné : {playerScript.playerProfile.Username}");
+            }
+            else
+            {
+                Debug.LogError($"❌ Pas de script Player sur {playerObject.name} !");
+            }
+        }
+    }
+
 
 
     public void StartGame()
     {
         if (players.Count == 0)
         {
-            Debug.LogError(" No players found!");
+            Debug.LogError("❌ No players found!");
             return;
         }
 
-        //Sets the first player and starts their turn
-
+        // Sets the first player and starts their turn
         selectedPlayer = players[currentPlayerIndex];
         Debug.Log("🎮 Game Started! First player: " + selectedPlayer.name);
     }
@@ -72,26 +131,140 @@ public class GameManager : MonoBehaviour
         if (movementScript != null)
         {
             movementScript.MovePlayer(moveSteps);
-            StartCoroutine(WaitForMovement(movementScript)); //  Wait for movement to complete
+            StartCoroutine(WaitForMovement(movementScript)); // Wait for movement to complete
         }
         else
         {
-            Debug.LogError("❌ No WaypointScript found on " + selectedPlayer.name);
+            Debug.LogError("❌ No Player script found on " + selectedPlayer.name);
         }
     }
 
-    //Waits for the player to stop moving
+    // Waits for the player to stop moving
     private IEnumerator WaitForMovement(Player movementScript)
     {
         yield return new WaitUntil(() => movementScript.HasFinishedMoving);
         NextTurn();
     }
 
+    public void SetCurrentQuestionPlayer(Player player)
+    {
+        currentQuestionPlayer = player;
+    }
+
+    public Player GetCurrentPlayer()
+    {
+        return currentQuestionPlayer;
+    }
+
+    private IEnumerator RestoreDirectionWhenStopped(Player player, int originalDirection)
+    {
+        // Wait until the player finishes moving
+        while (player.isMoving)
+        {
+            yield return null; // Wait for the next frame
+        }
+
+        // Restore the original movement direction
+        player.movementDirection = originalDirection;
+        Debug.Log("✅ Direction restored after movement.");
+    }
+
+
+    public void ApplyQuestionResult(Player player, bool isCorrect, Tile.Difficulty difficulty)
+    {
+        switch (difficulty)
+        {
+            case Tile.Difficulty.Easy:
+                if (isCorrect)
+                {
+                    // CA MARCHE 
+
+                    Debug.Log("✅ Bonne réponse ! Récompense : Avancer de 2 cases.");
+                    player.MovePlayer(2);
+                }
+                else
+                {
+                    Debug.Log("❌ Mauvaise réponse ! Pénalité : Reculer de 6 cases.");
+
+                    // Store the original movement direction
+                    int originalDirection = player.movementDirection;
+
+                    // Reverse the direction to move backward
+                    player.movementDirection = -Mathf.Abs(originalDirection);
+
+                    // Move the player backward
+                    int backwardSteps = -6;
+                    player.MovePlayer(Mathf.Abs(backwardSteps)); // Ensure MovePlayer receives a positive value
+
+                    // Start a coroutine to restore the direction AFTER movement stops
+                    player.StartCoroutine(RestoreDirectionWhenStopped(player, originalDirection));
+
+
+                }
+                break;
+
+            case Tile.Difficulty.Medium:
+                if (isCorrect)
+                {
+                    Debug.Log("✅ Bonne réponse ! Récompense : Lancer les dés une nouvelle fois.");
+                    RollDiceAgain(player);
+                    return; // Don't switch turns yet, the player rolls again
+                }
+                else
+                {
+
+                    // CA MARCHE 
+
+                    Debug.Log("❌ Mauvaise réponse ! Pénalité : Perdre 1 vie.");
+                    player.LoseLife();
+                }
+                break;
+
+            case Tile.Difficulty.Hard:
+                if (isCorrect)
+                {
+                    // ca marche 
+
+                    Debug.Log("✅ Bonne réponse ! Récompense : Gagner 1 vie.");
+                    player.GainLife();
+                }
+                else
+                {
+                    int turnsSkipped = 2;
+                    Debug.Log($"❌ Mauvaise réponse ! Pénalité : Passer {turnsSkipped} tours.");
+                    SkipTurns(player, turnsSkipped);
+                }
+                break;
+        }
+
+        
+    }
+
+
     private void NextTurn()
     {
+        // Store the player who just finished their turn
+        SetCurrentQuestionPlayer(selectedPlayer.GetComponent<Player>());
+
+        // Move to the next player
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
         selectedPlayer = players[currentPlayerIndex];
-        Debug.Log($"🔄 Next turn: {selectedPlayer.name}");
+
+        Debug.Log($"🔄 {currentQuestionPlayer.name} has finished their turn. Next turn: {selectedPlayer.name}");
     }
+
+
+    public void RollDiceAgain(Player player)
+    {
+        Debug.Log($"🎲 {player.gameObject.name} peut relancer les dés !");
+        // Appelle ici ta fonction qui gère le lancement de dés
+    }
+
+    public void SkipTurns(Player player, int turns)
+    {
+        player.SkipTurns(turns);
+    }
+
+    
 }
 
