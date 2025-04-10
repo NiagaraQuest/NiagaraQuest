@@ -26,9 +26,9 @@ public class GameManager : MonoBehaviour
     public Board gameBoard;
     public DiceManager diceManager;
 
-    private GameObject selectedPlayer;
+    public GameObject selectedPlayer;
 
-    private Player currentQuestionPlayer;
+    public Player currentQuestionPlayer;
 
     
 
