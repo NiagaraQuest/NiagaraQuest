@@ -86,9 +86,20 @@ public class GeoPlayer : Player
     private void DeactivateShield()
     {
         shieldActive = false;
-        lives /= 2; //  Divise les vies par 2
-        Debug.Log($"⚠️ Shield DÉSACTIVÉ ! Vies : {lives}");
 
+        // Vérifier si le nombre de vies est impair avant la division
+        if (lives % 2 != 0) // Si impair
+        {
+            // Division avec arrondi supérieur
+            lives = (lives + 1) / 2;
+            Debug.Log($"⚠️ Shield DÉSACTIVÉ ! Vies impaires arrondies vers le haut : {lives}");
+        }
+        else // Si pair
+        {
+            // Division normale pour les nombres pairs
+            lives /= 2;
+            Debug.Log($"⚠️ Shield DÉSACTIVÉ ! Vies : {lives}");
+        }
     }
     public override void GainLife()
     {

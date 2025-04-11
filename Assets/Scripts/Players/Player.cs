@@ -404,13 +404,7 @@ public class Player : MonoBehaviour
         lives++;
         Debug.Log($"❤️gained a life! Total lives: {lives}");
     }
-    /*
-    public void SkipTurns(int turns)
-    {
-        TurnsToSkip += turns;
-        Debug.Log($"⏳ {gameObject.name} doit sauter {turns} tour(s). Total à sauter : {TurnsToSkip}");
-    }
-    */
+   
     public virtual void AnswerQuestion(bool isCorrect)
     {
         //  later

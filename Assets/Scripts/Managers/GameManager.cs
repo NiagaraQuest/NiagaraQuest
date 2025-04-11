@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
         if (movementScript != null)
         {
             movementScript.MovePlayer(moveSteps);
-            StartCoroutine(WaitForMovement(movementScript)); // Wait for movement to complete
+            StartCoroutine(WaitForMovements(movementScript)); // Wait for movement to complete
         }
         else
         {
@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Waits for the player to stop moving
-    private IEnumerator WaitForMovement(Player movementScript)
+    private IEnumerator WaitForMovements(Player movementScript)
     {
         yield return new WaitUntil(() => movementScript.HasFinishedMoving);
         NextTurn();
@@ -201,7 +201,7 @@ public class GameManager : MonoBehaviour
                 if (isCorrect)
                 {
                     Debug.Log("✅ Bonne réponse ! Récompense : Lancer les dés une nouvelle fois.");
-                    // RollDiceAgain(player);
+                    RollDiceAgain(player);
                     return; // Don't switch turns yet, the player rolls again
                 }
                 else
@@ -263,6 +263,50 @@ public class GameManager : MonoBehaviour
 
 
 
+
+    private bool isExtraTurn = false;
+
+    public void RollDiceAgain(Player player)
+    {
+        Debug.Log($"🎲 {player.gameObject.name} peut relancer les dés comme récompense!");
+
+        // Activer le flag pour indiquer un tour supplémentaire
+        isExtraTurn = true;
+
+        // Réinitialiser l'état du joueur 
+        currentPlayerIndex = players.IndexOf(player.gameObject);
+        selectedPlayer = player.gameObject;
+
+        // Activer le bouton de dés pour permettre un nouveau lancer
+        if (diceManager != null)
+        {
+            diceManager.EnableRollButton();
+        }
+
+        Debug.Log($"🔄 {player.gameObject.name}peut relancer les dés comme récompense!");
+    }
+
+    // Modifions aussi le WaitForMovement pour gérer le cas d'un tour supplémentaire
+    private IEnumerator WaitForMovement(Player movementScript)
+    {
+        yield return new WaitUntil(() => movementScript.HasFinishedMoving);
+
+        if (isExtraTurn)
+        {
+            // Réinitialiser le flag pour le prochain tour
+            isExtraTurn = false;
+            Debug.Log($"✅ Tour supplémentaire terminé pour {selectedPlayer.name}");
+        }
+        else
+        {
+            // C'est un tour normal, passer au joueur suivant
+            NextTurn();
+        }
+    }
+
+
+
+
     /*
     public void RollDiceAgain(Player player)
     {
@@ -274,10 +318,3 @@ public class GameManager : MonoBehaviour
     */
 
 }
-
-
-
-
-
-
-

@@ -55,5 +55,10 @@ public class DiceManager : MonoBehaviour
 
         gameManager.OnDiceRolled(); // ✅ Notify GameManager
     }
+    // Dans la classe DiceManager
+    public void EnableRollButton()
+    {
+        rollButton.interactable = true;
+    }
 }
 
