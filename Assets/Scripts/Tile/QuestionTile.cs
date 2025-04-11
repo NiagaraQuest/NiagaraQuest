@@ -3,9 +3,8 @@ using UnityEngine;
 
 public class QuestionTile : Tile
 {
-    [Header("Question Settings")]
-    public string category = "General";
-    public Difficulty questionDifficulty = Difficulty.Medium;
+    [Header("Question")]
+    public Question question;
     
     // 0 = Random, 1 = Open, 2 = QCM
     [Range(0, 2)]
@@ -13,8 +12,6 @@ public class QuestionTile : Tile
     
     private QuestionUIManager uiManager;
     private bool isProcessingQuestion = false;
-    private bool questionAnswered = false;
-    private bool isCorrect = false;
 
     public override void OnPlayerLands()
     {
@@ -48,18 +45,28 @@ public class QuestionTile : Tile
             return;
         }
 
-        Question question;
-        
+        // Generate a question if one isn't already assigned
+        if (question == null)
+        {
+            GenerateDefaultQuestion();
+        }
+
+        Debug.Log($"📢 Question posée : {question.Qst} (Difficulté: {question.Difficulty})");
+        uiManager.ShowUI(question, this);
+    }
+    
+    private void GenerateDefaultQuestion()
+    {
         // Choix du type de question en fonction de la préférence
         if (questionTypePreference == 1 || (questionTypePreference == 0 && UnityEngine.Random.Range(0, 2) == 0))
         {
             // Créer une question ouverte de test
             question = new OpenQuestion
             {
-                Category = category,
+                Category = "General",
                 Qst = "What is the capital of France?",
                 Answer = "Paris",
-                Difficulty = questionDifficulty.ToString()
+                Difficulty = "Easy"
             };
         }
         else
@@ -67,16 +74,13 @@ public class QuestionTile : Tile
             // Créer une question QCM de test
             question = new QCMQuestion
             {
-                Category = category,
+                Category = "General",
                 Qst = "Which is the capital of France?",
                 Choices = new string[] { "Lyon", "Paris", "Marseille", "Lille" },
                 CorrectChoice = 1,
-                Difficulty = questionDifficulty.ToString()
+                Difficulty = "Medium"
             };
         }
-
-        Debug.Log($"📢 Question posée : {question.Qst} (Difficulté: {questionDifficulty})");
-        uiManager.ShowUI(question, this);
     }
 
     public void ContinueGame()
@@ -93,11 +97,22 @@ public class QuestionTile : Tile
             return;
         }
         
-        // Appliquer les récompenses/pénalités en fonction de la réponse
-        if (questionAnswered)
+        // Get the question result from the UI manager
+        if (uiManager != null && question != null)
         {
-            GameManager.Instance.ApplyQuestionResult(currentPlayer, isCorrect, questionDifficulty);
-            questionAnswered = false;
+            bool isCorrect = uiManager.GetQuestionResult();
+            
+            // Convert string difficulty to enum
+            Difficulty tileDifficulty;
+            if (Enum.TryParse(question.Difficulty, out tileDifficulty))
+            {
+                GameManager.Instance.ApplyQuestionResult(currentPlayer, isCorrect, tileDifficulty);
+            }
+            else
+            {
+                // Default to Medium if conversion fails
+                GameManager.Instance.ApplyQuestionResult(currentPlayer, isCorrect, Difficulty.Medium);
+            }
         }
         
         // Vérifier si le joueur a encore des vies
@@ -106,14 +121,5 @@ public class QuestionTile : Tile
             Debug.Log($"💀 {currentPlayer.gameObject.name} n'a plus de vies !");
             // Le GameManager gère déjà l'élimination des joueurs dans ApplyQuestionResult
         }
-    }
-    
-    // Cette méthode est appelée par le QuestionUIManager lorsque le joueur a répondu
-    public void OnQuestionAnswered(bool correct)
-    {
-        questionAnswered = true;
-        isCorrect = correct;
-        
-        // La méthode ContinueGame sera appelée par le QuestionUIManager
     }
 }

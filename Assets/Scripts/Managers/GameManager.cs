@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     public Player currentQuestionPlayer;
 
-    
+
 
     void Start()
     {
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-   
+
 
     // Finds all Player objects and stores them in players
     private void InitializePlayers()
@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
         return currentQuestionPlayer;
     }
 
-    private IEnumerator RestoreDirectionWhenStopped(Player player, int originalDirection)
+    public IEnumerator RestoreDirectionWhenStopped(Player player, int originalDirection)
     {
         // Wait until the player finishes moving
         while (player.isMoving)
@@ -180,24 +180,18 @@ public class GameManager : MonoBehaviour
                     // CA MARCHE 
 
                     Debug.Log("✅ Bonne réponse ! Récompense : Avancer de 2 cases.");
-                    player.MovePlayer(2);
+                    player.MoveForward(2);
                 }
                 else
                 {
                     Debug.Log("❌ Mauvaise réponse ! Pénalité : Reculer de 6 cases.");
 
-                    // Store the original movement direction
-                    int originalDirection = player.movementDirection;
 
-                    // Reverse the direction to move backward
-                    player.movementDirection = -Mathf.Abs(originalDirection);
 
                     // Move the player backward
-                    int backwardSteps = -6;
-                    player.MovePlayer(Mathf.Abs(backwardSteps)); // Ensure MovePlayer receives a positive value
+                    player.MovePlayerBack();
 
-                    // Start a coroutine to restore the direction AFTER movement stops
-                    player.StartCoroutine(RestoreDirectionWhenStopped(player, originalDirection));
+
 
 
                 }
@@ -207,7 +201,7 @@ public class GameManager : MonoBehaviour
                 if (isCorrect)
                 {
                     Debug.Log("✅ Bonne réponse ! Récompense : Lancer les dés une nouvelle fois.");
-                    RollDiceAgain(player);
+                    // RollDiceAgain(player);
                     return; // Don't switch turns yet, the player rolls again
                 }
                 else
@@ -230,41 +224,56 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    int turnsSkipped = 2;
+                    int turnsSkipped = 1;
                     Debug.Log($"❌ Mauvaise réponse ! Pénalité : Passer {turnsSkipped} tours.");
-                    SkipTurns(player, turnsSkipped);
+                    player.SkipTurns(turnsSkipped);
                 }
                 break;
         }
 
-        
+
     }
 
 
     private void NextTurn()
     {
-        // Store the player who just finished their turn
         SetCurrentQuestionPlayer(selectedPlayer.GetComponent<Player>());
 
-        // Move to the next player
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
-        selectedPlayer = players[currentPlayerIndex];
+        do
+        {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+            selectedPlayer = players[currentPlayerIndex];
 
-        Debug.Log($"🔄 {currentQuestionPlayer.name} has finished their turn. Next turn: {selectedPlayer.name}");
+            Player p = selectedPlayer.GetComponent<Player>();
+
+            if (p.ShouldSkipTurn())
+            {
+                p.DecrementSkipTurn(); // ❗on décrémente le compteur ici
+                Debug.Log($"⏭️ {selectedPlayer.name} passe son tour. Reste : {p.turnsToSkip} tours à sauter.");
+            }
+            else
+            {
+                break; // ✅ joueur peut jouer
+            }
+
+        } while (true); // continue jusqu'à trouver un joueur qui peut jouer
+
+        Debug.Log($"🔄 Prochain joueur : {selectedPlayer.name}");
     }
 
 
+
+    /*
     public void RollDiceAgain(Player player)
     {
         Debug.Log($"🎲 {player.gameObject.name} peut relancer les dés !");
         // Appelle ici ta fonction qui gère le lancement de dés
     }
 
-    public void SkipTurns(Player player, int turns)
-    {
-        player.SkipTurns(turns);
-    }
+   
+    */
 
-    
 }
+
+
 

@@ -19,37 +19,26 @@ public class QuestionUIManager : MonoBehaviour
     [Header("Result UI")]
     public GameObject resultPanel;
     public TextMeshProUGUI resultText;
-    public TextMeshProUGUI correctAnswerText;
     public Button exitButton;
-    public float autoCloseResultTime = 2f;
-
-    [Header("Effects")]
-    public AudioSource audioSource;
-    public AudioClip correctSound;
-    public AudioClip wrongSound;
 
     private QuestionTile currentTile;
     private Question currentQuestion;
-    private Coroutine autoCloseCoroutine;
-    private Player currentPlayer;
+    private bool isProcessingQuestion = false;
+    private bool lastAnswerCorrect = false; // Store the last answer result
 
     void Start()
     {
-        // Initialize all panels to hidden
+        // Hide all panels at start
         HideAllPanels();
 
         // Setup button listeners
         submitButton.onClick.AddListener(CheckOpenAnswer);
         exitButton.onClick.AddListener(CloseResultPanel);
-        
-        // Setup audio if needed
-        if (audioSource == null && (correctSound != null || wrongSound != null))
-            audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     void Update()
     {
-        // Allow Enter key to submit open answers
+        // Allow submitting open question answers with Enter key
         if (openQuestionPanel.activeSelf && Input.GetKeyDown(KeyCode.Return))
         {
             CheckOpenAnswer();
@@ -65,21 +54,16 @@ public class QuestionUIManager : MonoBehaviour
 
     public void ShowUI(Question question, QuestionTile tile)
     {
-        // Cancel any existing auto-close routine
-        if (autoCloseCoroutine != null)
+        if (isProcessingQuestion)
         {
-            StopCoroutine(autoCloseCoroutine);
-            autoCloseCoroutine = null;
+            Debug.LogWarning("⚠️ Already processing a question, ignoring new request");
+            return;
         }
 
-        // Get the current player from the game manager
-        currentPlayer = GameManager.Instance?.GetCurrentPlayer();
-        
-        // Store reference to tile and question
+        isProcessingQuestion = true;
         currentTile = tile;
         currentQuestion = question;
-        
-        // Show the appropriate panel based on question type
+
         if (question is OpenQuestion openQuestion)
         {
             ShowOpenQuestion(openQuestion);
@@ -90,19 +74,20 @@ public class QuestionUIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"Unsupported question type: {question.GetType().Name}");
+            Debug.LogError($"⚠️ Unsupported question type: {question.GetType().Name}");
+            isProcessingQuestion = false;
         }
     }
 
     private void ShowOpenQuestion(OpenQuestion question)
     {
-        // Set the question text
+        // Set question text
         openQuestionText.text = question.Qst;
         
-        // Reset input field
+        // Clear previous answer
         answerInput.text = "";
         
-        // Show the panel
+        // Show panel
         openQuestionPanel.SetActive(true);
         
         // Focus the input field
@@ -111,15 +96,15 @@ public class QuestionUIManager : MonoBehaviour
     
     private IEnumerator FocusInputField()
     {
-        // Wait for end of frame to ensure UI is initialized
-        yield return new WaitForEndOfFrame();
+        // Wait a frame to ensure the UI is active
+        yield return null;
         answerInput.Select();
         answerInput.ActivateInputField();
     }
 
     private void ShowQCMQuestion(QCMQuestion question)
     {
-        // Set the question text
+        // Set question text
         qcmQuestionText.text = question.Qst;
         
         // Setup choice buttons
@@ -129,19 +114,19 @@ public class QuestionUIManager : MonoBehaviour
             {
                 choiceButtons[i].gameObject.SetActive(true);
                 choiceButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = question.Choices[i];
-                
-                // Setup click handler
-                int choiceIndex = i; // Local copy for closure
+
+                int choiceIndex = i;
                 choiceButtons[i].onClick.RemoveAllListeners();
                 choiceButtons[i].onClick.AddListener(() => CheckQCMAnswer(question, choiceIndex));
             }
             else
             {
+                // Hide unused buttons
                 choiceButtons[i].gameObject.SetActive(false);
             }
         }
         
-        // Show the panel
+        // Show panel
         qcmQuestionPanel.SetActive(true);
     }
 
@@ -154,11 +139,11 @@ public class QuestionUIManager : MonoBehaviour
         // Hide question panel
         openQuestionPanel.SetActive(false);
         
-        // Check if answer is correct
-        bool isCorrect = playerAnswer == correctAnswer;
+        // Store result
+        lastAnswerCorrect = playerAnswer == correctAnswer;
         
         // Show result
-        ShowResult(isCorrect, ((OpenQuestion)currentQuestion).Answer);
+        ShowResult(lastAnswerCorrect);
     }
 
     private void CheckQCMAnswer(QCMQuestion question, int choiceIndex)
@@ -166,99 +151,40 @@ public class QuestionUIManager : MonoBehaviour
         // Hide question panel
         qcmQuestionPanel.SetActive(false);
         
-        // Check if answer is correct
-        bool isCorrect = choiceIndex == question.CorrectChoice;
-        
-        // Get correct answer text
-        string correctAnswer = question.Choices[question.CorrectChoice];
+        // Store result
+        lastAnswerCorrect = choiceIndex == question.CorrectChoice;
         
         // Show result
-        ShowResult(isCorrect, correctAnswer);
+        ShowResult(lastAnswerCorrect);
     }
 
-    private void ShowResult(bool isCorrect, string correctAnswer)
+    private void ShowResult(bool isCorrect)
     {
-        // Set result text
-        resultText.text = isCorrect ? "✅ Correct!" : "❌ Wrong!";
-        
-        // Show correct answer if wrong
-        if (correctAnswerText != null)
-        {
-            if (isCorrect)
-            {
-                correctAnswerText.gameObject.SetActive(false);
-            }
-            else
-            {
-                correctAnswerText.gameObject.SetActive(true);
-                correctAnswerText.text = $"The correct answer was: {correctAnswer}";
-            }
-        }
-        
-        // Apply game consequences
-        if (currentPlayer != null)
-        {
-            // Using the Player.AnswerQuestion method
-            currentPlayer.AnswerQuestion(isCorrect);
-            
-            // Also apply life consequences based on answer
-            if (!isCorrect)
-            {
-                currentPlayer.LoseLife();
-                Debug.Log($"Player lost a life. Remaining lives: {currentPlayer.lives}");
-                
-                // Play wrong sound
-                if (audioSource != null && wrongSound != null)
-                    audioSource.PlayOneShot(wrongSound);
-            }
-            else
-            {
-                // Play correct sound
-                if (audioSource != null && correctSound != null)
-                    audioSource.PlayOneShot(correctSound);
-            }
-        }
-        
         // Show result panel
         resultPanel.SetActive(true);
         
-        // Auto-close result after delay if set
-        if (autoCloseResultTime > 0)
-        {
-            autoCloseCoroutine = StartCoroutine(AutoCloseResult(autoCloseResultTime));
-        }
+        // Set result text
+        resultText.text = isCorrect ? "✅ Correct!" : "❌ Wrong!";
     }
 
-    private IEnumerator AutoCloseResult(float delay)
+    // New method to get the question result
+    public bool GetQuestionResult()
     {
-        yield return new WaitForSeconds(delay);
-        CloseResultPanel();
+        return lastAnswerCorrect;
     }
 
     private void CloseResultPanel()
     {
-        // Cancel auto-close if running
-        if (autoCloseCoroutine != null)
-        {
-            StopCoroutine(autoCloseCoroutine);
-            autoCloseCoroutine = null;
-        }
-        
         // Hide all panels
         HideAllPanels();
-        
-        // Continue gameplay
+
+        // Continue game flow
         if (currentTile != null)
-            currentTile.ContinueGame();
-    }
-    
-    private void OnDisable()
-    {
-        // Clean up coroutines
-        if (autoCloseCoroutine != null)
         {
-            StopCoroutine(autoCloseCoroutine);
-            autoCloseCoroutine = null;
+            currentTile.ContinueGame();
         }
+        
+        // Reset processing flag to allow new questions
+        isProcessingQuestion = false;
     }
 }
