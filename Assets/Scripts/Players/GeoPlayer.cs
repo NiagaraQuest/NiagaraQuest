@@ -3,10 +3,10 @@
 public class GeoPlayer : Player
 {
     [Header("🛡️ GeoPlayer Settings")]
-    
+
     private bool shieldActive = false;
 
-   
+
     protected override void Start()
     {
         currentPath = "GeoPath";
@@ -88,5 +88,24 @@ public class GeoPlayer : Player
         shieldActive = false;
         lives /= 2; //  Divise les vies par 2
         Debug.Log($"⚠️ Shield DÉSACTIVÉ ! Vies : {lives}");
+
     }
+    public override void GainLife()
+    {
+        GameObject waypoint = GetCurrentWaypoint();
+        if (waypoint != null)
+        {
+            Tile tile = waypoint.GetComponent<Tile>();
+            if (tile != null && tile.region == Tile.Region.Berg)
+            {
+                lives += 2;
+                Debug.Log($"💚 Dans sa région (Berg) → GeoPlayer gagne 2 vies ! Total : {lives}");
+                return;
+            }
+        }
+
+        lives += 1;
+        Debug.Log($"💚 Hors région → GeoPlayer gagne 1 vie. Total : {lives}");
+    }
+
 }
