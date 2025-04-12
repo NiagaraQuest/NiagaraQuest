@@ -1,3 +1,4 @@
+﻿
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -55,5 +56,15 @@ public class DiceManager : MonoBehaviour
 
         gameManager.OnDiceRolled(); // ✅ Notify GameManager
     }
-}
+    // Dans la classe DiceManager
+    public void EnableRollButton()
+    {
+        rollButton.interactable = true;
+    }
 
+    // Dans la classe DiceManager
+    public void DisableRollButton()
+    {
+        rollButton.interactable = false;
+    }
+}

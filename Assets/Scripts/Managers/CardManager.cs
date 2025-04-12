@@ -225,24 +225,6 @@ public class CardManager : MonoBehaviour
         }
     }
     
-    private void MoveBackward(Player player, int steps)
-    {
-        // Store original direction
-        int originalDirection = player.movementDirection;
-        
-        // Set backward direction
-        player.movementDirection = -1;
-        
-        // Move backward
-        player.MovePlayer(steps);
-        
-        // Use the GameManager's method to restore direction when stopped
-        GameManager gameManager = GameManager.Instance;
-        if (gameManager != null)
-        {
-            player.StartCoroutine(gameManager.RestoreDirectionWhenStopped(player, originalDirection));
-        }
-    }
     
     private void MoveAllPlayers(int steps)
     {

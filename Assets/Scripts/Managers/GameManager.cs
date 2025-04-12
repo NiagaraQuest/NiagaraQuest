@@ -7,6 +7,26 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+  
+
+
+    public enum GameMode
+    {
+        TwoPlayers,
+        ThreePlayers,
+        FourPlayers
+    }
+
+
+
+    [Header("Game Settings")]
+    public GameMode currentGameMode;
+    public int maxLives;
+    public int twoPlayersInitialLives = 4;
+    public int threeOrFourPlayersInitialLives = 3;
+
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -19,6 +39,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
+
+
     // Stocke tous les joueurs
     public List<GameObject> players = new List<GameObject>();
 
@@ -29,18 +53,97 @@ public class GameManager : MonoBehaviour
     public GameObject selectedPlayer;
 
     public Player currentQuestionPlayer;
+    // Dans GameManager
+    public bool isRewardMovement = false;
+    private bool gameWon = false;
+
 
 
 
     void Start()
     {
+        DetectGameModeBasedOnActivePlayers();
         InitializePlayers();
-
         Debug.Log($"📌 Nombre de joueurs détectés: {players?.Count ?? 0}");
-
         AssignProfiles();
+        SetupPlayersInitialLives();
+
+        // Vérifier si certains joueurs ont besoin d'une initialisation spéciale
+        foreach (var player in players)
+        {
+            // Spécifiquement identifier GeoPlayer pour son initialisation spéciale
+            GeoPlayer geoPlayer = player.GetComponent<GeoPlayer>();
+            if (geoPlayer != null)
+            {
+                // Pour GeoPlayer, réactiver le bouclier après l'initialisation des vies
+                Debug.Log("🔄 Réinitialisation du bouclier de GeoPlayer après configuration des vies");
+                geoPlayer.InitializeShield();
+            }
+        }
+
         StartGame();
     }
+
+
+
+    private void DetectGameModeBasedOnActivePlayers()
+    {
+        int activePlayers = 0;
+        foreach (var playerObj in new List<GameObject> {
+            GameObject.Find("PyroPlayer"),
+            GameObject.Find("AnemoPlayer"),
+            GameObject.Find("GeoPlayer"),
+            GameObject.Find("HydroPlayer")
+        })
+        {
+            if (playerObj != null && playerObj.activeInHierarchy) activePlayers++;
+        }
+
+        switch (activePlayers)
+        {
+            case 2:
+                currentGameMode = GameMode.TwoPlayers;
+                maxLives = twoPlayersInitialLives;
+                break;
+            case 3:
+                currentGameMode = GameMode.ThreePlayers;
+                maxLives = threeOrFourPlayersInitialLives;
+                break;
+            case 4:
+                currentGameMode = GameMode.FourPlayers;
+                maxLives = threeOrFourPlayersInitialLives;
+                break;
+            default:
+                Debug.LogError($"Unsupported number of players: {activePlayers}");
+                break;
+        }
+
+        Debug.Log($"🎮 Mode: {currentGameMode} | Players: {activePlayers} | Max Lives: {maxLives}");
+    }
+
+
+
+
+
+
+
+    private void SetupPlayersInitialLives()
+    {
+        foreach (var player in players)
+        {
+            if (player == null) continue;
+
+            Player playerScript = player.GetComponent<Player>();
+            if (playerScript != null)
+            {
+                playerScript.lives = maxLives;
+                //playerScript.maxLives = maxLives;
+                
+                Debug.Log($"❤️ {player.name} initialized with {maxLives} lives");
+            }
+        }
+    }
+
 
 
 
@@ -51,9 +154,10 @@ public class GameManager : MonoBehaviour
         players.Clear();
 
         players.Add(GameObject.Find("PyroPlayer"));
+        players.Add(GameObject.Find("HydroPlayer"));
         players.Add(GameObject.Find("AnemoPlayer"));
         players.Add(GameObject.Find("GeoPlayer"));
-        players.Add(GameObject.Find("HydroPlayer"));
+        
 
         if (players.Contains(null))
         {
@@ -131,7 +235,7 @@ public class GameManager : MonoBehaviour
         if (movementScript != null)
         {
             movementScript.MovePlayer(moveSteps);
-            StartCoroutine(WaitForMovement(movementScript)); // Wait for movement to complete
+            StartCoroutine(WaitForMovements(movementScript)); // Wait for movement to complete
         }
         else
         {
@@ -140,11 +244,17 @@ public class GameManager : MonoBehaviour
     }
 
     // Waits for the player to stop moving
-    private IEnumerator WaitForMovement(Player movementScript)
+    private IEnumerator WaitForMovements(Player movementScript)
     {
         yield return new WaitUntil(() => movementScript.HasFinishedMoving);
         NextTurn();
     }
+
+
+
+
+
+
 
     public void SetCurrentQuestionPlayer(Player player)
     {
@@ -156,18 +266,7 @@ public class GameManager : MonoBehaviour
         return currentQuestionPlayer;
     }
 
-    public IEnumerator RestoreDirectionWhenStopped(Player player, int originalDirection)
-    {
-        // Wait until the player finishes moving
-        while (player.isMoving)
-        {
-            yield return null; // Wait for the next frame
-        }
-
-        // Restore the original movement direction
-        player.movementDirection = originalDirection;
-        Debug.Log("✅ Direction restored after movement.");
-    }
+  
 
 
     public void ApplyQuestionResult(Player player, bool isCorrect, Tile.Difficulty difficulty)
@@ -178,9 +277,9 @@ public class GameManager : MonoBehaviour
                 if (isCorrect)
                 {
                     // CA MARCHE 
-
                     Debug.Log("✅ Bonne réponse ! Récompense : Avancer de 2 cases.");
-                    player.MoveForward(2);
+                    isRewardMovement = true;
+                    player.MovePlayer(2);
                 }
                 else
                 {
@@ -201,7 +300,7 @@ public class GameManager : MonoBehaviour
                 if (isCorrect)
                 {
                     Debug.Log("✅ Bonne réponse ! Récompense : Lancer les dés une nouvelle fois.");
-                    // RollDiceAgain(player);
+                    RollDiceAgain(player);
                     return; // Don't switch turns yet, the player rolls again
                 }
                 else
@@ -222,6 +321,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("✅ Bonne réponse ! Récompense : Gagner 1 vie.");
                     player.GainLife();
                 }
+
                 else
                 {
                     int turnsSkipped = 1;
@@ -237,6 +337,8 @@ public class GameManager : MonoBehaviour
 
     private void NextTurn()
     {
+        // Réinitialiser le flag au cas où
+        isRewardMovement = false;
         SetCurrentQuestionPlayer(selectedPlayer.GetComponent<Player>());
 
         do
@@ -263,16 +365,99 @@ public class GameManager : MonoBehaviour
 
 
 
-    /*
+
+    private bool isExtraTurn = false;
+
     public void RollDiceAgain(Player player)
     {
-        Debug.Log($"🎲 {player.gameObject.name} peut relancer les dés !");
-        // Appelle ici ta fonction qui gère le lancement de dés
+        Debug.Log($"🎲 {player.gameObject.name} peut relancer les dés comme récompense!");
+
+        // Activer le flag pour indiquer un tour supplémentaire
+        isExtraTurn = true;
+
+        // Réinitialiser l'état du joueur 
+        currentPlayerIndex = players.IndexOf(player.gameObject);
+        selectedPlayer = player.gameObject;
+
+        // Activer le bouton de dés pour permettre un nouveau lancer
+        if (diceManager != null)
+        {
+            diceManager.EnableRollButton();
+        }
+
+        Debug.Log($"🔄 {player.gameObject.name} obtient un tour supplémentaire!");
     }
 
-   
-    */
+ 
+    // Dans la classe GameManager
+    public void WinGameOver(Player winningPlayer)
+    {
+        if (gameWon) return; // Éviter d'appeler plusieurs fois
+
+        gameWon = true;
+
+        string playerName = winningPlayer != null ? winningPlayer.gameObject.name : "Un joueur";
+        Debug.Log($"🏆 VICTOIRE ! {playerName} a atteint un waypoint final ! Tous les joueurs ont gagné !");
+
+        // Désactiver les contrôles
+        if (diceManager != null)
+        {
+            diceManager.DisableRollButton();
+        }
+
+        // Afficher un effet visuel ou un message pour chaque joueur
+        foreach (GameObject playerObj in players)
+        {
+            Player player = playerObj.GetComponent<Player>();
+            if (player != null)
+            {
+                // Tu pourrais ajouter un effet visuel ici
+                Debug.Log($"🎉 {player.gameObject.name} célèbre la victoire !");
+            }
+        }
+
+        // Tu peux appeler ici une méthode pour afficher l'écran de victoire
+        // ShowVictoryScreen();
+    }
+
+
+    /*
+ // Modifions aussi le WaitForMovement pour gérer le cas d'un tour supplémentaire
+ private IEnumerator WaitForMovement(Player movementScript)
+ {
+     yield return new WaitUntil(() => movementScript.HasFinishedMoving);
+
+     if (isExtraTurn)
+     {
+         // Réinitialiser le flag pour le prochain tour
+         isExtraTurn = false;
+         Debug.Log($"✅ Tour supplémentaire terminé pour {selectedPlayer.name}");
+     }
+     else
+     {
+         // C'est un tour normal, passer au joueur suivant
+         NextTurn();
+     }
+ }
+
+
+  private IEnumerator RestoreDirectionWhenStopped(Player player, int originalDirection)
+    {
+        // Wait until the player finishes moving
+        while (player.isMoving)
+        {
+            yield return null; // Wait for the next frame
+        }
+
+        // Restore the original movement direction
+        player.movementDirection = originalDirection;
+        Debug.Log("✅ Direction restored after movement.");
+    }
+
+
+
+
+ */
+
 
 }
-
-

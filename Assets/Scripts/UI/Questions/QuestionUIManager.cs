@@ -160,11 +160,9 @@ public class QuestionUIManager : MonoBehaviour
 
     private void ShowResult(bool isCorrect)
     {
-        // Show result panel
         resultPanel.SetActive(true);
-        
-        // Set result text
         resultText.text = isCorrect ? "✅ Correct!" : "❌ Wrong!";
+        GameManager.Instance.ApplyQuestionResult(GameManager.Instance.GetCurrentPlayer(), isCorrect, Tile.Difficulty.Hard);
     }
 
     // New method to get the question result
