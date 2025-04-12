@@ -84,7 +84,7 @@ public class QuestionUIManager : MonoBehaviour
     {
         resultPanel.SetActive(true);
         resultText.text = isCorrect ? "✅ Correct!" : "❌ Wrong!";
-        GameManager.Instance.ApplyQuestionResult(GameManager.Instance.GetCurrentPlayer(), isCorrect, Tile.Difficulty.Medium);
+        GameManager.Instance.ApplyQuestionResult(GameManager.Instance.GetCurrentPlayer(), isCorrect, Tile.Difficulty.Hard);
     }
 
     private void CloseResultPanel()

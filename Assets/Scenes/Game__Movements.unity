@@ -7623,15 +7623,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.46
+      value: -6.83
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.76
+      value: 10.61
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11255,7 +11255,7 @@ GameObject:
   - component: {fileID: 1236931943}
   - component: {fileID: 1236931944}
   m_Layer: 0
-  m_Name: Geo50
+  m_Name: GeoWin
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -16858,7 +16858,7 @@ GameObject:
   - component: {fileID: 1877823689}
   - component: {fileID: 1877823690}
   m_Layer: 0
-  m_Name: Pyro50
+  m_Name: PyroWin
   m_TagString: forward
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -17256,15 +17256,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.66
+      value: -5.61
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.73
+      value: 10.96
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17871,6 +17871,7 @@ MonoBehaviour:
   currentPlayerIndex: 0
   gameBoard: {fileID: 1953554474}
   diceManager: {fileID: 808641352}
+  isRewardMovement: 0
 --- !u!1 &2052419213
 GameObject:
   m_ObjectHideFlags: 0

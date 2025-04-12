@@ -60,5 +60,11 @@ public class DiceManager : MonoBehaviour
     {
         rollButton.interactable = true;
     }
+
+    // Dans la classe DiceManager
+    public void DisableRollButton()
+    {
+        rollButton.interactable = false;
+    }
 }
 

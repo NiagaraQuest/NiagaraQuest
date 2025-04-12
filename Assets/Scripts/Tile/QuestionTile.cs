@@ -17,6 +17,16 @@ public class QuestionTile : Tile
 
     private void AskQuestion()
     {
+
+
+        // Vérifier si c'est un mouvement de récompense
+        if (GameManager.Instance.isRewardMovement)
+        {
+            Debug.Log("🎁 Mouvement de récompense - pas de nouvelle question!");
+            GameManager.Instance.isRewardMovement = false;  // Réinitialiser pour le prochain tour
+            return;  // Ne pas poser de question
+        }
+
         // 🔥 Always find the UI Manager before using it
         uiManager = FindFirstObjectByType<QuestionUIManager>();
 

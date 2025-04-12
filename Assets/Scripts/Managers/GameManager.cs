@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviour
     private GameObject selectedPlayer;
 
     private Player currentQuestionPlayer;
+    // Dans GameManager
+    public bool isRewardMovement = false;
+    private bool gameWon = false;
+
 
 
 
@@ -146,6 +150,12 @@ public class GameManager : MonoBehaviour
         NextTurn();
     }
 
+
+
+
+
+
+
     public void SetCurrentQuestionPlayer(Player player)
     {
         currentQuestionPlayer = player;
@@ -178,9 +188,9 @@ public class GameManager : MonoBehaviour
                 if (isCorrect)
                 {
                     // CA MARCHE 
-
                     Debug.Log("✅ Bonne réponse ! Récompense : Avancer de 2 cases.");
-                    player.MoveForward(2);
+                    isRewardMovement = true;
+                    player.MovePlayer(2);
                 }
                 else
                 {
@@ -222,6 +232,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("✅ Bonne réponse ! Récompense : Gagner 1 vie.");
                     player.GainLife();
                 }
+
                 else
                 {
                     int turnsSkipped = 1;
@@ -237,6 +248,8 @@ public class GameManager : MonoBehaviour
 
     private void NextTurn()
     {
+        // Réinitialiser le flag au cas où
+        isRewardMovement = false;
         SetCurrentQuestionPlayer(selectedPlayer.GetComponent<Player>());
 
         do
@@ -283,7 +296,7 @@ public class GameManager : MonoBehaviour
             diceManager.EnableRollButton();
         }
 
-        Debug.Log($"🔄 {player.gameObject.name}peut relancer les dés comme récompense!");
+        Debug.Log($"🔄 {player.gameObject.name} obtient un tour supplémentaire!");
     }
 
     // Modifions aussi le WaitForMovement pour gérer le cas d'un tour supplémentaire
@@ -304,17 +317,39 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
-
-    /*
-    public void RollDiceAgain(Player player)
+    // Dans la classe GameManager
+    public void WinGameOver(Player winningPlayer)
     {
-        Debug.Log($"🎲 {player.gameObject.name} peut relancer les dés !");
-        // Appelle ici ta fonction qui gère le lancement de dés
+        if (gameWon) return; // Éviter d'appeler plusieurs fois
+
+        gameWon = true;
+
+        string playerName = winningPlayer != null ? winningPlayer.gameObject.name : "Un joueur";
+        Debug.Log($"🏆 VICTOIRE ! {playerName} a atteint un waypoint final ! Tous les joueurs ont gagné !");
+
+        // Désactiver les contrôles
+        if (diceManager != null)
+        {
+            diceManager.DisableRollButton();
+        }
+
+        // Afficher un effet visuel ou un message pour chaque joueur
+        foreach (GameObject playerObj in players)
+        {
+            Player player = playerObj.GetComponent<Player>();
+            if (player != null)
+            {
+                // Tu pourrais ajouter un effet visuel ici
+                Debug.Log($"🎉 {player.gameObject.name} célèbre la victoire !");
+            }
+        }
+
+        // Tu peux appeler ici une méthode pour afficher l'écran de victoire
+        // ShowVictoryScreen();
     }
 
-   
-    */
+
+
+
 
 }
