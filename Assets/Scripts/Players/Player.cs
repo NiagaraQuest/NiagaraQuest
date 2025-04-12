@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     protected const int MAX_MOVE_BACK_STEPS = 7;    // Maximum de pas en arrière à la fois
     protected bool isMovingBack = false; // Pour indiquer que le joueur est en train de reculer
     protected bool hasStoredInitialWaypoint = false; // Pour s'assurer que le waypoint initial est stocké une seule fois
-
+    private bool usingPlayerCamera = false;
     public int lives = 4; // ✅ Starts with 4 lives
     public Profile playerProfile; // Visible in the Inspector
 
@@ -120,16 +120,18 @@ public class Player : MonoBehaviour
                     currentWaypointIndex = targetWaypointIndex;
                     Debug.Log($"📍 Waypoint Atteint: {currentWaypointIndex}");
 
-                    // Si on n'est pas en train de reculer, stocker ce waypoint dans la pile
-                    if (!isMovingBack && !targetWaypoint.CompareTag("Intersection"))
-                    {
-                        StoreWaypointInHistory();
-                    }
-
                     if (targetWaypoint.CompareTag("Intersection"))
                     {
                         reachedIntersection = true;
                         isMoving = false;
+                        
+                        // Switch back to main camera when reaching intersection
+                        if (usingPlayerCamera && CameraManager.Instance != null)
+                        {
+                            CameraManager.Instance.SwitchToMainCamera();
+                            usingPlayerCamera = false;
+                        }
+                        
                         uiManager.ShowUI(this);
                     }
                     else
@@ -140,6 +142,7 @@ public class Player : MonoBehaviour
                         if (remainingSteps > 0)
                         {
                             targetWaypointIndex += movementDirection;
+                            // ✅ Vérification encore si on dépasse -1
                             if (targetWaypointIndex < 0)
                             {
                                 Debug.LogWarning($"⚠️ ATTENTION: targetWaypointIndex est négatif ({targetWaypointIndex}) à l'étape {remainingSteps}. Chemin: {currentPath}, Index actuel: {currentWaypointIndex}");
@@ -152,7 +155,14 @@ public class Player : MonoBehaviour
                         else
                         {
                             isMoving = false;
-                            isMovingBack = false; // Réinitialiser l'état de recul
+                            
+                            // Switch back to main camera when player stops moving
+                            if (usingPlayerCamera && CameraManager.Instance != null)
+                            {
+                                CameraManager.Instance.SwitchToMainCamera();
+                                usingPlayerCamera = false;
+                            }
+                            
                             DisplayCurrentRegion();
                         }
                     }
@@ -204,22 +214,20 @@ public class Player : MonoBehaviour
 
     public virtual void MovePlayer(int steps)
     {
-        // Stocker le waypoint initial si c'est le premier tour du joueur
-        if (!hasStoredInitialWaypoint)
-        {
-            StoreWaypointInHistory();
-            hasStoredInitialWaypoint = true;
-            Debug.Log($"🏁 {gameObject.name} → Waypoint initial stocké: {currentPath} - {currentWaypointIndex} (direction: {movementDirection})");
-        }
-
         if (!reachedIntersection)
         {
             remainingSteps = steps;
             targetWaypointIndex = currentWaypointIndex + movementDirection;
             isMoving = true;
+            
+            // Switch to player camera when starting movement
+            if (CameraManager.Instance != null)
+            {
+                CameraManager.Instance.SwitchToPlayerCamera(this);
+                usingPlayerCamera = true;
+            }
         }
     }
-
     // Nouvelle méthode pour reculer en utilisant les waypoints stockés
     public virtual void MovePlayerBack()
     {
@@ -350,6 +358,13 @@ public class Player : MonoBehaviour
 
         reachedIntersection = false;
         isMoving = (remainingSteps > 0);
+        
+        // If continuing movement, switch to player camera
+        if (isMoving && CameraManager.Instance != null)
+        {
+            CameraManager.Instance.SwitchToPlayerCamera(this);
+            usingPlayerCamera = true;
+        }
     }
 
     protected virtual void MoveToWaypoint(int index)
