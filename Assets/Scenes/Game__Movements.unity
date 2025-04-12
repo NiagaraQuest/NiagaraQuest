@@ -994,6 +994,8 @@ MonoBehaviour:
   movementDirection: 1
   turnsToSkip: 0
   lives: 4
+  maxLives: 4
+  isEliminated: 0
   debugProfileName: 
 --- !u!1 &89349143
 GameObject:
@@ -2503,6 +2505,8 @@ MonoBehaviour:
   movementDirection: 1
   turnsToSkip: 0
   lives: 4
+  maxLives: 4
+  isEliminated: 0
   debugProfileName: 
 --- !u!1 &233938174
 GameObject:
@@ -4858,6 +4862,8 @@ MonoBehaviour:
   movementDirection: 1
   turnsToSkip: 0
   lives: 4
+  maxLives: 4
+  isEliminated: 0
   debugProfileName: 
   useSecondChance: 0
 --- !u!1 &460038995
@@ -14405,6 +14411,8 @@ MonoBehaviour:
   movementDirection: 1
   turnsToSkip: 0
   lives: 4
+  maxLives: 4
+  isEliminated: 0
   debugProfileName: 
   isBoostActive: 0
 --- !u!1 &1664171365
@@ -17264,7 +17272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.96
+      value: 10.64
       objectReference: {fileID: 0}
     - target: {fileID: 6138043921473953259, guid: 0d2b9188252a78b4298fb8e34d9229ee, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17867,6 +17875,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5434ad8f6d8b14083687037590ffe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentGameMode: 0
+  maxLives: 0
+  twoPlayersInitialLives: 4
+  threeOrFourPlayersInitialLives: 3
   players: []
   currentPlayerIndex: 0
   gameBoard: {fileID: 1953554474}

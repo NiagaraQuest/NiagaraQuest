@@ -27,6 +27,12 @@ public class GeoPlayer : Player
         Debug.Log($"🛡️ Départ ! Shield ACTIVÉ ! Vies : {lives}");
     }
 
+    public void InitializeShield()
+    {
+        shieldActive = true;
+        lives *= 2;
+        Debug.Log($"🛡️ Initialisation spéciale! Shield ACTIVÉ ! Vies : {lives}");
+    }
     protected override void Update()
     {
         base.Update();

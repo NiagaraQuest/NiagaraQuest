@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     protected bool isMovingBack = false; // Pour indiquer que le joueur est en train de reculer
     protected bool hasStoredInitialWaypoint = false; // Pour s'assurer que le waypoint initial est stocké une seule fois
 
-    public int lives = 4; // ✅ Starts with 4 lives
+    public int lives ; // 
     public Profile playerProfile; // Visible in the Inspector
 
     [Header("🔹 Player Profile Info")]
@@ -372,46 +372,46 @@ public class Player : MonoBehaviour
         return lastWaypointBeforeIntersection;
     }
 
-   // Dans la classe Player, ajoute à la fin de DisplayCurrentRegion() :
+    // Dans la classe Player, ajoute à la fin de DisplayCurrentRegion() :
 
-private void DisplayCurrentRegion()
-{
-    GameObject currentWaypoint = GetCurrentWaypoint();
-    if (currentWaypoint != null)
+    private void DisplayCurrentRegion()
     {
-        Tile tile = currentWaypoint.GetComponent<Tile>();
-        if (tile != null)
+        GameObject currentWaypoint = GetCurrentWaypoint();
+        if (currentWaypoint != null)
         {
-            tile.OnPlayerLands();
-        }
-        
-        // Vérifier si c'est un waypoint final
-        CheckForWinCondition(currentWaypoint);
-    }
-}
+            Tile tile = currentWaypoint.GetComponent<Tile>();
+            if (tile != null)
+            {
+                tile.OnPlayerLands();
+            }
 
-// Nouvelle méthode pour vérifier la condition de victoire
-protected virtual void CheckForWinCondition(GameObject waypoint)
-{
-    // Vérifier si le waypoint actuel est un waypoint de victoire
-    if (waypoint.name == "PyroWin" || waypoint.name == "HydroWin" || 
-        waypoint.name == "GeoWin" || waypoint.name == "AnemoWin")
-    {
-        Debug.Log($"🏆 {gameObject.name} a atteint le waypoint de victoire {waypoint.name} !");
-        
-        // Appeler la méthode de victoire dans GameManager
-        GameManager.Instance.WinGameOver(this);
+            // Vérifier si c'est un waypoint final
+            CheckForWinCondition(currentWaypoint);
+        }
     }
-    
-    // Alternative : vérifier par l'index si tous les waypoints de victoire sont à l'index 50
-    if (currentWaypointIndex == 50)
+
+    // Nouvelle méthode pour vérifier la condition de victoire
+    protected virtual void CheckForWinCondition(GameObject waypoint)
     {
-        string pathEndName = currentPath + " final";
-        Debug.Log($"🏆 {gameObject.name} a atteint l'index 50 sur {currentPath} !");
-        
-        GameManager.Instance.WinGameOver(this);
+        // Vérifier si le waypoint actuel est un waypoint de victoire
+        if (waypoint.name == "PyroWin" || waypoint.name == "HydroWin" ||
+            waypoint.name == "GeoWin" || waypoint.name == "AnemoWin")
+        {
+            Debug.Log($"🏆 {gameObject.name} a atteint le waypoint de victoire {waypoint.name} !");
+
+            // Appeler la méthode de victoire dans GameManager
+            GameManager.Instance.WinGameOver(this);
+        }
+
+        // Alternative : vérifier par l'index si tous les waypoints de victoire sont à l'index 50
+        if (currentWaypointIndex == 50)
+        {
+            string pathEndName = currentPath + " final";
+            Debug.Log($"🏆 {gameObject.name} a atteint l'index 50 sur {currentPath} !");
+
+            GameManager.Instance.WinGameOver(this);
+        }
     }
-}
 
     // ✅ Method to lose a life
     public virtual void LoseLife()
@@ -433,7 +433,7 @@ protected virtual void CheckForWinCondition(GameObject waypoint)
         lives++;
         Debug.Log($"❤️gained a life! Total lives: {lives}");
     }
-   
+
     public virtual void AnswerQuestion(bool isCorrect)
     {
         //  later
@@ -456,7 +456,7 @@ protected virtual void CheckForWinCondition(GameObject waypoint)
     }
 
 
-   
+
 
 
     public void SkipTurns(int turns)
@@ -477,6 +477,6 @@ protected virtual void CheckForWinCondition(GameObject waypoint)
         }
     }
 
-    
+
 
 }

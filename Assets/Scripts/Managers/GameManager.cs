@@ -7,6 +7,26 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+  
+
+
+    public enum GameMode
+    {
+        TwoPlayers,
+        ThreePlayers,
+        FourPlayers
+    }
+
+
+
+    [Header("Game Settings")]
+    public GameMode currentGameMode;
+    public int maxLives;
+    public int twoPlayersInitialLives = 4;
+    public int threeOrFourPlayersInitialLives = 3;
+
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -18,6 +38,10 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
+
+
 
     // Stocke tous les joueurs
     public List<GameObject> players = new List<GameObject>();
@@ -38,13 +62,88 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        DetectGameModeBasedOnActivePlayers();
         InitializePlayers();
-
         Debug.Log($"📌 Nombre de joueurs détectés: {players?.Count ?? 0}");
-
         AssignProfiles();
+        SetupPlayersInitialLives();
+
+        // Vérifier si certains joueurs ont besoin d'une initialisation spéciale
+        foreach (var player in players)
+        {
+            // Spécifiquement identifier GeoPlayer pour son initialisation spéciale
+            GeoPlayer geoPlayer = player.GetComponent<GeoPlayer>();
+            if (geoPlayer != null)
+            {
+                // Pour GeoPlayer, réactiver le bouclier après l'initialisation des vies
+                Debug.Log("🔄 Réinitialisation du bouclier de GeoPlayer après configuration des vies");
+                geoPlayer.InitializeShield();
+            }
+        }
+
         StartGame();
     }
+
+
+
+    private void DetectGameModeBasedOnActivePlayers()
+    {
+        int activePlayers = 0;
+        foreach (var playerObj in new List<GameObject> {
+            GameObject.Find("PyroPlayer"),
+            GameObject.Find("AnemoPlayer"),
+            GameObject.Find("GeoPlayer"),
+            GameObject.Find("HydroPlayer")
+        })
+        {
+            if (playerObj != null && playerObj.activeInHierarchy) activePlayers++;
+        }
+
+        switch (activePlayers)
+        {
+            case 2:
+                currentGameMode = GameMode.TwoPlayers;
+                maxLives = twoPlayersInitialLives;
+                break;
+            case 3:
+                currentGameMode = GameMode.ThreePlayers;
+                maxLives = threeOrFourPlayersInitialLives;
+                break;
+            case 4:
+                currentGameMode = GameMode.FourPlayers;
+                maxLives = threeOrFourPlayersInitialLives;
+                break;
+            default:
+                Debug.LogError($"Unsupported number of players: {activePlayers}");
+                break;
+        }
+
+        Debug.Log($"🎮 Mode: {currentGameMode} | Players: {activePlayers} | Max Lives: {maxLives}");
+    }
+
+
+
+
+
+
+
+    private void SetupPlayersInitialLives()
+    {
+        foreach (var player in players)
+        {
+            if (player == null) continue;
+
+            Player playerScript = player.GetComponent<Player>();
+            if (playerScript != null)
+            {
+                playerScript.lives = maxLives;
+                //playerScript.maxLives = maxLives;
+                
+                Debug.Log($"❤️ {player.name} initialized with {maxLives} lives");
+            }
+        }
+    }
+
 
 
 
@@ -55,9 +154,10 @@ public class GameManager : MonoBehaviour
         players.Clear();
 
         players.Add(GameObject.Find("PyroPlayer"));
+        players.Add(GameObject.Find("HydroPlayer"));
         players.Add(GameObject.Find("AnemoPlayer"));
         players.Add(GameObject.Find("GeoPlayer"));
-        players.Add(GameObject.Find("HydroPlayer"));
+        
 
         if (players.Contains(null))
         {
@@ -166,18 +266,7 @@ public class GameManager : MonoBehaviour
         return currentQuestionPlayer;
     }
 
-    private IEnumerator RestoreDirectionWhenStopped(Player player, int originalDirection)
-    {
-        // Wait until the player finishes moving
-        while (player.isMoving)
-        {
-            yield return null; // Wait for the next frame
-        }
-
-        // Restore the original movement direction
-        player.movementDirection = originalDirection;
-        Debug.Log("✅ Direction restored after movement.");
-    }
+  
 
 
     public void ApplyQuestionResult(Player player, bool isCorrect, Tile.Difficulty difficulty)
@@ -299,24 +388,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"🔄 {player.gameObject.name} obtient un tour supplémentaire!");
     }
 
-    // Modifions aussi le WaitForMovement pour gérer le cas d'un tour supplémentaire
-    private IEnumerator WaitForMovement(Player movementScript)
-    {
-        yield return new WaitUntil(() => movementScript.HasFinishedMoving);
-
-        if (isExtraTurn)
-        {
-            // Réinitialiser le flag pour le prochain tour
-            isExtraTurn = false;
-            Debug.Log($"✅ Tour supplémentaire terminé pour {selectedPlayer.name}");
-        }
-        else
-        {
-            // C'est un tour normal, passer au joueur suivant
-            NextTurn();
-        }
-    }
-
+ 
     // Dans la classe GameManager
     public void WinGameOver(Player winningPlayer)
     {
@@ -349,7 +421,43 @@ public class GameManager : MonoBehaviour
     }
 
 
+    /*
+ // Modifions aussi le WaitForMovement pour gérer le cas d'un tour supplémentaire
+ private IEnumerator WaitForMovement(Player movementScript)
+ {
+     yield return new WaitUntil(() => movementScript.HasFinishedMoving);
 
+     if (isExtraTurn)
+     {
+         // Réinitialiser le flag pour le prochain tour
+         isExtraTurn = false;
+         Debug.Log($"✅ Tour supplémentaire terminé pour {selectedPlayer.name}");
+     }
+     else
+     {
+         // C'est un tour normal, passer au joueur suivant
+         NextTurn();
+     }
+ }
+
+
+  private IEnumerator RestoreDirectionWhenStopped(Player player, int originalDirection)
+    {
+        // Wait until the player finishes moving
+        while (player.isMoving)
+        {
+            yield return null; // Wait for the next frame
+        }
+
+        // Restore the original movement direction
+        player.movementDirection = originalDirection;
+        Debug.Log("✅ Direction restored after movement.");
+    }
+
+
+
+
+ */
 
 
 }
