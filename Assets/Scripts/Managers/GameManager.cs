@@ -7,9 +7,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-  
-
-
     public enum GameMode
     {
         TwoPlayers,
@@ -17,15 +14,11 @@ public class GameManager : MonoBehaviour
         FourPlayers
     }
 
-
-
     [Header("Game Settings")]
     public GameMode currentGameMode;
     public int maxLives;
     public int twoPlayersInitialLives = 4;
     public int threeOrFourPlayersInitialLives = 3;
-
-
 
     private void Awake()
     {
@@ -38,10 +31,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-
-
-
 
     // Stocke tous les joueurs
     public List<GameObject> players = new List<GameObject>();
@@ -56,9 +45,7 @@ public class GameManager : MonoBehaviour
     // Dans GameManager
     public bool isRewardMovement = false;
     private bool gameWon = false;
-
-
-
+    private bool gameLost = false;
 
     void Start()
     {
@@ -83,8 +70,6 @@ public class GameManager : MonoBehaviour
 
         StartGame();
     }
-
-
 
     private void DetectGameModeBasedOnActivePlayers()
     {
@@ -121,12 +106,6 @@ public class GameManager : MonoBehaviour
         Debug.Log($"🎮 Mode: {currentGameMode} | Players: {activePlayers} | Max Lives: {maxLives}");
     }
 
-
-
-
-
-
-
     private void SetupPlayersInitialLives()
     {
         foreach (var player in players)
@@ -138,30 +117,44 @@ public class GameManager : MonoBehaviour
             {
                 playerScript.lives = maxLives;
                 //playerScript.maxLives = maxLives;
-                
+
                 Debug.Log($"❤️ {player.name} initialized with {maxLives} lives");
             }
         }
     }
-
-
-
-
 
     // Finds all Player objects and stores them in players
     private void InitializePlayers()
     {
         players.Clear();
 
-        players.Add(GameObject.Find("PyroPlayer"));
-        players.Add(GameObject.Find("HydroPlayer"));
-        players.Add(GameObject.Find("AnemoPlayer"));
-        players.Add(GameObject.Find("GeoPlayer"));
-        
+        // Collecter les références aux joueurs
+        GameObject pyroPlayer = GameObject.Find("PyroPlayer");
+        GameObject hydroPlayer = GameObject.Find("HydroPlayer");
+        GameObject anemoPlayer = GameObject.Find("AnemoPlayer");
+        GameObject geoPlayer = GameObject.Find("GeoPlayer");
 
-        if (players.Contains(null))
+        // Ajouter seulement les joueurs qui existent et sont actifs
+        if (pyroPlayer != null && pyroPlayer.activeInHierarchy)
+            players.Add(pyroPlayer);
+
+        if (hydroPlayer != null && hydroPlayer.activeInHierarchy)
+            players.Add(hydroPlayer);
+
+        if (anemoPlayer != null && anemoPlayer.activeInHierarchy)
+            players.Add(anemoPlayer);
+
+        if (geoPlayer != null && geoPlayer.activeInHierarchy)
+            players.Add(geoPlayer);
+
+        // Vérifier qu'il y a au moins 2 joueurs
+        if (players.Count < 2)
         {
-            Debug.LogError("❌ Some players are missing from the scene!");
+            Debug.LogError("❌ Il faut au moins 2 joueurs actifs pour commencer la partie!");
+        }
+        else
+        {
+            Debug.Log($"✅ {players.Count} joueurs actifs détectés pour le mode {currentGameMode}");
         }
     }
 
@@ -199,8 +192,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-
 
     public void StartGame()
     {
@@ -250,12 +241,6 @@ public class GameManager : MonoBehaviour
         NextTurn();
     }
 
-
-
-
-
-
-
     public void SetCurrentQuestionPlayer(Player player)
     {
         currentQuestionPlayer = player;
@@ -265,9 +250,6 @@ public class GameManager : MonoBehaviour
     {
         return currentQuestionPlayer;
     }
-
-  
-
 
     public void ApplyQuestionResult(Player player, bool isCorrect, Tile.Difficulty difficulty)
     {
@@ -284,15 +266,8 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     Debug.Log("❌ Mauvaise réponse ! Pénalité : Reculer de 6 cases.");
-
-
-
                     // Move the player backward
                     player.MovePlayerBack();
-
-
-
-
                 }
                 break;
 
@@ -305,11 +280,11 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-
                     // CA MARCHE 
-
                     Debug.Log("❌ Mauvaise réponse ! Pénalité : Perdre 1 vie.");
                     player.LoseLife();
+                    // Vérifier si un joueur a perdu toutes ses vies
+                    CheckPlayerLives();
                 }
                 break;
 
@@ -317,11 +292,9 @@ public class GameManager : MonoBehaviour
                 if (isCorrect)
                 {
                     // ca marche 
-
                     Debug.Log("✅ Bonne réponse ! Récompense : Gagner 1 vie.");
                     player.GainLife();
                 }
-
                 else
                 {
                     int turnsSkipped = 1;
@@ -330,10 +303,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
-
-
     }
-
 
     private void NextTurn()
     {
@@ -363,9 +333,6 @@ public class GameManager : MonoBehaviour
         Debug.Log($"🔄 Prochain joueur : {selectedPlayer.name}");
     }
 
-
-
-
     private bool isExtraTurn = false;
 
     public void RollDiceAgain(Player player)
@@ -388,7 +355,6 @@ public class GameManager : MonoBehaviour
         Debug.Log($"🔄 {player.gameObject.name} obtient un tour supplémentaire!");
     }
 
- 
     // Dans la classe GameManager
     public void WinGameOver(Player winningPlayer)
     {
@@ -416,48 +382,54 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // Tu peux appeler ici une méthode pour afficher l'écran de victoire
+        //  appeler ici une méthode pour afficher l'écran de victoire
         // ShowVictoryScreen();
     }
 
-
-    /*
- // Modifions aussi le WaitForMovement pour gérer le cas d'un tour supplémentaire
- private IEnumerator WaitForMovement(Player movementScript)
- {
-     yield return new WaitUntil(() => movementScript.HasFinishedMoving);
-
-     if (isExtraTurn)
-     {
-         // Réinitialiser le flag pour le prochain tour
-         isExtraTurn = false;
-         Debug.Log($"✅ Tour supplémentaire terminé pour {selectedPlayer.name}");
-     }
-     else
-     {
-         // C'est un tour normal, passer au joueur suivant
-         NextTurn();
-     }
- }
-
-
-  private IEnumerator RestoreDirectionWhenStopped(Player player, int originalDirection)
+    // Fonction qui vérifie les vies de chaque joueur
+    public void CheckPlayerLives()
     {
-        // Wait until the player finishes moving
-        while (player.isMoving)
-        {
-            yield return null; // Wait for the next frame
-        }
+        if (gameLost) return; // Éviter d'appeler plusieurs fois
 
-        // Restore the original movement direction
-        player.movementDirection = originalDirection;
-        Debug.Log("✅ Direction restored after movement.");
+        foreach (GameObject playerObj in players)
+        {
+            Player player = playerObj.GetComponent<Player>();
+            if (player != null && player.lives <= 0)
+            {
+                // Un joueur a perdu toutes ses vies, on appelle LoseGame
+                LoseGame(player);
+                return;
+            }
+        }
     }
 
+    // Fonction qui gère la fin de partie en cas de défaite
+    public void LoseGame(Player losingPlayer)
+    {
+        if (gameLost || gameWon) return; // Éviter d'appeler plusieurs fois
 
+        gameLost = true;
 
+        string playerName = losingPlayer != null ? losingPlayer.gameObject.name : "Un joueur";
+        Debug.Log($"💀 DÉFAITE ! {playerName} a perdu toutes ses vies ! La partie est terminée !");
 
- */
+        // Désactiver les contrôles
+        if (diceManager != null)
+        {
+            diceManager.DisableRollButton();
+        }
 
+        // Afficher un état pour chaque joueur
+        foreach (GameObject playerObj in players)
+        {
+            Player player = playerObj.GetComponent<Player>();
+            if (player != null)
+            {
+                Debug.Log($"📊 État final : {player.gameObject.name} a terminé avec {player.lives} vies.");
+            }
+        }
 
+        //  appeler ici une méthode pour afficher l'écran de défaite
+        // ShowDefeatScreen();
+    }
 }

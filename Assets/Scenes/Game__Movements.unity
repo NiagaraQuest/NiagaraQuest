@@ -994,8 +994,6 @@ MonoBehaviour:
   movementDirection: 1
   turnsToSkip: 0
   lives: 4
-  maxLives: 4
-  isEliminated: 0
   debugProfileName: 
 --- !u!1 &89349143
 GameObject:
@@ -2505,8 +2503,6 @@ MonoBehaviour:
   movementDirection: 1
   turnsToSkip: 0
   lives: 4
-  maxLives: 4
-  isEliminated: 0
   debugProfileName: 
 --- !u!1 &233938174
 GameObject:
@@ -4862,8 +4858,6 @@ MonoBehaviour:
   movementDirection: 1
   turnsToSkip: 0
   lives: 4
-  maxLives: 4
-  isEliminated: 0
   debugProfileName: 
   useSecondChance: 0
 --- !u!1 &460038995
@@ -14411,8 +14405,6 @@ MonoBehaviour:
   movementDirection: 1
   turnsToSkip: 0
   lives: 4
-  maxLives: 4
-  isEliminated: 0
   debugProfileName: 
   isBoostActive: 0
 --- !u!1 &1664171365
