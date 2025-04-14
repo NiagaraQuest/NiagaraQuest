@@ -20271,12 +20271,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5434ad8f6d8b14083687037590ffe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentGameMode: 0
+  maxLives: 0
+  twoPlayersInitialLives: 4
+  threeOrFourPlayersInitialLives: 3
   players: []
   currentPlayerIndex: 0
   gameBoard: {fileID: 1953554474}
   diceManager: {fileID: 808641352}
   selectedPlayer: {fileID: 0}
   currentQuestionPlayer: {fileID: 0}
+  isEffectMovement: 0
 --- !u!114 &2031781948
 MonoBehaviour:
   m_ObjectHideFlags: 0
