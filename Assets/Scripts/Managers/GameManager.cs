@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     public Player currentQuestionPlayer;
     public bool isEffectMovement = false;
     private bool gameWon = false;
+    private bool gameLost = false;
 
 
 
@@ -250,11 +251,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-
-
-
-
-
     public void SetCurrentQuestionPlayer(Player player)
     {
         currentQuestionPlayer = player;
@@ -411,37 +407,50 @@ public class GameManager : MonoBehaviour
 
     
  // Modifions aussi le WaitForMovement pour gérer le cas d'un tour supplémentaire
- private IEnumerator WaitForMovement(Player movementScript)
- {
-     yield return new WaitUntil(() => movementScript.HasFinishedMoving);
 
-     if (isExtraTurn)
-     {
-         // Réinitialiser le flag pour le prochain tour
-         isExtraTurn = false;
-         Debug.Log($"✅ Tour supplémentaire terminé pour {selectedPlayer.name}");
-     }
-     else
-     {
-        isEffectMovement = false;
-         NextTurn();
-     }
- }
-
-
-  private IEnumerator RestoreDirectionWhenStopped(Player player, int originalDirection)
+    public void CheckPlayerLives()
     {
-        // Wait until the player finishes moving
-        while (player.isMoving)
-        {
-            yield return null; // Wait for the next frame
-        }
+        if (gameLost) return; // Éviter d'appeler plusieurs fois
 
-        // Restore the original movement direction
-        player.movementDirection = originalDirection;
-        Debug.Log("✅ Direction restored after movement.");
+        foreach (GameObject playerObj in players)
+        {
+            Player player = playerObj.GetComponent<Player>();
+            if (player != null && player.lives <= 0)
+            {
+                // Un joueur a perdu toutes ses vies, on appelle LoseGame
+                LoseGame(player);
+                return;
+            }
+        }
     }
 
+    // Fonction qui gère la fin de partie en cas de défaite
+    public void LoseGame(Player losingPlayer)
+    {
+        if (gameLost || gameWon) return; // Éviter d'appeler plusieurs fois
 
+        gameLost = true;
 
+        string playerName = losingPlayer != null ? losingPlayer.gameObject.name : "Un joueur";
+        Debug.Log($"💀 DÉFAITE ! {playerName} a perdu toutes ses vies ! La partie est terminée !");
+
+        // Désactiver les contrôles
+        if (diceManager != null)
+        {
+            diceManager.DisableRollButton();
+        }
+
+        // Afficher un état pour chaque joueur
+        foreach (GameObject playerObj in players)
+        {
+            Player player = playerObj.GetComponent<Player>();
+            if (player != null)
+            {
+                Debug.Log($"📊 État final : {player.gameObject.name} a terminé avec {player.lives} vies.");
+            }
+        }
+
+        //  appeler ici une méthode pour afficher l'écran de défaite
+        // ShowDefeatScreen();
+    }
 }
