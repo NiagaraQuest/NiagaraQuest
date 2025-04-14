@@ -56,7 +56,7 @@ public class CardManager : MonoBehaviour
     // Draw a random card and return its type
     public int DrawRandomCard()
     {
-        return Random.Range(0, cardNames.Length);
+        return 11;
     }
     
     // Get card name by type
@@ -116,6 +116,7 @@ public class CardManager : MonoBehaviour
                 break;
                 
             case 5: // Mythic Leap
+                gameManager.isEffectMovement = true; 
                 player.MovePlayer(6);
                 break;
                 
@@ -125,10 +126,12 @@ public class CardManager : MonoBehaviour
                 
             case 7: // The Reward
                 Debug.Log($"🎮 {player.gameObject.name} gets an extra turn!");
-                // Extra turn logic would need to be implemented in GameManager
+                gameManager.isEffectMovement = true;
+                gameManager.RollDiceAgain(player);
                 break;
                 
             case 8: // Cursed Steps
+                gameManager.isEffectMovement = true;
                 player.MovePlayerBack();
                 break;
                 
@@ -143,6 +146,7 @@ public class CardManager : MonoBehaviour
                 break;
                 
             case 11: // Path of Clouds
+                gameManager.isEffectMovement = true; 
                 MoveAllPlayers(3);
                 break;
         }
@@ -233,10 +237,10 @@ public class CardManager : MonoBehaviour
             return;
             
         Debug.Log($"☁️ Moving all players forward {steps} tiles");
-        
         foreach (GameObject playerObj in gameManager.players)
         {
             Player player = playerObj.GetComponent<Player>();
+            gameManager.isEffectMovement = true; 
             if (player != null)
             {
                 player.MovePlayer(steps);

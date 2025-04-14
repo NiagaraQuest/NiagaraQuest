@@ -53,8 +53,7 @@ public class GameManager : MonoBehaviour
     public GameObject selectedPlayer;
 
     public Player currentQuestionPlayer;
-    // Dans GameManager
-    public bool isRewardMovement = false;
+    public bool isEffectMovement = false;
     private bool gameWon = false;
 
 
@@ -278,21 +277,14 @@ public class GameManager : MonoBehaviour
                 {
                     // CA MARCHE 
                     Debug.Log("✅ Bonne réponse ! Récompense : Avancer de 2 cases.");
-                    isRewardMovement = true;
+                    isEffectMovement = true;
                     player.MovePlayer(2);
                 }
                 else
                 {
                     Debug.Log("❌ Mauvaise réponse ! Pénalité : Reculer de 6 cases.");
-
-
-
-                    // Move the player backward
+                    isEffectMovement = true;
                     player.MovePlayerBack();
-
-
-
-
                 }
                 break;
 
@@ -300,14 +292,12 @@ public class GameManager : MonoBehaviour
                 if (isCorrect)
                 {
                     Debug.Log("✅ Bonne réponse ! Récompense : Lancer les dés une nouvelle fois.");
+                    isEffectMovement = true;
                     RollDiceAgain(player);
-                    return; // Don't switch turns yet, the player rolls again
+                    return;
                 }
                 else
                 {
-
-                    // CA MARCHE 
-
                     Debug.Log("❌ Mauvaise réponse ! Pénalité : Perdre 1 vie.");
                     player.LoseLife();
                 }
@@ -316,8 +306,6 @@ public class GameManager : MonoBehaviour
             case Tile.Difficulty.Hard:
                 if (isCorrect)
                 {
-                    // ca marche 
-
                     Debug.Log("✅ Bonne réponse ! Récompense : Gagner 1 vie.");
                     player.GainLife();
                 }
@@ -338,7 +326,7 @@ public class GameManager : MonoBehaviour
     private void NextTurn()
     {
         // Réinitialiser le flag au cas où
-        isRewardMovement = false;
+        isEffectMovement = false;
         SetCurrentQuestionPlayer(selectedPlayer.GetComponent<Player>());
 
         do
@@ -421,7 +409,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    /*
+    
  // Modifions aussi le WaitForMovement pour gérer le cas d'un tour supplémentaire
  private IEnumerator WaitForMovement(Player movementScript)
  {
@@ -435,7 +423,7 @@ public class GameManager : MonoBehaviour
      }
      else
      {
-         // C'est un tour normal, passer au joueur suivant
+        isEffectMovement = false;
          NextTurn();
      }
  }
@@ -454,10 +442,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("✅ Direction restored after movement.");
     }
 
-
-
-
- */
 
 
 }

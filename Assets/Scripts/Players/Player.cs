@@ -119,6 +119,10 @@ public class Player : MonoBehaviour
                 {
                     currentWaypointIndex = targetWaypointIndex;
                     Debug.Log($"📍 Waypoint Atteint: {currentWaypointIndex}");
+                    if (!isMovingBack && !targetWaypoint.CompareTag("Intersection"))
+                    {
+                        StoreWaypointInHistory();
+                    }
 
                     if (targetWaypoint.CompareTag("Intersection"))
                     {
@@ -155,6 +159,7 @@ public class Player : MonoBehaviour
                         else
                         {
                             isMoving = false;
+                            isMovingBack = false;
                             
                             // Switch back to main camera when player stops moving
                             if (usingPlayerCamera && CameraManager.Instance != null)
@@ -214,6 +219,13 @@ public class Player : MonoBehaviour
 
     public virtual void MovePlayer(int steps)
     {
+        if (!hasStoredInitialWaypoint)
+        {
+            StoreWaypointInHistory();
+            hasStoredInitialWaypoint = true;
+            Debug.Log($"🏁 {gameObject.name} → Waypoint initial stocké: {currentPath} - {currentWaypointIndex} (direction: {movementDirection})");
+        }
+
         if (!reachedIntersection)
         {
             remainingSteps = steps;
@@ -396,8 +408,34 @@ public class Player : MonoBehaviour
             {
                 tile.OnPlayerLands();
             }
+
+            // Vérifier si c'est un waypoint final
+            CheckForWinCondition(currentWaypoint);
         }
     }
+
+    protected virtual void CheckForWinCondition(GameObject waypoint)
+    {
+        // Vérifier si le waypoint actuel est un waypoint de victoire
+        if (waypoint.name == "PyroWin" || waypoint.name == "HydroWin" ||
+            waypoint.name == "GeoWin" || waypoint.name == "AnemoWin")
+        {
+            Debug.Log($"🏆 {gameObject.name} a atteint le waypoint de victoire {waypoint.name} !");
+
+            // Appeler la méthode de victoire dans GameManager
+            GameManager.Instance.WinGameOver(this);
+        }
+
+        // Alternative : vérifier par l'index si tous les waypoints de victoire sont à l'index 50
+        if (currentWaypointIndex == 50)
+        {
+            string pathEndName = currentPath + " final";
+            Debug.Log($"🏆 {gameObject.name} a atteint l'index 50 sur {currentPath} !");
+
+            GameManager.Instance.WinGameOver(this);
+        }
+    }
+
 
     // ✅ Method to lose a life
     public virtual void LoseLife()
@@ -446,26 +484,6 @@ public class Player : MonoBehaviour
             Debug.Log($"  {marker} {index++}. Path: {data.pathName}, Index: {data.waypointIndex}, Direction: {data.direction}");
         }
     }
-
-
-    public virtual void MoveForward(int steps)
-    {
-        // Stocker le waypoint initial si c'est le premier tour du joueur
-        if (!hasStoredInitialWaypoint)
-        {
-            StoreWaypointInHistory();
-            hasStoredInitialWaypoint = true;
-            Debug.Log($"🏁 {gameObject.name} → Waypoint initial stocké: {currentPath} - {currentWaypointIndex} (direction: {movementDirection})");
-        }
-
-        if (!reachedIntersection)
-        {
-            remainingSteps = steps;
-            targetWaypointIndex = currentWaypointIndex + movementDirection;
-            isMoving = true;
-        }
-    }
-
 
 
 

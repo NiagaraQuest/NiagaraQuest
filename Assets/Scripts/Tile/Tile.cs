@@ -21,8 +21,15 @@ public class Tile : MonoBehaviour
     public Region region;
 
 
-    public virtual void OnPlayerLands()
+public virtual void OnPlayerLands()
+{
+    // Skip tile effects if this movement was triggered by a question/card effect
+    if (GameManager.Instance.isEffectMovement)
     {
-        Debug.Log($"🎯 Le joueur a atterri sur une tuile {type} dans la région {region} à la position {position}.");
+        Debug.Log($"🎯 Le joueur a atterri sur une tuile {type} dans la région {region} à la position {position} - effet ignoré car mouvement par effet.");
+        return;
     }
+
+    Debug.Log($"🎯 Le joueur a atterri sur une tuile {type} dans la région {region} à la position {position}.");
+}
 }

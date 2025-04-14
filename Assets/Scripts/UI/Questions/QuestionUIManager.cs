@@ -162,7 +162,7 @@ public class QuestionUIManager : MonoBehaviour
     {
         resultPanel.SetActive(true);
         resultText.text = isCorrect ? "✅ Correct!" : "❌ Wrong!";
-        GameManager.Instance.ApplyQuestionResult(GameManager.Instance.GetCurrentPlayer(), isCorrect, Tile.Difficulty.Hard);
+        GameManager.Instance.ApplyQuestionResult(GameManager.Instance.GetCurrentPlayer(), isCorrect, currentQuestion.Difficulty);
     }
 
     // New method to get the question result
@@ -181,7 +181,7 @@ public class QuestionUIManager : MonoBehaviour
         {
             currentTile.ContinueGame();
         }
-         
+        
         // Reset processing flag to allow new questions
         isProcessingQuestion = false;
     }

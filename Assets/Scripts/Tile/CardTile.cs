@@ -30,6 +30,12 @@ public class CardTile : Tile
             return;
         }
         
+        if (GameManager.Instance.isEffectMovement)
+        {
+            Debug.Log("🎁 Mouvement de récompense - pas de nouvelle question!");
+            GameManager.Instance.isEffectMovement = false;  // Réinitialiser pour le prochain tour
+            return;  // Ne pas poser de question
+        }
         // Draw a random card using CardManager
         CardManager cardManager = CardManager.Instance;
         if (cardManager != null)
