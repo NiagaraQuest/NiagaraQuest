@@ -73,7 +73,7 @@ public class QuestionTile : Tile
                 Category = "General",
                 Qst = "What is the capital of France?",
                 Answer = "Paris",
-                Difficulty = Tile.Difficulty.Hard
+                Difficulty = "Hard"
             };
         }
         else
@@ -85,7 +85,7 @@ public class QuestionTile : Tile
                 Qst = "Which is the capital of France?",
                 Choices = new string[] { "Lyon", "Paris", "Marseille", "Lille" },
                 CorrectChoice = 1,
-                Difficulty = Tile.Difficulty.Hard
+                Difficulty = "Hard"
             };
         }
     }

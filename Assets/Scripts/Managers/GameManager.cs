@@ -264,11 +264,11 @@ public class GameManager : MonoBehaviour
   
 
 
-    public void ApplyQuestionResult(Player player, bool isCorrect, Tile.Difficulty difficulty)
+    public void ApplyQuestionResult(Player player, bool isCorrect, string difficulty)
     {
         switch (difficulty)
         {
-            case Tile.Difficulty.Easy:
+            case "Easy":
                 if (isCorrect)
                 {
                     // CA MARCHE 
@@ -284,7 +284,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
 
-            case Tile.Difficulty.Medium:
+            case "Medium":
                 if (isCorrect)
                 {
                     Debug.Log("✅ Bonne réponse ! Récompense : Lancer les dés une nouvelle fois.");
@@ -299,7 +299,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
 
-            case Tile.Difficulty.Hard:
+            case "Hard":
                 if (isCorrect)
                 {
                     Debug.Log("✅ Bonne réponse ! Récompense : Gagner 1 vie.");
