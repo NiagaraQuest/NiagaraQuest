@@ -15,6 +15,12 @@ public class QuestionUIManager : MonoBehaviour
     public GameObject qcmQuestionPanel;
     public TextMeshProUGUI qcmQuestionText;
     public Button[] choiceButtons;
+    
+    [Header("True/False Question UI")]
+    public GameObject tfQuestionPanel;
+    public TextMeshProUGUI tfQuestionText;
+    public Button trueButton;
+    public Button falseButton;
 
     [Header("Result UI")]
     public GameObject resultPanel;
@@ -34,14 +40,29 @@ public class QuestionUIManager : MonoBehaviour
         // Setup button listeners
         submitButton.onClick.AddListener(CheckOpenAnswer);
         exitButton.onClick.AddListener(CloseResultPanel);
+        
+        // Setup True/False button listeners
+        if (trueButton != null)
+            trueButton.onClick.AddListener(() => CheckTrueFalseAnswer(true));
+        if (falseButton != null)
+            falseButton.onClick.AddListener(() => CheckTrueFalseAnswer(false));
     }
 
     void Update()
     {
-        // Allow submitting open question answers with Enter key
-        if (openQuestionPanel.activeSelf && Input.GetKeyDown(KeyCode.Return))
+        // Enter key handler - simulates clicking the active button
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
         {
-            CheckOpenAnswer();
+            // Submit answer if open question panel is active
+            if (openQuestionPanel.activeSelf)
+            {
+                submitButton.onClick.Invoke();
+            }
+            // Close result panel if it's active
+            else if (resultPanel.activeSelf)
+            {
+                exitButton.onClick.Invoke();
+            }
         }
     }
 
@@ -49,6 +70,7 @@ public class QuestionUIManager : MonoBehaviour
     {
         openQuestionPanel.SetActive(false);
         qcmQuestionPanel.SetActive(false);
+        tfQuestionPanel.SetActive(false);
         resultPanel.SetActive(false);
     }
 
@@ -71,6 +93,10 @@ public class QuestionUIManager : MonoBehaviour
         else if (question is QCMQuestion qcmQuestion)
         {
             ShowQCMQuestion(qcmQuestion);
+        }
+        else if (question is TrueFalseQuestion tfQuestion)
+        {
+            ShowTrueFalseQuestion(tfQuestion);
         }
         else
         {
@@ -129,6 +155,21 @@ public class QuestionUIManager : MonoBehaviour
         // Show panel
         qcmQuestionPanel.SetActive(true);
     }
+    
+    private void ShowTrueFalseQuestion(TrueFalseQuestion question)
+    {
+        // Set question text
+        tfQuestionText.text = question.Qst;
+        
+        // Make sure the True and False buttons are active
+        if (trueButton != null)
+            trueButton.gameObject.SetActive(true);
+        if (falseButton != null)
+            falseButton.gameObject.SetActive(true);
+        
+        // Show panel
+        tfQuestionPanel.SetActive(true);
+    }
 
     private void CheckOpenAnswer()
     {
@@ -144,6 +185,9 @@ public class QuestionUIManager : MonoBehaviour
         
         // Show result
         ShowResult(lastAnswerCorrect);
+        
+        // Update ELO ratings
+        UpdatePlayerElo(lastAnswerCorrect);
     }
 
     private void CheckQCMAnswer(QCMQuestion question, int choiceIndex)
@@ -156,6 +200,27 @@ public class QuestionUIManager : MonoBehaviour
         
         // Show result
         ShowResult(lastAnswerCorrect);
+        
+        // Update ELO ratings
+        UpdatePlayerElo(lastAnswerCorrect);
+    }
+    
+    private void CheckTrueFalseAnswer(bool userAnswer)
+    {
+        // Hide question panel
+        tfQuestionPanel.SetActive(false);
+        
+        // Check if the user's answer matches the correct answer
+        bool correctAnswer = ((TrueFalseQuestion)currentQuestion).IsTrue;
+        
+        // Store result
+        lastAnswerCorrect = userAnswer == correctAnswer;
+        
+        // Show result
+        ShowResult(lastAnswerCorrect);
+        
+        // Update ELO ratings
+        UpdatePlayerElo(lastAnswerCorrect);
     }
 
     private void ShowResult(bool isCorrect)
@@ -163,9 +228,47 @@ public class QuestionUIManager : MonoBehaviour
         resultPanel.SetActive(true);
         resultText.text = isCorrect ? "✅ Correct!" : "❌ Wrong!";
         GameManager.Instance.ApplyQuestionResult(GameManager.Instance.GetCurrentPlayer(), isCorrect, currentQuestion.Difficulty);
+        
+        // Focus on the exit button so Enter key works right away
+        StartCoroutine(FocusExitButton());
+    }
+    
+    private IEnumerator FocusExitButton()
+    {
+        // Wait a frame to ensure the panel is active
+        yield return null;
+        if (exitButton != null)
+        {
+            exitButton.Select();
+        }
+    }
+    
+    private async void UpdatePlayerElo(bool isCorrect)
+    {
+        try
+        {
+            // Get the current player
+            Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
+            if (currentPlayer != null && currentPlayer.playerProfile != null && currentQuestion != null)
+            {
+                // Record the answer using QuestionManager - this will update ELO ratings
+                int initialElo = currentPlayer.playerProfile.Elo;
+                await QuestionManager.Instance.RecordPlayerAnswer(currentPlayer.playerProfile, currentQuestion, isCorrect);
+                
+                // Log ELO change
+                int newElo = currentPlayer.playerProfile.Elo;
+                int eloChange = newElo - initialElo;
+                
+                Debug.Log($"⚖️ Player ELO updated: {initialElo} → {newElo} ({(eloChange >= 0 ? "+" : "")}{eloChange})");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"❌ Error updating ELO ratings: {ex.Message}");
+        }
     }
 
-    // New method to get the question result
+    // Method to get the question result
     public bool GetQuestionResult()
     {
         return lastAnswerCorrect;
