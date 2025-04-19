@@ -242,4 +242,12 @@ public class QuestionTile : Tile
         // Apply game effects based on question difficulty and correctness
         GameManager.Instance.ApplyQuestionResult(player, isCorrect, question.Difficulty);
     }
+
+
+    //lyna
+    public void SkipQuestion()
+    {
+        Debug.Log("🔀 Le joueur a choisi de passer la question.");
+
+    }
 }

@@ -118,6 +118,7 @@ public class Player : MonoBehaviour
                 else
                 {
                     currentWaypointIndex = targetWaypointIndex;
+                    Debug.Log($"📍 Waypoint Atteint: {currentWaypointIndex}, isMovingBack: {isMovingBack}");
                     Debug.Log($"📍 Waypoint Atteint: {currentWaypointIndex}");
                     if (!isMovingBack && !targetWaypoint.CompareTag("Intersection"))
                     {
@@ -205,10 +206,41 @@ public class Player : MonoBehaviour
         Debug.Log($"🔄 Waypoint stocké: {currentPath} - {currentWaypointIndex} (direction: {movementDirection}). Total stocké: {previousWaypoints.Count}/{MAX_WAYPOINT_HISTORY}");
     }
 
-    // Cette méthode est appelée lorsqu'un joueur commence son tour
+
+public virtual bool CanGiveLife()
+{
+    return lives >= 3;
+}
+
+public virtual void GiveLifeTo(Player targetPlayer)
+{
+    if (!CanGiveLife())
+    {
+        Debug.LogWarning($"⚠️ {gameObject.name} cannot give a life (only has {lives} left, needs at least 3)");
+        return;
+    }
+
+    if (targetPlayer == null)
+    {
+        Debug.LogError("❌ Target player is null!");
+        return;
+    }
+    
+    if (targetPlayer.lives != 1)
+    {
+        Debug.LogWarning($"⚠️ Cannot give life to {targetPlayer.gameObject.name} - they must have exactly 1 life (current: {targetPlayer.lives})");
+        return;
+    }
+    lives--;
+    targetPlayer.GainLife();
+    
+    Debug.Log($"❤️ {gameObject.name} gave a life to {targetPlayer.gameObject.name}! " +
+              $"{gameObject.name} now has {lives} lives, {targetPlayer.gameObject.name} has {targetPlayer.lives} lives.");
+}
+
+
     public virtual void StartTurn()
     {
-        // Si c'est la première fois que ce joueur joue, stocker sa position initiale
         if (!hasStoredInitialWaypoint)
         {
             StoreWaypointInHistory();
@@ -219,6 +251,7 @@ public class Player : MonoBehaviour
 
     public virtual void MovePlayer(int steps)
     {
+        Debug.Log($"DEBUG: MovePlayer called - isMovingBack before: {isMovingBack}");
         if (!hasStoredInitialWaypoint)
         {
             StoreWaypointInHistory();
@@ -243,6 +276,7 @@ public class Player : MonoBehaviour
     // Nouvelle méthode pour reculer en utilisant les waypoints stockés
     public virtual void MovePlayerBack()
     {
+        Debug.Log($"DEBUG: MovePlayerBack called - isMovingBack before: {isMovingBack}");
         if (isMoving || reachedIntersection)
         {
             Debug.LogWarning("⚠️ Impossible de reculer pendant un mouvement ou à une intersection");

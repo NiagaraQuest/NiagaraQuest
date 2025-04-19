@@ -21,7 +21,13 @@ public class GameManager : MonoBehaviour
     public int maxLives;
     public int twoPlayersInitialLives = 4;
     public int threeOrFourPlayersInitialLives = 3;
-    
+
+    [Header("Life Sharing Settings")]
+    public bool allowLifeSharing = true;
+    private bool hasDiceBeenRolledThisTurn = false;
+    private LifeSharingManager lifeSharingManager; 
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -51,21 +57,21 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Debug.Log("🎲 GameManager starting...");
-        
+        lifeSharingManager = FindObjectOfType<LifeSharingManager>();
         DetectGameModeBasedOnActivePlayers();
         InitializePlayers();
         Debug.Log($"📌 Nombre de joueurs détectés: {players?.Count ?? 0}");
-        
+
         // Initialize database and set up profiles
         _ = InitializeDatabaseAndSetupProfiles();
-        
+
         SetupPlayersInitialLives();
 
         // Special initialization for certain player types
         foreach (var player in players)
         {
             if (player == null) continue;
-            
+
             GeoPlayer geoPlayer = player.GetComponent<GeoPlayer>();
             if (geoPlayer != null)
             {
@@ -86,19 +92,19 @@ public class GameManager : MonoBehaviour
             Debug.Log("🔄 Initializing DatabaseManager...");
             await DatabaseManager.Instance.Initialize();
             Debug.Log("✅ DatabaseManager initialized successfully");
-            
+
             // Check for existing profiles first
             var existingProfiles = await DatabaseManager.Instance.GetAll<Profile>();
-            Debug.Log($"🔍 Found {existingProfiles.Count} existing profiles in database");            
+            Debug.Log($"🔍 Found {existingProfiles.Count} existing profiles in database");
             // Query all profiles from database again to confirm what we have
             var updatedProfiles = await DatabaseManager.Instance.GetAll<Profile>();
             Debug.Log($"📊 Database now contains {updatedProfiles.Count} profiles");
-            
+
             foreach (var profile in updatedProfiles)
             {
                 Debug.Log($"  - Profile: {profile.Username} (ID: {profile.Id}, ELO: {profile.Elo})");
             }
-            
+
             // Now assign profiles directly from database to players
             await AssignProfilesFromDatabase();
         }
@@ -108,35 +114,35 @@ public class GameManager : MonoBehaviour
             CreateEmergencyProfiles();
         }
     }
-    
+
     // Separate method to assign profiles directly from database
     private async Task AssignProfilesFromDatabase()
     {
         Debug.Log("🔄 Assigning profiles from database to players...");
-        
+
         try
         {
             // Get all profiles from database
             var allProfiles = await DatabaseManager.Instance.GetAll<Profile>();
-            
+
             if (allProfiles.Count == 0)
             {
                 Debug.LogError("❌ No profiles found in database!");
                 CreateEmergencyProfiles();
                 return;
             }
-            
+
             // Match profiles to players based on element type in the name
             foreach (var player in players)
             {
                 if (player == null) continue;
-                
+
                 string elementType = player.name.Replace("Player", "");
-                
+
                 // Find a profile with matching element type
-                Profile matchingProfile = allProfiles.FirstOrDefault(p => 
+                Profile matchingProfile = allProfiles.FirstOrDefault(p =>
                     p.Username.StartsWith(elementType, StringComparison.OrdinalIgnoreCase));
-                
+
                 if (matchingProfile != null)
                 {
                     Player playerScript = player.GetComponent<Player>();
@@ -144,9 +150,9 @@ public class GameManager : MonoBehaviour
                     {
                         playerScript.playerProfile = matchingProfile;
                         playerScript.debugProfileName = matchingProfile.Username;
-                        
+
                         Debug.Log($"✅ Assigned database profile to {player.name}: {matchingProfile.Username} (ID: {matchingProfile.Id}, ELO: {matchingProfile.Elo})");
-                        
+
                         // Remove this profile from the list to avoid duplicate assignments
                         allProfiles.Remove(matchingProfile);
                     }
@@ -158,7 +164,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     Debug.LogWarning($"⚠️ No matching profile found for {player.name}");
-                    
+
                     // If no matching profile, assign any available profile
                     if (allProfiles.Count > 0)
                     {
@@ -168,33 +174,33 @@ public class GameManager : MonoBehaviour
                             Profile anyProfile = allProfiles[0];
                             playerScript.playerProfile = anyProfile;
                             playerScript.debugProfileName = anyProfile.Username;
-                            
+
                             Debug.Log($"⚠️ Assigned non-matching profile to {player.name}: {anyProfile.Username} (ID: {anyProfile.Id})");
-                            
+
                             // Remove this profile from the list
                             allProfiles.RemoveAt(0);
                         }
                     }
                 }
             }
-            
+
             // Check if any players are missing profiles
             foreach (var player in players)
             {
                 if (player == null) continue;
-                
+
                 Player playerScript = player.GetComponent<Player>();
                 if (playerScript != null && playerScript.playerProfile == null)
                 {
                     Debug.LogWarning($"⚠️ Player {player.name} still has no profile after database assignment");
-                    
+
                     // If there are any remaining profiles, assign one
                     if (allProfiles.Count > 0)
                     {
                         Profile remainingProfile = allProfiles[0];
                         playerScript.playerProfile = remainingProfile;
                         playerScript.debugProfileName = remainingProfile.Username;
-                        
+
                         Debug.Log($"⚠️ Assigned remaining profile to {player.name}: {remainingProfile.Username}");
                         allProfiles.RemoveAt(0);
                     }
@@ -205,14 +211,14 @@ public class GameManager : MonoBehaviour
                         {
                             string username = $"{player.name.Replace("Player", "")}Emergency{UnityEngine.Random.Range(100, 999)}";
                             Profile emergencyProfile = new Profile(username);
-                            
+
                             // Insert emergency profile into database
                             await DatabaseManager.Instance.Insert(emergencyProfile);
-                            
+
                             // Get the profile with ID
                             var createdProfile = await DatabaseManager.Instance.QueryFirstOrDefaultAsync<Profile>(
                                 "SELECT * FROM Profiles WHERE Username = ?", username);
-                                
+
                             if (createdProfile != null)
                             {
                                 playerScript.playerProfile = createdProfile;
@@ -228,7 +234,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-            
+
             Debug.Log("✅ Profile assignment from database complete");
         }
         catch (Exception ex)
@@ -237,39 +243,39 @@ public class GameManager : MonoBehaviour
             CreateEmergencyProfiles();
         }
     }
-    
+
     // Fallback method to create profiles directly in memory (without database)
     private void CreateEmergencyProfiles()
     {
         Debug.Log("⚠️ Creating emergency profiles directly (not in database)...");
-        
+
         foreach (var player in players)
         {
             if (player == null) continue;
-            
+
             CreateEmergencyProfileForPlayer(player);
         }
-        
+
         Debug.Log("⚠️ Emergency profile creation complete");
     }
-    
+
     // Create an emergency profile for a single player
     private void CreateEmergencyProfileForPlayer(GameObject player)
     {
         if (player == null) return;
-        
+
         Player playerScript = player.GetComponent<Player>();
         if (playerScript == null) return;
-        
+
         try
         {
             string elementType = player.name.Replace("Player", "");
             string username = $"{elementType}Emergency{UnityEngine.Random.Range(100, 999)}";
-            
+
             Profile emergencyProfile = new Profile(username);
             playerScript.playerProfile = emergencyProfile;
             playerScript.debugProfileName = username;
-            
+
             Debug.Log($"⚠️ Created direct emergency profile for {player.name}: {username}");
         }
         catch (Exception ex)
@@ -329,6 +335,70 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+public bool CanCurrentPlayerGiveLife()
+{
+    if (selectedPlayer == null)
+        return false;
+        
+    // Check if current player has 3+ lives
+    Player currentPlayer = selectedPlayer.GetComponent<Player>();
+    if (currentPlayer == null || currentPlayer.lives < 3)
+        return false;
+        
+    // Check if any player has exactly 1 life
+    foreach (GameObject playerObj in players)
+    {
+        if (playerObj == null || playerObj == selectedPlayer)
+            continue;
+        
+        Player otherPlayer = playerObj.GetComponent<Player>();
+        if (otherPlayer != null && otherPlayer.lives == 1)
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+public void GiveLifeToPlayer(GameObject targetPlayerObject)
+{
+    if (selectedPlayer == null || targetPlayerObject == null)
+        return;
+    
+    Player currentPlayer = selectedPlayer.GetComponent<Player>();
+    Player targetPlayer = targetPlayerObject.GetComponent<Player>();
+    
+    if (currentPlayer == null || targetPlayer == null)
+        return;
+    
+    // Check requirements
+    if (currentPlayer.lives < 3)
+    {
+        Debug.LogWarning($"⚠️ {currentPlayer.gameObject.name} doesn't have enough lives to give (has {currentPlayer.lives}, needs at least 3)");
+        return;
+    }
+    
+    if (targetPlayer.lives != 1)
+    {
+        Debug.LogWarning($"⚠️ {targetPlayer.gameObject.name} must have exactly 1 life to receive (has {targetPlayer.lives})");
+        return;
+    }
+    
+    // Execute life transfer
+    currentPlayer.lives--;
+    targetPlayer.lives++;
+    
+    Debug.Log($"❤️ {currentPlayer.gameObject.name} gave a life to {targetPlayer.gameObject.name}!");
+    
+    // Notify LifeSharingManager if it exists
+    if (lifeSharingManager != null)
+    {
+        lifeSharingManager.UpdateGiveLifeButtonVisibility();
+    }
+}
+
     // Finds all Player objects and stores them in players
     private void InitializePlayers()
     {
@@ -340,9 +410,9 @@ public class GameManager : MonoBehaviour
         GameObject hydroPlayer = GameObject.Find("HydroPlayer");
         GameObject anemoPlayer = GameObject.Find("AnemoPlayer");
         GameObject geoPlayer = GameObject.Find("GeoPlayer");
-        
+
         Debug.Log($"Found players - Pyro: {pyroPlayer != null}, Hydro: {hydroPlayer != null}, Anemo: {anemoPlayer != null}, Geo: {geoPlayer != null}");
-        
+
         // Add only non-null players to the list
         if (pyroPlayer != null && pyroPlayer.activeInHierarchy) players.Add(pyroPlayer);
         if (hydroPlayer != null && hydroPlayer.activeInHierarchy) players.Add(hydroPlayer);
@@ -353,7 +423,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("❌ No active players found in the scene!");
         }
-        
+
         Debug.Log($"Total active players: {players.Count}");
     }
 
@@ -368,7 +438,7 @@ public class GameManager : MonoBehaviour
         // Sets the first player and starts their turn
         currentPlayerIndex = 0;
         selectedPlayer = players[currentPlayerIndex];
-        
+
         // Ensure selectedPlayer is not null
         if (selectedPlayer == null && players.Count > 0)
         {
@@ -383,19 +453,37 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        
+
         Debug.Log("🎮 Game Started! First player: " + (selectedPlayer != null ? selectedPlayer.name : "None"));
+
+        // Activer le bouton de dés au début du jeu
+        if (diceManager != null)
+        {
+            diceManager.EnableRollButton();
+        }
     }
 
     public void OnDiceRolled()
     {
         Debug.Log("🎲 Dice rolled!");
-        
+        hasDiceBeenRolledThisTurn = true;
+
+    if (lifeSharingManager != null)
+    {
+        lifeSharingManager.OnDiceRolled();
+    }
+
+        // Désactiver le bouton de dés après le lancer
+        if (diceManager != null)
+        {
+            diceManager.DisableRollButton();
+        }
+
         // Make sure selectedPlayer is valid
         if (selectedPlayer == null)
         {
             Debug.LogError("❌ No player selected for dice roll!");
-            
+
             // Try to select a valid player
             for (int i = 0; i < players.Count; i++)
             {
@@ -407,14 +495,14 @@ public class GameManager : MonoBehaviour
                     break;
                 }
             }
-            
+
             if (selectedPlayer == null)
             {
                 Debug.LogError("❌ Could not find any valid player for dice roll!");
                 return;
             }
         }
-        
+
         Debug.Log($"🎲 Moving player: {selectedPlayer.name}");
         MoveSelectedPlayer();
     }
@@ -436,7 +524,7 @@ public class GameManager : MonoBehaviour
             if (movementScript.playerProfile == null)
             {
                 Debug.LogWarning($"⚠️ Player {selectedPlayer.name} has no profile before movement!");
-                
+
                 // Create an emergency profile directly since this is during gameplay
                 CreateEmergencyProfileForPlayer(selectedPlayer);
             }
@@ -469,9 +557,9 @@ public class GameManager : MonoBehaviour
 
     public void ApplyQuestionResult(Player player, bool isCorrect, string difficulty)
     {
-        switch (difficulty)
+        switch (difficulty.ToUpper())
         {
-            case "Easy":
+            case "EASY":
                 if (isCorrect)
                 {
                     // CA MARCHE 
@@ -487,7 +575,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
 
-            case "Medium":
+            case "MEDIUM":
                 if (isCorrect)
                 {
                     Debug.Log("✅ Bonne réponse ! Récompense : Lancer les dés une nouvelle fois.");
@@ -502,7 +590,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
 
-            case "Hard":
+            case "HARD":
                 if (isCorrect)
                 {
                     Debug.Log("✅ Bonne réponse ! Récompense : Gagner 1 vie.");
@@ -521,11 +609,14 @@ public class GameManager : MonoBehaviour
 
     private void NextTurn()
     {
-        // Réinitialiser le flag au cas où
+        hasDiceBeenRolledThisTurn = false;
         isEffectMovement = false;
         SetCurrentQuestionPlayer(selectedPlayer.GetComponent<Player>());
+    if (lifeSharingManager != null)
+    {
+        lifeSharingManager.OnNewTurn();
+    }
 
-        // Prevent infinite loops by limiting attempts
         int attempts = 0;
         int maxAttempts = players.Count * 2;
 
@@ -541,7 +632,6 @@ public class GameManager : MonoBehaviour
             currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
             selectedPlayer = players[currentPlayerIndex];
 
-            // Skip null players
             if (selectedPlayer == null)
             {
                 Debug.LogWarning($"⚠️ Player at index {currentPlayerIndex} is null. Skipping...");
@@ -568,7 +658,14 @@ public class GameManager : MonoBehaviour
         } while (attempts <= maxAttempts); // continue jusqu'à trouver un joueur qui peut jouer
 
         Debug.Log($"🔄 Prochain joueur : {selectedPlayer.name}");
+
+        // Activer le bouton de dés pour le nouveau joueur
+        if (diceManager != null)
+        {
+            diceManager.EnableRollButton();
+        }
     }
+
 
     private bool isExtraTurn = false;
 
@@ -612,7 +709,7 @@ public class GameManager : MonoBehaviour
         foreach (GameObject playerObj in players)
         {
             if (playerObj == null) continue;
-            
+
             Player player = playerObj.GetComponent<Player>();
             if (player != null)
             {
@@ -624,7 +721,7 @@ public class GameManager : MonoBehaviour
         // Tu peux appeler ici une méthode pour afficher l'écran de victoire
         // ShowVictoryScreen();
     }
-    
+
     public void CheckPlayerLives()
     {
         if (gameLost) return; // Éviter d'appeler plusieurs fois
@@ -632,7 +729,7 @@ public class GameManager : MonoBehaviour
         foreach (GameObject playerObj in players)
         {
             if (playerObj == null) continue;
-            
+
             Player player = playerObj.GetComponent<Player>();
             if (player != null && player.lives <= 0)
             {
@@ -663,7 +760,7 @@ public class GameManager : MonoBehaviour
         foreach (GameObject playerObj in players)
         {
             if (playerObj == null) continue;
-            
+
             Player player = playerObj.GetComponent<Player>();
             if (player != null)
             {

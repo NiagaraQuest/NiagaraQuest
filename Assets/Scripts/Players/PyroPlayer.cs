@@ -3,9 +3,7 @@
 public class PyroPlayer : Player
 {
     [Header("Pyro Player Settings")]
-    [SerializeField] public bool useSecondChance = false; // 🔥 Visible in Inspector
-    
-
+    [SerializeField] public bool useSecondChance = false;
 
     protected override void Start()
     {
@@ -16,8 +14,7 @@ public class PyroPlayer : Player
     protected override void Update()
     {
         base.Update();
-
-        if (!isMoving && HasFinishedMoving) // When Pyro stops moving
+        if (!isMoving && HasFinishedMoving)
         {
             GameObject waypoint = GetCurrentWaypoint();
             if (waypoint != null)
@@ -33,66 +30,41 @@ public class PyroPlayer : Player
 
     private void HandleSecondChance(Tile tile)
     {
-        if (tile.region == Tile.Region.None)
-        {
-            return; // Ignore intersections
-        }
-
         if (tile.region == Tile.Region.Vulkan)
         {
             if (!useSecondChance)
             {
                 ActivateSecondChance();
             }
-            else
-            {
-                Debug.Log($"🔥 Second chance STILL ACTIVE!");
-            }
         }
-        else
+        else if (useSecondChance)
         {
-            if (useSecondChance)
-            {
-                DeactivateSecondChance();
-            }
-            else
-            {
-                Debug.Log($"⚠️ Second chance ALREADY DEACTIVATED!");
-            }
+            DeactivateSecondChance();
         }
     }
 
     private void ActivateSecondChance()
     {
         useSecondChance = true;
-        Debug.Log($"🔥 Second chance ACTIVATED! You can retry a question if you fail.");
+        Debug.Log($"🔥 Second chance ACTIVATED in Vulkan region!");
     }
 
     private void DeactivateSecondChance()
     {
         useSecondChance = false;
-        Debug.Log($"⚠️ Second chance DEACTIVATED! No retries available.");
+        Debug.Log($"⚠️ Second chance DEACTIVATED outside Vulkan region");
     }
 
-    //  OVERRIDING AnswerQuestion TO INCLUDE SECOND CHANCE LOGIC!
     public override void AnswerQuestion(bool isCorrect)
     {
         if (isCorrect)
         {
-            Debug.Log("✅ Correct answer! Proceeding...");
-            return; // Normal behavior
+            useSecondChance = false; // Réinitialiser si bonne réponse
+            base.AnswerQuestion(true);
+            return;
         }
 
-        // ❌ If the answer is wrong and Second Chance is active, allow a retry
-        if (useSecondChance)
-        {
-            Debug.Log("🔁 Incorrect! But you have a second chance. Try again!");
-            useSecondChance = false; // Second chance is used up
-        }
-        else
-        {
-            Debug.Log("❌ Incorrect answer. No second chance available.");
-        }
+        // La logique de seconde chance est gérée par QuestionUIManager
+        base.AnswerQuestion(false);
     }
 }
-
