@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    private AudioManager audioManager; 
     public enum GameMode
     {
         TwoPlayers,
@@ -31,6 +32,13 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+                audioManager = AudioManager.Instance;
+        
+        // Check if it exists
+        if (audioManager == null)
+        {
+            Debug.LogError("AudioManager not found in the scene. Make sure it's set up properly.");
         }
     }
 
@@ -441,6 +449,7 @@ public class GameManager : MonoBehaviour
                 CreateEmergencyProfileForPlayer(selectedPlayer);
             }
 
+            audioManager.PlayMovement(); 
             movementScript.MovePlayer(moveSteps);
             StartCoroutine(WaitForMovements(movementScript)); // Wait for movement to complete
         }
@@ -469,8 +478,18 @@ public class GameManager : MonoBehaviour
 
     public void ApplyQuestionResult(Player player, bool isCorrect, string difficulty)
     {
+            if (isCorrect)
+    {
+        audioManager.PlayRightAnswer();
+    }
+    else
+    {
+        audioManager.PlayWrongAnswer();
+    }
+    
         switch (difficulty)
         {
+            
             case "Easy":
                 if (isCorrect)
                 {
