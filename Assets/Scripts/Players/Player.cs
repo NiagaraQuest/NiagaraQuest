@@ -66,6 +66,8 @@ public class Player : MonoBehaviour
             Debug.LogWarning($"⚠️ {gameObject.name} → Profil encore vide. Assignation en attente...");
             StartCoroutine(WaitForProfileAssignment());
         }
+
+        uiManager = FindObjectOfType<IntersectionUIManager>();
     }
 
     // 🔹 Coroutine pour attendre que le profil soit bien assigné

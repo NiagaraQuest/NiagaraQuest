@@ -6,9 +6,9 @@ public class CardManager : MonoBehaviour
 {
     public static CardManager Instance { get; private set; }
     
-    // Event for player selection
     public delegate void PlayerSelectionRequested(Player currentPlayer, int cardType);
     public static event PlayerSelectionRequested OnPlayerSelectionRequested;
+    private List<Player> protectedPlayers = new List<Player>();
     
     private void Awake()
     {
@@ -93,17 +93,7 @@ public class CardManager : MonoBehaviour
                 break;
                 
             case 2: // The Gambler
-                bool win = Random.Range(0, 2) == 0;
-                if (win)
-                {
-                    Debug.Log("🎲 The Gambler: Won a life!");
-                    player.GainLife();
-                }
-                else
-                {
-                    Debug.Log("🎲 The Gambler: Lost a life!");
-                    player.LoseLife();
-                }
+                CardUIManager.Instance.ShowGambleChoice(player);
                 break;
                 
             case 3: // Echo of the Past (Swap position)
@@ -117,7 +107,7 @@ public class CardManager : MonoBehaviour
                 
             case 5: // Mythic Leap
                 gameManager.isEffectMovement = true; 
-                player.MovePlayer(6);
+                player.MovePlayer(25);
                 break;
                 
             case 6: // The Punishment
@@ -137,12 +127,12 @@ public class CardManager : MonoBehaviour
                 
             case 9: // Shield Bless
                 Debug.Log($"🛡️ {player.gameObject.name} is protected by a shield!");
-                // Shield implementation would be needed in Player class
+                ApplyProtectedEffect(player);
                 break;
                 
             case 10: // Twisted Paths
-                Debug.Log($"🔀 {player.gameObject.name} must change path at next intersection!");
-                // Path change flag would be needed in Player class
+                Debug.Log($"🔀 {player.gameObject.name} must change its direction");
+                player.movementDirection = -1 * player.movementDirection;
                 break;
                 
             case 11: // Path of Clouds
@@ -246,5 +236,36 @@ public class CardManager : MonoBehaviour
                 player.MovePlayer(steps);
             }
         }
+    }
+
+    public void ApplyProtectedEffect(Player player)
+    {
+        if (player == null)
+            return;
+        
+        Debug.Log($"🛡️ {player.gameObject.name} is now protected from the next wrong answer penalty!");
+        
+        // Add player to the protected list if not already there
+        if (!protectedPlayers.Contains(player))
+        {
+            protectedPlayers.Add(player);
+        }
+    }
+
+    public bool IsPlayerProtected(Player player)
+    {
+        return protectedPlayers.Contains(player);
+    }
+
+    // Use protection if available (call this when player answers incorrectly)
+    public bool UseProtectionIfAvailable(Player player)
+    {
+        if (protectedPlayers.Contains(player))
+        {
+            Debug.Log($"🛡️ {player.gameObject.name}'s protection activated! Penalty avoided.");
+            protectedPlayers.Remove(player);
+            return true;
+        }
+        return false;
     }
 }
