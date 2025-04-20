@@ -34,8 +34,7 @@ public class CardManager : MonoBehaviour
         "The Reward",
         "Cursed Steps",
         "Shield Bless",
-        "Twisted Paths",
-        "Path of Clouds"
+        "Twisted Paths"
     };
     
     private readonly string[] cardDescriptions = {
@@ -49,8 +48,7 @@ public class CardManager : MonoBehaviour
         "Get an extra turn",
         "Move 6 tiles backward",
         "Protected from losing a life",
-        "Forced to change your path",
-        "All players move 3 tiles forward"
+        "Forced to change your path"
     };
     
     // Draw a random card and return its type
@@ -134,11 +132,6 @@ public class CardManager : MonoBehaviour
                 Debug.Log($"🔀 {player.gameObject.name} must change its direction");
                 player.movementDirection = -1 * player.movementDirection;
                 break;
-                
-            case 11: // Path of Clouds
-                gameManager.isEffectMovement = true; 
-                MoveAllPlayers(3);
-                break;
         }
     }
     
@@ -219,24 +212,6 @@ public class CardManager : MonoBehaviour
         }
     }
     
-    
-    private void MoveAllPlayers(int steps)
-    {
-        GameManager gameManager = GameManager.Instance;
-        if (gameManager == null || gameManager.players == null)
-            return;
-            
-        Debug.Log($"☁️ Moving all players forward {steps} tiles");
-        foreach (GameObject playerObj in gameManager.players)
-        {
-            Player player = playerObj.GetComponent<Player>();
-            gameManager.isEffectMovement = true; 
-            if (player != null)
-            {
-                player.MovePlayer(steps);
-            }
-        }
-    }
 
     public void ApplyProtectedEffect(Player player)
     {
