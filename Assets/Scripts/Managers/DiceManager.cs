@@ -8,7 +8,7 @@ public class DiceManager : MonoBehaviour
 {
 
     public static DiceManager Instance { get; private set; }
- 
+    private AudioManager audioManager;
     private void Awake()
     {
         if (Instance == null)
@@ -18,6 +18,13 @@ public class DiceManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+                audioManager = AudioManager.Instance;
+        
+        // Check if it exists
+        if (audioManager == null)
+        {
+            Debug.LogError("AudioManager not found in the scene. Make sure it's set up properly.");
         }
     }
 
@@ -41,6 +48,7 @@ public class DiceManager : MonoBehaviour
         sumText.text = "Lancer en cours...";
         dice1.RollTheDice();
         dice2.RollTheDice();
+        audioManager.PlayDiceRolling();
         yield return new WaitUntil(() => dice1.HasStopped && dice2.HasStopped);
         LastRollSum = dice1.GetRollValue() + dice2.GetRollValue();
         sumText.text = "Somme : " + LastRollSum;
