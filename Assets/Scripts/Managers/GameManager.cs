@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
     public int twoPlayersInitialLives = 4;
     public int threeOrFourPlayersInitialLives = 3;
 
+    [Header("UI References")]
+    public DefeatUIManager defeatUIManager;
+
+    public GameObject victoryPanel;
+
     [Header("Life Sharing Settings")]
     public bool allowLifeSharing = true;
     private bool hasDiceBeenRolledThisTurn = false;
@@ -706,19 +711,30 @@ public void GiveLifeToPlayer(GameObject targetPlayerObject)
         Debug.Log($"🔄 {player.gameObject.name} obtient un tour supplémentaire!");
     }
 
-    // Dans la classe GameManager
-    public void WinGameOver(Player winningPlayer)
+    public bool IsGameWon()
     {
-        if (gameWon) return; // Éviter d'appeler plusieurs fois
+        return gameWon;
+    }
+public void WinGameOver(Player winningPlayer)
+    {
+        Debug.Log($"🏆 WinGameOver appelé pour le joueur: {(winningPlayer != null ? winningPlayer.gameObject.name : "null")}");
 
+        if (gameWon)
+        {
+            Debug.Log("🏆 Le jeu est déjà gagné, ignoré");
+            return; // Éviter d'appeler plusieurs fois
+        }
+
+        Debug.Log("🏆 DÉFINITION DE VICTOIRE DU JEU");
         gameWon = true;
 
         string playerName = winningPlayer != null ? winningPlayer.gameObject.name : "Un joueur";
-        Debug.Log($"🏆 VICTOIRE ! {playerName} a atteint un waypoint final ! Tous les joueurs ont gagné !");
+        Debug.Log($"🏆 VICTOIRE ! {playerName} a atteint un waypoint final et répondu correctement ! Tous les joueurs ont gagné !");
 
         // Désactiver les contrôles
         if (diceManager != null)
         {
+            Debug.Log("🎮 Désactivation du bouton de dé");
             diceManager.DisableRollButton();
         }
 
@@ -730,13 +746,19 @@ public void GiveLifeToPlayer(GameObject targetPlayerObject)
             Player player = playerObj.GetComponent<Player>();
             if (player != null)
             {
-                // Tu pourrais ajouter un effet visuel ici
                 Debug.Log($"🎉 {player.gameObject.name} célèbre la victoire !");
             }
         }
 
-        // Tu peux appeler ici une méthode pour afficher l'écran de victoire
-        // ShowVictoryScreen();
+        // Afficher simplement le panneau de victoire
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Panneau de victoire non assigné dans GameManager!");
+        }
     }
 
     public void CheckPlayerLives()
@@ -745,8 +767,6 @@ public void GiveLifeToPlayer(GameObject targetPlayerObject)
 
         foreach (GameObject playerObj in players)
         {
-            if (playerObj == null) continue;
-
             Player player = playerObj.GetComponent<Player>();
             if (player != null && player.lives <= 0)
             {
@@ -756,14 +776,13 @@ public void GiveLifeToPlayer(GameObject targetPlayerObject)
             }
         }
     }
+    
 
-    // Fonction qui gère la fin de partie en cas de défaite
     public void LoseGame(Player losingPlayer)
     {
         if (gameLost || gameWon) return; // Éviter d'appeler plusieurs fois
 
         gameLost = true;
-
         string playerName = losingPlayer != null ? losingPlayer.gameObject.name : "Un joueur";
         Debug.Log($"💀 DÉFAITE ! {playerName} a perdu toutes ses vies ! La partie est terminée !");
 
@@ -773,7 +792,7 @@ public void GiveLifeToPlayer(GameObject targetPlayerObject)
             diceManager.DisableRollButton();
         }
 
-        // Afficher un état pour chaque joueur
+        // Afficher l'état final dans les logs
         foreach (GameObject playerObj in players)
         {
             if (playerObj == null) continue;
@@ -785,7 +804,15 @@ public void GiveLifeToPlayer(GameObject targetPlayerObject)
             }
         }
 
-        //  appeler ici une méthode pour afficher l'écran de défaite
-        // ShowDefeatScreen();
+        // Afficher l'écran de défaite simplifié
+        if (defeatUIManager != null)
+        {
+            defeatUIManager.ShowDefeatScreen(losingPlayer);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ DefeatUIManager non assigné dans GameManager. Impossible d'afficher l'écran de défaite!");
+        }
     }
+
 }
