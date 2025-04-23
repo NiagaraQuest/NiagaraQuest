@@ -541,7 +541,6 @@ public void GiveLifeToPlayer(GameObject targetPlayerObject)
                 // Create an emergency profile directly since this is during gameplay
                 CreateEmergencyProfileForPlayer(selectedPlayer);
             }
-            audioManager.PlayMovement(); 
             movementScript.MovePlayer(moveSteps);
             StartCoroutine(WaitForMovements(movementScript)); // Wait for movement to complete
         }

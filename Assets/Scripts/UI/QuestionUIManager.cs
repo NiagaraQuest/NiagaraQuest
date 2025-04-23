@@ -348,7 +348,7 @@ public class QuestionUIManager : MonoBehaviour
             string eloColorStart = lastPlayerEloChange >= 0 ? "<color=#4CAF50>" : "<color=#F44336>";
             string eloColorEnd = "</color>";
             
-            string eloChangeDisplay = $"\n\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
+            string eloChangeDisplay = $"\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
             resultText.text = resultBaseText + eloChangeDisplay;
             
             // Show separate ELO change text if it exists
