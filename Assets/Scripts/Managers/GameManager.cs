@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,9 +25,7 @@ public class GameManager : MonoBehaviour
     public int threeOrFourPlayersInitialLives = 3;
 
     [Header("UI References")]
-    public DefeatUIManager defeatUIManager;
-    public GameObject victoryPanel;
-
+    public GameEndUIManager gameEndUIManager;
     [Header("Life Sharing Settings")]
     public bool allowLifeSharing = true;
     private bool hasDiceBeenRolledThisTurn = false;
@@ -67,13 +66,10 @@ public class GameManager : MonoBehaviour
     public bool isEffectMovement = false;
     private bool gameWon = false;
     private bool gameLost = false;
+    public GameEndManager gameEndManager;
 
     void Start()
     {
-        if (victoryPanel != null)
-        {
-            victoryPanel.SetActive(false);
-        }
         Debug.Log("🎲 GameManager starting...");
         lifeSharingManager = FindObjectOfType<LifeSharingManager>();
         DetectGameModeBasedOnActivePlayers();
@@ -97,7 +93,6 @@ public class GameManager : MonoBehaviour
                 geoPlayer.InitializeShield();
             }
         }
-
         StartGame();
     }
 
@@ -754,10 +749,9 @@ public void WinGameOver(Player winningPlayer)
             }
         }
 
-        // Afficher simplement le panneau de victoire
-        if (victoryPanel != null)
+        if (gameEndUIManager != null)
         {
-            victoryPanel.SetActive(true);
+            gameEndUIManager.ShowVictoryScreen(winningPlayer);
         }
         else
         {
@@ -808,14 +802,13 @@ public void WinGameOver(Player winningPlayer)
             }
         }
 
-        // Afficher l'écran de défaite simplifié
-        if (defeatUIManager != null)
+        if (gameEndUIManager != null)
         {
-            defeatUIManager.ShowDefeatScreen(losingPlayer);
+            gameEndUIManager.ShowDefeatScreen(losingPlayer);
         }
         else
         {
-            Debug.LogWarning("⚠️ DefeatUIManager non assigné dans GameManager. Impossible d'afficher l'écran de défaite!");
+            Debug.LogWarning("⚠️ gameEndUIManager non assigné dans GameManager. Impossible d'afficher l'écran de défaite!");
         }
     }
 
