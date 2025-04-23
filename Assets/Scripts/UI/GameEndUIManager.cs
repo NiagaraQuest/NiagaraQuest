@@ -119,6 +119,12 @@ public class GameEndUIManager : MonoBehaviour
             return;
         }
         
+        // Clean up all UI panels before showing game end screen
+        if (gameEndManager != null)
+        {
+            gameEndManager.CleanupUIForGameEnd();
+        }
+        
         // Make sure buttons are set up (in case panel was inactive before)
         SetupButtons();
         
@@ -140,6 +146,12 @@ public class GameEndUIManager : MonoBehaviour
         {
             Debug.LogError("❌ End panel not assigned in GameEndUIManager!");
             return;
+        }
+        
+        // Clean up all UI panels before showing game end screen
+        if (gameEndManager != null)
+        {
+            gameEndManager.CleanupUIForGameEnd();
         }
         
         // Make sure buttons are set up (in case panel was inactive before)

@@ -15,6 +15,10 @@ public class GameEndManager : MonoBehaviour
     // Reference to the GameManager
     private GameManager gameManager;
     
+    // References to UI managers that need to be cleared at game end
+    private QuestionUIManager questionUIManager;
+    private CardUIManager cardUIManager;
+    
     // Static dictionary to store profiles between game sessions
     private static Dictionary<string, Profile> savedProfiles = new Dictionary<string, Profile>();
     
@@ -29,6 +33,10 @@ public class GameEndManager : MonoBehaviour
         {
             Debug.LogError("❌ GameManager not found! GameEndManager requires GameManager to work properly.");
         }
+        
+        // Find UI managers
+        questionUIManager = FindObjectOfType<QuestionUIManager>();
+        cardUIManager = FindObjectOfType<CardUIManager>();
     }
     
     private void Start()
@@ -111,6 +119,59 @@ public class GameEndManager : MonoBehaviour
         catch (Exception ex)
         {
             Debug.LogError($"❌ Error loading profiles: {ex.Message}");
+        }
+    }
+    
+    // New method to clean up UI when game ends
+    public void CleanupUIForGameEnd()
+    {
+        Debug.Log("🧹 Cleaning up UI for game end");
+        
+        // Hide question panels if they exist
+        if (questionUIManager != null)
+        {
+            // Access the panels directly through the QuestionUIManager
+            if (questionUIManager.openQuestionPanel != null)
+                questionUIManager.openQuestionPanel.SetActive(false);
+                
+            if (questionUIManager.qcmQuestionPanel != null)
+                questionUIManager.qcmQuestionPanel.SetActive(false);
+                
+            if (questionUIManager.tfQuestionPanel != null)
+                questionUIManager.tfQuestionPanel.SetActive(false);
+                
+            if (questionUIManager.resultPanel != null)
+                questionUIManager.resultPanel.SetActive(false);
+                
+            // Reset processing flag
+            questionUIManager.isProcessingQuestion = false;
+            
+            Debug.Log("✅ Question UI panels hidden");
+        }
+        
+        // Hide card panels if they exist
+        if (cardUIManager != null)
+        {
+            if (cardUIManager.cardPanel != null)
+                cardUIManager.cardPanel.SetActive(false);
+                
+            if (cardUIManager.playerSelectionPanel != null)
+                cardUIManager.playerSelectionPanel.SetActive(false);
+                
+            if (cardUIManager.gambleChoicePanel != null)
+                cardUIManager.gambleChoicePanel.SetActive(false);
+                
+            if (cardUIManager.gambleResultPanel != null)
+                cardUIManager.gambleResultPanel.SetActive(false);
+                
+            Debug.Log("✅ Card UI panels hidden");
+        }
+        
+        // Disable dice button if it exists
+        if (gameManager != null && gameManager.diceManager != null)
+        {
+            gameManager.diceManager.DisableRollButton();
+            Debug.Log("✅ Dice roll button disabled");
         }
     }
     

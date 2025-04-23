@@ -714,7 +714,7 @@ public void GiveLifeToPlayer(GameObject targetPlayerObject)
     {
         return gameWon;
     }
-public void WinGameOver(Player winningPlayer)
+    public void WinGameOver(Player winningPlayer)
     {
         Debug.Log($"🏆 WinGameOver appelé pour le joueur: {(winningPlayer != null ? winningPlayer.gameObject.name : "null")}");
 
@@ -756,9 +756,16 @@ public void WinGameOver(Player winningPlayer)
         else
         {
             Debug.LogWarning("⚠️ Panneau de victoire non assigné dans GameManager!");
+            
+            // Fallback: try to find GameEndManager directly if UI manager is not set
+            GameEndManager endManager = FindObjectOfType<GameEndManager>();
+            if (endManager != null)
+            {
+                endManager.CleanupUIForGameEnd();
+                Debug.Log("⚠️ Utilisé GameEndManager directement pour nettoyer l'UI.");
+            }
         }
     }
-
     public void CheckPlayerLives()
     {
         if (gameLost) return; // Éviter d'appeler plusieurs fois
@@ -809,6 +816,14 @@ public void WinGameOver(Player winningPlayer)
         else
         {
             Debug.LogWarning("⚠️ gameEndUIManager non assigné dans GameManager. Impossible d'afficher l'écran de défaite!");
+            
+            // Fallback: try to find GameEndManager directly if UI manager is not set
+            GameEndManager endManager = FindObjectOfType<GameEndManager>();
+            if (endManager != null)
+            {
+                endManager.CleanupUIForGameEnd();
+                Debug.Log("⚠️ Utilisé GameEndManager directement pour nettoyer l'UI.");
+            }
         }
     }
 

@@ -1606,7 +1606,7 @@ MonoBehaviour:
   movementSound: {fileID: 8300000, guid: 75a4e9ff97983444599bbd68e0afd069, type: 3}
   diceRollingSound: {fileID: 8300000, guid: 957c8fdb6b1d0f24cb6bf149acc091fa, type: 3}
   winGameSound: {fileID: 8300000, guid: d769f115aa8e5b04280c6082d8c38c4d, type: 3}
-  gameplayBackgroundSound: {fileID: 8300000, guid: db0fa8da3f0c2ea478177642002b7a7f, type: 3}
+  gameplayBackgroundSound: {fileID: 8300000, guid: 28cf51c66d2604e48a65267596170bc9, type: 3}
   menuButtonSound: {fileID: 8300000, guid: 176ce210092302c43a208c6af21ab396, type: 3}
   bonusCardSound: {fileID: 8300000, guid: d42158db87df60546abfd3a9a8dae2a7, type: 3}
   intersectionTileSound: {fileID: 8300000, guid: 83387f8ac08483141a9cf2740a96d451, type: 3}
@@ -5338,7 +5338,7 @@ MonoBehaviour:
   uiManager: {fileID: 0}
   currentPath: 
   speed: 2
-  currentWaypointIndex: 45
+  currentWaypointIndex: 0
   targetWaypointIndex: 0
   isMoving: 0
   movementDirection: 1
@@ -10521,7 +10521,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 117.00003}
+  m_AnchoredPosition: {x: 0, y: 117.00292}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1026817317
@@ -20030,8 +20030,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -21485,8 +21485,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 13838978}
   m_HandleRect: {fileID: 13838977}
   m_Direction: 2
-  m_Value: -0.000000260834
-  m_Size: 0.6099868
+  m_Value: -0.000025040064
+  m_Size: 0.6089866
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
