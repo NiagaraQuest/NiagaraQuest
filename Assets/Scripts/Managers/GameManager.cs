@@ -4,6 +4,7 @@ using System.Collections;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,7 +25,6 @@ public class GameManager : MonoBehaviour
 
     [Header("UI References")]
     public DefeatUIManager defeatUIManager;
-
     public GameObject victoryPanel;
 
     [Header("Life Sharing Settings")]

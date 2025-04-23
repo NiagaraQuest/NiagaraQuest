@@ -115,41 +115,16 @@ public class QuestionUIManager : MonoBehaviour
         currentTile.SkipQuestion();
     }
 
-    private string GetFormattedDifficulty(string difficulty)
-    {
-        // Normalize the difficulty to get a consistent format
-        string normalizedDifficulty = difficulty.ToUpper();
-        string colorCode = "";
-        string difficultyText = "";
-        
-        switch (normalizedDifficulty)
-        {
-            case "EASY":
-                colorCode = "#4CAF50"; // Green
-                difficultyText = "Easy";
-                break;
-            case "MEDIUM":
-                colorCode = "#FF9800"; // Orange
-                difficultyText = "Medium";
-                break;
-            case "HARD":
-                colorCode = "#F44336"; // Red
-                difficultyText = "Hard";
-                break;
-            default:
-                colorCode = "#2196F3"; // Blue
-                difficultyText = difficulty; // Use as-is
-                break;
-        }
-        
-        return $"<color={colorCode}><b>{difficultyText}</b></color>";
-    }
+
+
+
+
+
 
     private void ShowOpenQuestion(OpenQuestion question)
     {
-        // Set question text with difficulty
-        string difficultyDisplay = GetFormattedDifficulty(question.Difficulty);
-        openQuestionText.text = $"{difficultyDisplay}\n{question.Qst}";
+        // Set question text
+        openQuestionText.text = question.Qst;
         
         // Clear previous answer
         answerInput.text = "";
@@ -163,58 +138,54 @@ public class QuestionUIManager : MonoBehaviour
     
     private IEnumerator FocusInputField()
     {
-
+        // Wait a frame to ensure the UI is active
         yield return null;
         answerInput.Select();
         answerInput.ActivateInputField();
     }
 
-   private void ShowQCMQuestion(QCMQuestion question)
-{
-    // Set question text with difficulty
-    string difficultyDisplay = GetFormattedDifficulty(question.Difficulty);
-    qcmQuestionText.text = $"{difficultyDisplay}\n{question.Qst}";
-    
-    // Setup choice buttons
-    for (int i = 0; i < choiceButtons.Length; i++)
+    private void ShowQCMQuestion(QCMQuestion question)
     {
-        if (i < question.Choices.Length)
+        // Set question text
+        qcmQuestionText.text = question.Qst;
+        
+        // Setup choice buttons
+        for (int i = 0; i < choiceButtons.Length; i++)
         {
-            choiceButtons[i].gameObject.SetActive(true);
-            choiceButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = question.Choices[i];
+            if (i < question.Choices.Length)
+            {
+                choiceButtons[i].gameObject.SetActive(true);
+                choiceButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = question.Choices[i];
 
-            int choiceIndex = i;
-            choiceButtons[i].onClick.RemoveAllListeners();
-            choiceButtons[i].onClick.AddListener(() => CheckQCMAnswer(question, choiceIndex));
+                int choiceIndex = i;
+                choiceButtons[i].onClick.RemoveAllListeners();
+                choiceButtons[i].onClick.AddListener(() => CheckQCMAnswer(question, choiceIndex));
+            }
+            else
+            {
+                // Hide unused buttons
+                choiceButtons[i].gameObject.SetActive(false);
+            }
         }
-        else
-        {
-            // Hide unused buttons
-            choiceButtons[i].gameObject.SetActive(false);
-        }
+        
+        // Show panel
+        qcmQuestionPanel.SetActive(true);
     }
     
-    // Show panel
-    qcmQuestionPanel.SetActive(true);
-}
-   
     private void ShowTrueFalseQuestion(TrueFalseQuestion question)
-{
-    // Set question text with difficulty
-    string difficultyDisplay = GetFormattedDifficulty(question.Difficulty);
-    tfQuestionText.text = $"{difficultyDisplay}\n{question.Qst}";
-    
-    // Make sure the True and False buttons are active
-    if (trueButton != null)
-        trueButton.gameObject.SetActive(true);
-    if (falseButton != null)
-        falseButton.gameObject.SetActive(true);
-    
-    // Show panel
-    tfQuestionPanel.SetActive(true);
-}
-
-    
+    {
+        // Set question text
+        tfQuestionText.text = question.Qst;
+        
+        // Make sure the True and False buttons are active
+        if (trueButton != null)
+            trueButton.gameObject.SetActive(true);
+        if (falseButton != null)
+            falseButton.gameObject.SetActive(true);
+        
+        // Show panel
+        tfQuestionPanel.SetActive(true);
+    }
 
     private void CheckOpenAnswer()
     {
@@ -268,59 +239,44 @@ public class QuestionUIManager : MonoBehaviour
         UpdatePlayerElo(lastAnswerCorrect);
     }
 
+    // Dans QuestionUIManager.cs, modifiez la méthode ShowResult:
     private void ShowResult(bool isCorrect)
-{
-    Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
-
-    if (!isCorrect && currentPlayer is PyroPlayer pyroPlayer &&
-        pyroPlayer.useSecondChance && !isSecondChance)
     {
-        GameObject waypoint = pyroPlayer.GetCurrentWaypoint();
-        Tile tile = waypoint?.GetComponent<Tile>();
+        Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
 
-        if (tile != null && tile.region == Tile.Region.Vulkan)
+        if (!isCorrect && currentPlayer is PyroPlayer pyroPlayer &&
+            pyroPlayer.useSecondChance && !isSecondChance)
         {
-            isSecondChance = true;
-            resultPanel.SetActive(true);
-            resultText.text = "❌ Wrong!\n🔥 Second chance!";
-            Invoke("RetrySameQuestion", 1.5f);
-            return;
+            GameObject waypoint = pyroPlayer.GetCurrentWaypoint();
+            Tile tile = waypoint?.GetComponent<Tile>();
+
+            if (tile != null && tile.region == Tile.Region.Vulkan)
+            {
+                isSecondChance = true;
+                resultPanel.SetActive(true);
+                resultText.text = "❌ Wrong!\n🔥 Seconde chance!";
+                Invoke("RetrySameQuestion", 1.5f);
+                return;
+            }
         }
+
+        // Si réponse correcte OU 2ème échec
+        resultPanel.SetActive(true);
+        resultText.text = isCorrect ? "✅ Correct!" : "❌ Wrong!";
+        isSecondChance = false;
+
+        // AJOUTEZ CETTE LIGNE
+        if (currentPlayer != null)
+        {
+            currentPlayer.AnswerQuestion(isCorrect); // Appeler la méthode AnswerQuestion du joueur
+        }
+
+        GameManager.Instance.ApplyQuestionResult(GameManager.Instance.GetCurrentPlayer(), isCorrect, currentQuestion.Difficulty);
+
+        // Focus on the exit button so Enter key works right away
+        StartCoroutine(FocusExitButton());
     }
 
-    resultPanel.SetActive(true);
-    
-    string effectDescription = GetEffectDescription(currentQuestion.Difficulty, isCorrect);
-    
-    resultText.text = isCorrect ? 
-        $"✅ Correct!\n\n<b>Reward:</b> {effectDescription}" : 
-        $"❌ Wrong!\n\n<b>Penalty:</b> {effectDescription}";
-    
-    isSecondChance = false;
-    
-if (!isCorrect)
-{
-    // Check if player has protection
-    bool protectionUsed = CardManager.Instance.UseProtectionIfAvailable(currentPlayer);
-    
-    if (protectionUsed)
-    {
-        // Player was protected, show different result text
-        resultText.text = "❌ Wrong!\n\n🛡️ Protection activated! No penalty applied.";
-    }
-    else
-    {
-        // Normal wrong answer handling
-        GameManager.Instance.ApplyQuestionResult(currentPlayer, false, currentQuestion.Difficulty);
-    }
-}
-else {
-    GameManager.Instance.ApplyQuestionResult(currentPlayer, true, currentQuestion.Difficulty);
-}
-    
-    StartCoroutine(FocusExitButton());
-}
-    
     private IEnumerator FocusExitButton()
     {
         // Wait a frame to ensure the panel is active
@@ -331,49 +287,23 @@ else {
         }
     }
 
-    private string GetEffectDescription(string difficulty, bool isCorrect)
-    {
-    // Normalize the difficulty
-    string normalizedDifficulty = difficulty.ToUpper();
     
-    switch (normalizedDifficulty)
-    {
-        case "EASY":
-            if (isCorrect)
-                return "Move forward 2 spaces";
-            else
-                return "Move back 6 spaces";
-        
-        case "MEDIUM":
-            if (isCorrect)
-                return "Roll the dice again";
-            else
-                return "Lose 1 life";
-        
-        case "HARD":
-            if (isCorrect)
-                return "Gain 1 life";
-            else
-                return "Skip 1 turn";
-        
-        default:
-            return "Unknown effect";
-    }
-    }
-    
+
 
     private async void UpdatePlayerElo(bool isCorrect)
     {
         try
         {
-            // Get the current player
+            // Get the current playerd
             Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
             if (currentPlayer != null && currentPlayer.playerProfile != null && currentQuestion != null)
             {
                 // Record the answer using QuestionManager - this will update ELO ratings
                 int initialElo = currentPlayer.playerProfile.Elo;
                 await QuestionManager.Instance.RecordPlayerAnswer(currentPlayer.playerProfile, currentQuestion, isCorrect);
-                
+
+ 
+
                 // Log ELO change
                 int newElo = currentPlayer.playerProfile.Elo;
                 int eloChange = newElo - initialElo;

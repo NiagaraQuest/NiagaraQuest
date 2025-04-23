@@ -4,7 +4,6 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
-
     public Board gameBoard;
     public IntersectionUIManager uiManager;
     public string currentPath;
@@ -19,6 +18,15 @@ public class Player : MonoBehaviour
 
     public int turnsToSkip = 0;
 
+    protected string lastLandingPath;
+    protected int lastLandingIndex;
+    protected int lastLandingDirection;
+
+    // Pour suivre l'avant-dernière position d'atterrissage
+    protected string previousLandingPath;
+    protected int previousLandingIndex;
+    protected int previousLandingDirection;  
+
     // Pile pour stocker les derniers waypoints (maximum 20)
     protected Stack<WaypointData> previousWaypoints = new Stack<WaypointData>();
     protected const int MAX_WAYPOINT_HISTORY = 20;   // Maximum de waypoints à stocker
@@ -26,22 +34,12 @@ public class Player : MonoBehaviour
     protected bool isMovingBack = false; // Pour indiquer que le joueur est en train de reculer
     protected bool hasStoredInitialWaypoint = false; // Pour s'assurer que le waypoint initial est stocké une seule fois
     private bool usingPlayerCamera = false;
-    public int lives = 4; // ✅ Starts with 4 lives
+    public int lives;
     public Profile playerProfile; // Visible in the Inspector
 
     [Header("🔹 Player Profile Info")]
     [SerializeField] public string debugProfileName; // 🔥 Affiche dans l'Inspector
     public bool HasFinishedMoving => !isMoving && !reachedIntersection;
-
-
-    protected string lastLandingPath;
-    protected int lastLandingIndex;
-    protected int lastLandingDirection;
-
-
-    protected string previousLandingPath;
-    protected int previousLandingIndex;
-    protected int previousLandingDirection;
 
     // Structure pour stocker les données d'un waypoint avec sa direction
     protected struct WaypointData
@@ -67,10 +65,12 @@ public class Player : MonoBehaviour
             MoveToWaypoint(0);
             DisplayCurrentRegion();
 
+            // Initialiser les positions d'atterrissage initiales
             lastLandingPath = currentPath;
             lastLandingIndex = currentWaypointIndex;
             lastLandingDirection = movementDirection;
 
+            // Au début, l'avant-dernière position est identique à la dernière
             previousLandingPath = lastLandingPath;
             previousLandingIndex = lastLandingIndex;
             previousLandingDirection = lastLandingDirection;
@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
             Debug.Log($"🔰 Positions d'atterrissage initiales: current={currentPath}-{currentWaypointIndex}, last={lastLandingPath}-{lastLandingIndex}, previous={previousLandingPath}-{previousLandingIndex}");
         }
 
-
+        // Vérifie si le profil a été assigné correctement
         if (playerProfile != null && !string.IsNullOrEmpty(playerProfile.Username))
         {
             Debug.Log($"👤 {gameObject.name} → Profil après assignation : {playerProfile.Username}");
@@ -115,7 +115,6 @@ public class Player : MonoBehaviour
 
     protected virtual void Update()
     {
-        GameManager.Instance.CheckPlayerLives();
         if (isMoving && !reachedIntersection)
         {
             if (targetWaypointIndex < 0)
@@ -144,24 +143,24 @@ public class Player : MonoBehaviour
                 {
                     currentWaypointIndex = targetWaypointIndex;
                     Debug.Log($"📍 Waypoint Atteint: {currentWaypointIndex}, isMovingBack: {isMovingBack}");
-                    Debug.Log($"📍 Waypoint Atteint: {currentWaypointIndex}");
+
                     if (!isMovingBack && !targetWaypoint.CompareTag("Intersection"))
                     {
-                        StoreWaypointInHistory();
+                        StoreWaypointInHistory(false);
                     }
 
                     if (targetWaypoint.CompareTag("Intersection"))
                     {
                         reachedIntersection = true;
                         isMoving = false;
-                        
+
                         // Switch back to main camera when reaching intersection
                         if (usingPlayerCamera && CameraManager.Instance != null)
                         {
                             CameraManager.Instance.SwitchToMainCamera();
                             usingPlayerCamera = false;
                         }
-                        
+
                         uiManager.ShowUI(this);
                     }
                     else
@@ -186,14 +185,14 @@ public class Player : MonoBehaviour
                         {
                             isMoving = false;
                             isMovingBack = false;
-                            
+
                             // Switch back to main camera when player stops moving
                             if (usingPlayerCamera && CameraManager.Instance != null)
                             {
                                 CameraManager.Instance.SwitchToMainCamera();
                                 usingPlayerCamera = false;
                             }
-                            
+
                             DisplayCurrentRegion();
                         }
                     }
@@ -202,6 +201,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Méthode pour stocker un waypoint dans l'historique avec sa direction
     protected virtual void StoreWaypointInHistory(bool isLanding = false)
     {
         // Si la pile dépasse la limite, supprimer le waypoint le plus ancien
@@ -225,12 +225,44 @@ public class Player : MonoBehaviour
             }
         }
 
-        // Ajouter le waypoint actuel dans la pile avec la direction courante et le statut d'atterrissage
-        previousWaypoints.Push(new WaypointData(currentPath, currentWaypointIndex, movementDirection, isLanding));
-        Debug.Log($"🔄 Waypoint stocké: {currentPath} - {currentWaypointIndex} (direction: {movementDirection}, atterrissage: {isLanding}). Total stocké: {previousWaypoints.Count}/{MAX_WAYPOINT_HISTORY}");
+        // Ajouter le waypoint actuel dans la pile avec la direction courante
+        previousWaypoints.Push(new WaypointData(currentPath, currentWaypointIndex, movementDirection));
+        Debug.Log($"🔄 Waypoint stocké: {currentPath} - {currentWaypointIndex} (direction: {movementDirection}). Total stocké: {previousWaypoints.Count}/{MAX_WAYPOINT_HISTORY}");
     }
 
-        public virtual void RegisterLandingPosition()
+
+public virtual bool CanGiveLife()
+{
+    return lives >= 3;
+}
+
+public virtual void GiveLifeTo(Player targetPlayer)
+{
+    if (!CanGiveLife())
+    {
+        Debug.LogWarning($"⚠️ {gameObject.name} cannot give a life (only has {lives} left, needs at least 3)");
+        return;
+    }
+
+    if (targetPlayer == null)
+    {
+        Debug.LogError("❌ Target player is null!");
+        return;
+    }
+    
+    if (targetPlayer.lives != 1)
+    {
+        Debug.LogWarning($"⚠️ Cannot give life to {targetPlayer.gameObject.name} - they must have exactly 1 life (current: {targetPlayer.lives})");
+        return;
+    }
+    lives--;
+    targetPlayer.GainLife();
+    
+    Debug.Log($"❤️ {gameObject.name} gave a life to {targetPlayer.gameObject.name}! " +
+              $"{gameObject.name} now has {lives} lives, {targetPlayer.gameObject.name} has {targetPlayer.lives} lives.");
+}
+
+    public virtual void RegisterLandingPosition()
     {
         // L'ancienne position devient la précédente
         previousLandingPath = lastLandingPath;
@@ -247,38 +279,6 @@ public class Player : MonoBehaviour
 
         // On stocke aussi dans la pile pour la cohérence et le débogage
         StoreWaypointInHistory(true);
-    }
-
-
-    public virtual bool CanGiveLife()
-    {
-        return lives >= 3;
-    }
-
-    public virtual void GiveLifeTo(Player targetPlayer)
-    {
-        if (!CanGiveLife())
-        {
-            Debug.LogWarning($"⚠️ {gameObject.name} cannot give a life (only has {lives} left, needs at least 3)");
-            return;
-        }
-
-        if (targetPlayer == null)
-        {
-            Debug.LogError("❌ Target player is null!");
-            return;
-        }
-        
-        if (targetPlayer.lives != 1)
-        {
-            Debug.LogWarning($"⚠️ Cannot give life to {targetPlayer.gameObject.name} - they must have exactly 1 life (current: {targetPlayer.lives})");
-            return;
-        }
-        lives--;
-        targetPlayer.GainLife();
-        
-        Debug.Log($"❤️ {gameObject.name} gave a life to {targetPlayer.gameObject.name}! " +
-                $"{gameObject.name} now has {lives} lives, {targetPlayer.gameObject.name} has {targetPlayer.lives} lives.");
     }
 
 
@@ -341,7 +341,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-
+    // Nouvelle méthode pour reculer en utilisant les waypoints stockés
     public virtual void MovePlayerBack()
     {
         Debug.Log($"DEBUG: MovePlayerBack called - isMovingBack before: {isMovingBack}");
@@ -367,6 +367,7 @@ public class Player : MonoBehaviour
     }
 
 
+    // Méthode pour naviguer à travers les waypoints stockés
     protected virtual void MoveBackToStoredWaypoints(int currentStepCount, int maxSteps)
     {
         // Si on a atteint la limite de pas ou si la pile est vide, on s'arrête
@@ -501,6 +502,30 @@ public class Player : MonoBehaviour
         return lastWaypointBeforeIntersection;
     }
 
+    protected virtual void CheckForWinCondition(GameObject waypoint)
+    {
+        Debug.Log($"🏁 DEBUG: CheckForWinCondition called for {gameObject.name} at index {currentWaypointIndex} on {currentPath}");
+
+        // Print current isOnFinalTile value
+        Debug.Log($"🏁 DEBUG: Before check: isOnFinalTile = {isOnFinalTile}");
+
+        // Vérifier si le joueur a atteint l'index 50 ou plus
+        if (currentWaypointIndex >= 50)
+        {
+            Debug.Log($"🏁 {gameObject.name} a atteint l'index {currentWaypointIndex} sur {currentPath} ! Question finale requise.");
+
+            // Set isOnFinalTile flag
+            Debug.Log($"🏁 DEBUG: Setting isOnFinalTile from {isOnFinalTile} to true");
+            isOnFinalTile = true;
+            Debug.Log($"🏁 DEBUG: After setting: isOnFinalTile = {isOnFinalTile}");
+        }
+        else
+        {
+            Debug.Log($"🏁 DEBUG: Player not at final position (index {currentWaypointIndex} < 50)");
+        }
+    }
+
+
     private void DisplayCurrentRegion()
     {
         GameObject currentWaypoint = GetCurrentWaypoint();
@@ -511,12 +536,16 @@ public class Player : MonoBehaviour
             {
                 tile.OnPlayerLands();
             }
+
+            // Vérifier si c'est un waypoint final
             CheckForWinCondition(currentWaypoint);
         }
     }
 
     [Header("")]
     public bool isOnFinalTile = false;
+
+
 
     // ✅ Method to lose a life
     public virtual void LoseLife()
@@ -538,13 +567,50 @@ public class Player : MonoBehaviour
         lives++;
         Debug.Log($"❤️gained a life! Total lives: {lives}");
     }
-    /*
+
+    public void DebugWaypointHistory()
+    {
+        Debug.Log($"📋 Historique des waypoints ({previousWaypoints.Count}/{MAX_WAYPOINT_HISTORY}) - Maximum {MAX_MOVE_BACK_STEPS} pas en arrière à la fois:");
+
+        Stack<WaypointData> tempStack = new Stack<WaypointData>(previousWaypoints);
+        int index = 1;
+
+        while (tempStack.Count > 0)
+        {
+            WaypointData data = tempStack.Pop();
+            string marker = index <= MAX_MOVE_BACK_STEPS ? "🔹" : "⚪";
+            string landingIcon = data.isLandingPoint ? "🛬" : "  ";
+            Debug.Log($"  {marker} {index++}. Path: {data.pathName}, Index: {data.waypointIndex}, Direction: {data.direction} {landingIcon}");
+        }
+
+        // Aussi afficher les points d'atterrissage stockés
+        Debug.Log($"🛬 Points d'atterrissage actuels:");
+        Debug.Log($"  ↪️ Dernier: {lastLandingPath}-{lastLandingIndex} (direction: {lastLandingDirection})");
+        Debug.Log($"  ↪️ Avant-dernier: {previousLandingPath}-{previousLandingIndex} (direction: {previousLandingDirection})");
+    }
+    // Méthode pour déboguer l'historique des waypoints
+
+
+
+
     public void SkipTurns(int turns)
     {
-        TurnsToSkip += turns;
-        Debug.Log($"⏳ {gameObject.name} doit sauter {turns} tour(s). Total à sauter : {TurnsToSkip}");
+        turnsToSkip = turns;
     }
-    */
+
+    public bool ShouldSkipTurn()
+    {
+        return turnsToSkip > 0;
+    }
+
+    public void DecrementSkipTurn()
+    {
+        if (turnsToSkip > 0)
+        {
+            turnsToSkip--;
+        }
+    }
+
     public virtual void AnswerQuestion(bool isCorrect)
     {
         Debug.Log($"🎮 {gameObject.name} a répondu: {(isCorrect ? "Correctement ✓" : "Incorrectement ✗")}");
@@ -572,72 +638,8 @@ public class Player : MonoBehaviour
     }
 
 
-    public void DebugWaypointHistory()
-    {
-        Debug.Log($"📋 Historique des waypoints ({previousWaypoints.Count}/{MAX_WAYPOINT_HISTORY}) - Maximum {MAX_MOVE_BACK_STEPS} pas en arrière à la fois:");
-
-        Stack<WaypointData> tempStack = new Stack<WaypointData>(previousWaypoints);
-        int index = 1;
-
-        while (tempStack.Count > 0)
-        {
-            WaypointData data = tempStack.Pop();
-            string marker = index <= MAX_MOVE_BACK_STEPS ? "🔹" : "⚪";
-            string landingIcon = data.isLandingPoint ? "🛬" : "  ";
-            Debug.Log($"  {marker} {index++}. Path: {data.pathName}, Index: {data.waypointIndex}, Direction: {data.direction} {landingIcon}");
-        }
-
-        // Aussi afficher les points d'atterrissage stockés
-        Debug.Log($"🛬 Points d'atterrissage actuels:");
-        Debug.Log($"  ↪️ Dernier: {lastLandingPath}-{lastLandingIndex} (direction: {lastLandingDirection})");
-        Debug.Log($"  ↪️ Avant-dernier: {previousLandingPath}-{previousLandingIndex} (direction: {previousLandingDirection})");
-    }
-
-
-
-
-    public void SkipTurns(int turns)
-    {
-        turnsToSkip = turns;
-    }
-
-    public bool ShouldSkipTurn()
-    {
-        return turnsToSkip > 0;
-    }
-
-    public void DecrementSkipTurn()
-    {
-        if (turnsToSkip > 0)
-        {
-            turnsToSkip--;
-        }
-    }
-
-    protected virtual void CheckForWinCondition(GameObject waypoint)
-    {
-        Debug.Log($"🏁 DEBUG: CheckForWinCondition called for {gameObject.name} at index {currentWaypointIndex} on {currentPath}");
-
-        // Print current isOnFinalTile value
-        Debug.Log($"🏁 DEBUG: Before check: isOnFinalTile = {isOnFinalTile}");
-
-        // Vérifier si le joueur a atteint l'index 50 ou plus
-        if (currentWaypointIndex >= 50)
-        {
-            Debug.Log($"🏁 {gameObject.name} a atteint l'index {currentWaypointIndex} sur {currentPath} ! Question finale requise.");
-
-            // Set isOnFinalTile flag
-            Debug.Log($"🏁 DEBUG: Setting isOnFinalTile from {isOnFinalTile} to true");
-            isOnFinalTile = true;
-            Debug.Log($"🏁 DEBUG: After setting: isOnFinalTile = {isOnFinalTile}");
-        }
-        else
-        {
-            Debug.Log($"🏁 DEBUG: Player not at final position (index {currentWaypointIndex} < 50)");
-        }
-    }
-
-        public virtual void MoveToPreviousPosition()
+    // Nouvelle méthode pour revenir à l'avant-dernière position d'atterrissage
+    public virtual void MoveToPreviousPosition()
     {
         if (isMoving)
         {

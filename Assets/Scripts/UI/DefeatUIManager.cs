@@ -1,4 +1,3 @@
-// Version simplifiée du gestionnaire d'écran de défaite
 using UnityEngine;
 using TMPro;
 

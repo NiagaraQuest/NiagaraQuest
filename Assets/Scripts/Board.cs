@@ -42,29 +42,18 @@ public class Board : MonoBehaviour
     }
 
     //  Retourne un waypoint d’un chemin en fonction de son index.
-
-    // Dans la classe Board, modifie la méthode GetTile:
     public GameObject GetTile(string pathName, int index)
     {
         if (Paths.ContainsKey(pathName))
         {
             List<GameObject> waypoints = Paths[pathName];
 
-            // Si l'index est >= 50, c'est considéré comme une victoire
-            // donc on retourne le dernier waypoint du chemin
+            // Si l'index est >= 50, on utilise l'index 50 (ou le dernier si moins de 50)
             if (index >= 50)
             {
-                Debug.Log($"🏆 Victoire détectée ! Index {index} >= 50 sur le chemin {pathName}");
-
-                // Notifier le GameManager de la victoire
-                Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
-                if (currentPlayer != null)
-                {
-                    GameManager.Instance.WinGameOver(currentPlayer);
-                }
-
-                // Retourner le dernier waypoint du chemin
-                return waypoints[waypoints.Count - 1];
+                Debug.Log($"🏁 Index {index} >= 50 sur le chemin {pathName}, question finale requise !");
+                int finalIndex = Mathf.Min(50, waypoints.Count - 1);
+                return waypoints[finalIndex];
             }
 
             // Vérification normale pour les autres cas
@@ -117,4 +106,3 @@ public class Board : MonoBehaviour
     }
 
 }
-
