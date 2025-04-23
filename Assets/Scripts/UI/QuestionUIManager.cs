@@ -27,12 +27,19 @@ public class QuestionUIManager : MonoBehaviour
     public TextMeshProUGUI resultText;
     public Button exitButton;
 
+    [Header("ELO Display")]
+    public bool showEloChanges = true;
+    public float eloDisplayTime = 3f;
+    public TextMeshProUGUI eloChangeText;
+
     private QuestionTile currentTile;
     private Question currentQuestion;
     public bool isProcessingQuestion = false;
     private bool isRetrying = false;
     private bool isSecondChance = false;
     private bool lastAnswerCorrect = false; // Store the last answer result
+    private int lastPlayerEloChange = 0;
+    private int lastQuestionEloChange = 0;
 
     void Start()
     {
@@ -48,6 +55,10 @@ public class QuestionUIManager : MonoBehaviour
             trueButton.onClick.AddListener(() => CheckTrueFalseAnswer(true));
         if (falseButton != null)
             falseButton.onClick.AddListener(() => CheckTrueFalseAnswer(false));
+            
+        // Hide ELO change text if it exists
+        if (eloChangeText != null)
+            eloChangeText.gameObject.SetActive(false);
     }
 
     void Update()
@@ -74,6 +85,10 @@ public class QuestionUIManager : MonoBehaviour
         qcmQuestionPanel.SetActive(false);
         tfQuestionPanel.SetActive(false);
         resultPanel.SetActive(false);
+        
+        // Hide ELO change text if it exists
+        if (eloChangeText != null)
+            eloChangeText.gameObject.SetActive(false);
     }
 
     public void ShowUI(Question question, QuestionTile tile)
@@ -107,7 +122,6 @@ public class QuestionUIManager : MonoBehaviour
         }
     }
 
-    //lyna
     public void SkipQuestion()
     {
         HideAllPanels();
@@ -145,8 +159,6 @@ public class QuestionUIManager : MonoBehaviour
         return $"<color={colorCode}><b>{difficultyText}</b></color>";
     }
 
-
-
     private void ShowOpenQuestion(OpenQuestion question)
     {
         string difficultyDisplay = GetFormattedDifficulty(question.Difficulty);
@@ -172,8 +184,8 @@ public class QuestionUIManager : MonoBehaviour
 
     private void ShowQCMQuestion(QCMQuestion question)
     {
-    string difficultyDisplay = GetFormattedDifficulty(question.Difficulty);
-    qcmQuestionText.text = $"{difficultyDisplay}\n{question.Qst}";
+        string difficultyDisplay = GetFormattedDifficulty(question.Difficulty);
+        qcmQuestionText.text = $"{difficultyDisplay}\n{question.Qst}";
         
         // Setup choice buttons
         for (int i = 0; i < choiceButtons.Length; i++)
@@ -200,8 +212,8 @@ public class QuestionUIManager : MonoBehaviour
     
     private void ShowTrueFalseQuestion(TrueFalseQuestion question)
     {
-    string difficultyDisplay = GetFormattedDifficulty(question.Difficulty);
-    tfQuestionText.text = $"{difficultyDisplay}\n{question.Qst}";
+        string difficultyDisplay = GetFormattedDifficulty(question.Difficulty);
+        tfQuestionText.text = $"{difficultyDisplay}\n{question.Qst}";
         
         // Make sure the True and False buttons are active
         if (trueButton != null)
@@ -225,11 +237,8 @@ public class QuestionUIManager : MonoBehaviour
         // Store result
         lastAnswerCorrect = playerAnswer == correctAnswer;
         
-        // Show result
-        ShowResult(lastAnswerCorrect);
-        
-        // Update ELO ratings
-        UpdatePlayerElo(lastAnswerCorrect);
+        // Process answer and update ELO
+        ProcessPlayerAnswer(lastAnswerCorrect);
     }
 
     private void CheckQCMAnswer(QCMQuestion question, int choiceIndex)
@@ -240,11 +249,8 @@ public class QuestionUIManager : MonoBehaviour
         // Store result
         lastAnswerCorrect = choiceIndex == question.CorrectChoice;
         
-        // Show result
-        ShowResult(lastAnswerCorrect);
-        
-        // Update ELO ratings
-        UpdatePlayerElo(lastAnswerCorrect);
+        // Process answer and update ELO
+        ProcessPlayerAnswer(lastAnswerCorrect);
     }
     
     private void CheckTrueFalseAnswer(bool userAnswer)
@@ -258,18 +264,20 @@ public class QuestionUIManager : MonoBehaviour
         // Store result
         lastAnswerCorrect = userAnswer == correctAnswer;
         
-        // Show result
-        ShowResult(lastAnswerCorrect);
-        
-        // Update ELO ratings
-        UpdatePlayerElo(lastAnswerCorrect);
+        // Process answer and update ELO
+        ProcessPlayerAnswer(lastAnswerCorrect);
     }
 
-    // Dans QuestionUIManager.cs, modifiez la méthode ShowResult:
-    private void ShowResult(bool isCorrect)
+    // Process the player's answer, update ELO and show result
+    private async void ProcessPlayerAnswer(bool isCorrect)
     {
         Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
-
+        
+        // Reset ELO change values
+        lastPlayerEloChange = 0;
+        lastQuestionEloChange = 0;
+        
+        // Check for second chance with PyroPlayer
         if (!isCorrect && currentPlayer is PyroPlayer pyroPlayer &&
             pyroPlayer.useSecondChance && !isSecondChance)
         {
@@ -280,18 +288,92 @@ public class QuestionUIManager : MonoBehaviour
             {
                 isSecondChance = true;
                 resultPanel.SetActive(true);
-                resultText.text = "❌ Wrong!\n🔥 Seconde chance!";
+                resultText.text = "❌ Wrong!\n🔥 Second chance!";
                 Invoke("RetrySameQuestion", 1.5f);
                 return;
             }
         }
+        
+        // Capture initial ELO values for display
+        int initialPlayerElo = 0;
+        int initialQuestionElo = 0;
+        
+        if (currentPlayer != null && currentPlayer.playerProfile != null && currentQuestion != null)
+        {
+            initialPlayerElo = currentPlayer.playerProfile.Elo;
+            initialQuestionElo = currentQuestion.Elo;
+            
+            try
+            {
+                // Record the answer and update ELO values
+                await QuestionManager.Instance.RecordPlayerAnswer(currentPlayer.playerProfile, currentQuestion, isCorrect);
+                
+                // Calculate the ELO changes
+                lastPlayerEloChange = currentPlayer.playerProfile.Elo - initialPlayerElo;
+                lastQuestionEloChange = currentQuestion.Elo - initialQuestionElo;
+                
+                Debug.Log($"⚖️ ELO Change - Player: {initialPlayerElo} → {currentPlayer.playerProfile.Elo} " +
+                         $"({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}), " +
+                         $"Question: {initialQuestionElo} → {currentQuestion.Elo} " +
+                         $"({(lastQuestionEloChange >= 0 ? "+" : "")}{lastQuestionEloChange})");
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"❌ Error updating ELO: {ex.Message}");
+            }
+        }
+        
+        ShowResult(isCorrect);
+    }
+
+    private void ShowResult(bool isCorrect)
+    {
+        Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
 
         // Si réponse correcte OU 2ème échec
         resultPanel.SetActive(true);
         string effectDescription = GetEffectDescription(currentQuestion.Difficulty, isCorrect);
-        resultText.text = isCorrect ? 
+        
+        // Generate result text
+        string resultBaseText = isCorrect ? 
             $"✅ Correct!\n\n<b>Reward:</b> {effectDescription}" : 
             $"❌ Wrong!\n\n<b>Penalty:</b> {effectDescription}";
+            
+        // Add ELO information if available and enabled
+        if (showEloChanges && currentPlayer != null && currentPlayer.playerProfile != null)
+        {
+            int currentElo = currentPlayer.playerProfile.Elo;
+            int previousElo = currentElo - lastPlayerEloChange;
+            
+            string eloColorStart = lastPlayerEloChange >= 0 ? "<color=#4CAF50>" : "<color=#F44336>";
+            string eloColorEnd = "</color>";
+            
+            string eloChangeDisplay = $"\n\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
+            resultText.text = resultBaseText + eloChangeDisplay;
+            
+            // Show separate ELO change text if it exists
+            if (eloChangeText != null)
+            {
+                eloChangeText.gameObject.SetActive(true);
+                eloChangeText.text = $"ELO: {previousElo} → {currentElo} ({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange})";
+                
+                // Set color based on change
+                if (lastPlayerEloChange > 0)
+                    eloChangeText.color = new Color(0.2f, 0.8f, 0.2f); // Green
+                else if (lastPlayerEloChange < 0)
+                    eloChangeText.color = new Color(0.8f, 0.2f, 0.2f); // Red
+                else
+                    eloChangeText.color = Color.white;
+                    
+                // Hide ELO text after a few seconds
+                StartCoroutine(HideEloTextAfterDelay(eloDisplayTime));
+            }
+        }
+        else
+        {
+            resultText.text = resultBaseText;
+        }
+        
         isSecondChance = false;
 
         if (currentPlayer != null)
@@ -323,6 +405,13 @@ public class QuestionUIManager : MonoBehaviour
         StartCoroutine(FocusExitButton());
     }
 
+    private IEnumerator HideEloTextAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (eloChangeText != null)
+            eloChangeText.gameObject.SetActive(false);
+    }
+
     private IEnumerator FocusExitButton()
     {
         // Wait a frame to ensure the panel is active
@@ -335,59 +424,31 @@ public class QuestionUIManager : MonoBehaviour
 
     private string GetEffectDescription(string difficulty, bool isCorrect)
     {
-    // Normalize the difficulty
-    string normalizedDifficulty = difficulty.ToUpper();
-    
-    switch (normalizedDifficulty)
-    {
-        case "EASY":
-            if (isCorrect)
-                return "Move forward 2 spaces";
-            else
-                return "Move back 6 spaces";
+        // Normalize the difficulty
+        string normalizedDifficulty = difficulty.ToUpper();
         
-        case "MEDIUM":
-            if (isCorrect)
-                return "Roll the dice again";
-            else
-                return "Lose 1 life";
-        
-        case "HARD":
-            if (isCorrect)
-                return "Gain 1 life";
-            else
-                return "Skip 1 turn";
-        
-        default:
-            return "Unknown effect";
-    }
-    }
-
-
-    private async void UpdatePlayerElo(bool isCorrect)
-    {
-        try
+        switch (normalizedDifficulty)
         {
-            // Get the current playerd
-            Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
-            if (currentPlayer != null && currentPlayer.playerProfile != null && currentQuestion != null)
-            {
-                // Record the answer using QuestionManager - this will update ELO ratings
-                int initialElo = currentPlayer.playerProfile.Elo;
-                await QuestionManager.Instance.RecordPlayerAnswer(currentPlayer.playerProfile, currentQuestion, isCorrect);
-
- 
-
-                // Log ELO change
-                int newElo = currentPlayer.playerProfile.Elo;
-                int eloChange = newElo - initialElo;
-                
-                Debug.Log($"⚖️ Player ELO updated: {initialElo} → {newElo} ({(eloChange >= 0 ? "+" : "")}{eloChange})");
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError($"❌ Error updating ELO ratings: {ex.Message}");
+            case "EASY":
+                if (isCorrect)
+                    return "Move forward 2 spaces";
+                else
+                    return "Move back 6 spaces";
+            
+            case "MEDIUM":
+                if (isCorrect)
+                    return "Roll the dice again";
+                else
+                    return "Lose 1 life";
+            
+            case "HARD":
+                if (isCorrect)
+                    return "Gain 1 life";
+                else
+                    return "Skip 1 turn";
+            
+            default:
+                return "Unknown effect";
         }
     }
 
@@ -410,24 +471,6 @@ public class QuestionUIManager : MonoBehaviour
         isProcessingQuestion = false;
     }
 
-    private IEnumerator ShowSecondChanceQuestion()
-    {
-        // Afficher le message de seconde chance
-        resultText.text = "❌ Wrong!\n🔥 Seconde chance!";
-        yield return new WaitForSeconds(1.5f);
-
-        // Réafficher la même question
-        resultPanel.SetActive(false);
-
-        if (currentQuestion is OpenQuestion)
-        {
-            ShowOpenQuestion((OpenQuestion)currentQuestion);
-        }
-        else if (currentQuestion is QCMQuestion)
-        {
-            ShowQCMQuestion((QCMQuestion)currentQuestion);
-        }
-    }
     private void RetrySameQuestion()
     {
         resultPanel.SetActive(false);
@@ -435,8 +478,7 @@ public class QuestionUIManager : MonoBehaviour
             ShowOpenQuestion((OpenQuestion)currentQuestion);
         else if (currentQuestion is QCMQuestion)
             ShowQCMQuestion((QCMQuestion)currentQuestion);
+        else if (currentQuestion is TrueFalseQuestion)
+            ShowTrueFalseQuestion((TrueFalseQuestion)currentQuestion);
     }
-
-
-
 }
