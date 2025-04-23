@@ -115,6 +115,7 @@ public class Player : MonoBehaviour
 
     protected virtual void Update()
     {
+        GameManager.Instance.CheckPlayerLives();
         if (isMoving && !reachedIntersection)
         {
             if (targetWaypointIndex < 0)

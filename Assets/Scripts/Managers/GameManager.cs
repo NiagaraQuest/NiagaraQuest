@@ -70,6 +70,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(false);
+        }
         Debug.Log("🎲 GameManager starting...");
         lifeSharingManager = FindObjectOfType<LifeSharingManager>();
         DetectGameModeBasedOnActivePlayers();
