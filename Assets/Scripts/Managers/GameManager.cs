@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     public GameEndUIManager gameEndUIManager;
     [Header("Life Sharing Settings")]
     public bool allowLifeSharing = true;
-    private bool hasDiceBeenRolledThisTurn = false;
+    public bool hasDiceBeenRolledThisTurn = false;
     private LifeSharingManager lifeSharingManager; 
 
     private AudioManager audioManager; 
