@@ -10,6 +10,9 @@ public class LifeSharingManager : MonoBehaviour
     public GameObject playerSelectionPanel;
     public Transform playerOptionsContainer;
     public GameObject playerOptionPrefab;
+
+    [Header("Return Button")]
+    public Button returnButton;
     
     private List<GameObject> createdOptionButtons = new List<GameObject>();
     private bool hasDiceBeenRolledThisTurn = false;
@@ -41,6 +44,16 @@ public class LifeSharingManager : MonoBehaviour
             return;
         }
         
+        // Setup return button
+        if (returnButton != null)
+        {
+            returnButton.onClick.AddListener(ReturnToGame);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Return Button not assigned!");
+        }
+        
         // Hide player selection panel initially
         if (playerSelectionPanel != null)
         {
@@ -60,6 +73,16 @@ public class LifeSharingManager : MonoBehaviour
         
         // Update button visibility based on all conditions
         UpdateGiveLifeButtonVisibility();
+        
+        // Check for Escape key to return to game
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // Only process Escape if player selection panel is active
+            if (playerSelectionPanel != null && playerSelectionPanel.activeSelf)
+            {
+                ReturnToGame();
+            }
+        }
     }
     
     // Check if dice have been rolled by monitoring the dice button state
@@ -259,5 +282,22 @@ public class LifeSharingManager : MonoBehaviour
     public void ClosePlayerSelection()
     {
         HidePlayerSelectionPanel();
+    }
+
+    public void ReturnToGame()
+    {
+        Debug.Log("Player chose to continue without giving a life");
+        
+        // Hide the player selection panel
+        HidePlayerSelectionPanel();
+        
+        // Hide the give life button
+        if (giveLifeButton != null)
+        {
+            giveLifeButton.gameObject.SetActive(false);
+        }
+        
+        // Set the dice rolled flag to true to prevent the button from reappearing
+        hasDiceBeenRolledThisTurn = true;
     }
 }
