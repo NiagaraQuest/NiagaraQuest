@@ -180,19 +180,9 @@ public class HUDUIManager : MonoBehaviour
         }
     }
 
-    // Handle keyboard shortcuts for pausing/resuming
+    // Handle ESC key for resuming the game
     private void Update()
     {
-        // P key pauses the game
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (!isPaused)
-            {
-                PauseGame();
-                Debug.Log("🔄 P key pressed: Game paused");
-            }
-        }
-        
         // ESC key only resumes the game or closes settings
         if (Input.GetKeyDown(KeyCode.Escape))
         {

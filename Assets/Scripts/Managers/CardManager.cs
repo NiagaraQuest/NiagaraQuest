@@ -105,7 +105,7 @@ public class CardManager : MonoBehaviour
                 
             case 5: // Mythic Leap
                 gameManager.isEffectMovement = true; 
-                player.MovePlayer(25);
+                player.MovePlayer(6);
                 break;
                 
             case 6: // The Punishment
