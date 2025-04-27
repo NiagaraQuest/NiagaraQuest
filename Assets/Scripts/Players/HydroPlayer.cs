@@ -39,11 +39,8 @@ public class HydroPlayer : Player
     {
         base.Update();
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            UseSkipAbility();
-            Debug.Log("TEST: Touche S pressée - tentative d'utilisation de la capacité skip");
-        }
+        // Suppression de la détection de la touche S, remplacée par le bouton Skip dans l'UI
+        // Le code de détection de la touche S a été retiré d'ici
 
         if (!isMoving && HasFinishedMoving) // WHEN le joueur termine son mouvement
         {
@@ -57,6 +54,7 @@ public class HydroPlayer : Player
                 }
             }
         }
+
         // Ajoutez ceci dans Update() pour un débogage plus détaillé
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -112,8 +110,7 @@ public class HydroPlayer : Player
         }
     }
 
-    // Méthode pour utiliser effectivement la capacité (à appeler quand le joueur l'utilise)
-    // Méthode pour utiliser effectivement la capacité (à appeler quand le joueur l'utilise)
+    // Méthode pour utiliser effectivement la capacité (à appeler quand le joueur clique sur le bouton Skip)
     public void UseSkipAbility()
     {
         if (SkipQuestion)
@@ -151,6 +148,6 @@ public class HydroPlayer : Player
     {
         SkipQuestion = false;
 
-        Debug.Log($"Second chance DÉSACTIVÉE ! ");
+        Debug.Log($" Second chance DÉSACTIVÉE ! ");
     }
 }

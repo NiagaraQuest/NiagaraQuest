@@ -1,17 +1,14 @@
 ﻿using UnityEngine;
-
 public class GeoPlayer : Player
 {
     [Header("🛡️ GeoPlayer Settings")]
-
-    private bool shieldActive = false;
-
+    [SerializeField] private bool isInBerg = false;
+    [SerializeField] private bool shield = false; // Visible in inspector for debugging
 
     protected override void Start()
     {
         currentPath = "GeoPath";
         base.Start();
-
         if (playerProfile == null)
         {
             Debug.LogError($"{gameObject.name} → ❌ Pas de profil assigné !");
@@ -20,109 +17,93 @@ public class GeoPlayer : Player
         {
             Debug.Log($"✅ {gameObject.name} → Profil: {playerProfile.Username}");
         }
-
         //  Activer le shield dès le départ 
-        shieldActive = true;
-        lives *= 2;
-        Debug.Log($"🛡️ Départ ! Shield ACTIVÉ ! Vies : {lives}");
+        isInBerg = true;
+        shield = true;
+        Debug.Log($"🛡️ Départ ! Shield ACTIVÉ !");
     }
 
     public void InitializeShield()
     {
-        shieldActive = true;
-        lives *= 2;
-        Debug.Log($"🛡️ Initialisation spéciale! Shield ACTIVÉ ! Vies : {lives}");
+        isInBerg = true;
+        shield = true;
+        Debug.Log($"🛡️ Initialisation spéciale! Shield ACTIVÉ !");
     }
+
     protected override void Update()
     {
         base.Update();
-
         if (!isMoving && HasFinishedMoving) //  WHEN le joueur termine son mouvement
         {
             GameObject waypoint = GetCurrentWaypoint();
             if (waypoint != null)
             {
                 Tile tile = waypoint.GetComponent<Tile>();
-                if (tile != null)
+                if (tile != null && tile.region != Tile.Region.None)
                 {
-                    HandleShield(tile);
+                    HandleRegionChange(tile);
                 }
             }
         }
     }
 
-    private void HandleShield(Tile tile)
+    private void HandleRegionChange(Tile tile)
     {
         if (tile.region == Tile.Region.None)
         {
             return; // Ignorer les intersections
         }
 
-        if (tile.region == Tile.Region.Berg)
+        bool wasInBerg = isInBerg;
+        isInBerg = (tile.region == Tile.Region.Berg);
+
+        // Si le joueur entre dans Berg (n'y était pas avant)
+        if (isInBerg && !wasInBerg)
         {
-            if (!shieldActive)
-            {
-                ActivateShield();
-            }
-            else
-            {
-                Debug.Log($"🛡️ Shield TOUJOURS ACTIVÉ ! Vies : {lives}");
-            }
+            // Reset shield à true quand on entre dans Berg
+            shield = true;
+            Debug.Log($"🛡️ Entrée dans la région Berg ! Shield ACTIVÉ !");
+        }
+    }
+
+    // Override pour gérer le shield UNIQUEMENT avec LoseLife
+    public override void LoseLife()
+    {
+        if (isInBerg && shield)
+        {
+            // Utiliser le shield au lieu de perdre une vie
+            shield = false;
+            Debug.Log($"🛡️ Shield utilisé ! {gameObject.name} est protégé contre la perte de vie !");
         }
         else
         {
-            if (shieldActive)
+            // Comportement normal - perdre une vie
+            if (lives > 0)
             {
-                DeactivateShield();
+                lives--;
+                Debug.Log($"❌ {gameObject.name} a perdu une vie ! Vies restantes : {lives}");
+
+                // Après avoir perdu une vie dans Berg, réactiver le shield
+                if (isInBerg)
+                {
+                    shield = true;
+                    Debug.Log($"🛡️ Shield réactivé après la perte de vie !");
+                }
             }
             else
             {
-                Debug.Log($"⚠️ Shield DÉJÀ DÉSACTIVÉ ! Vies : {lives}");
+                Debug.Log($"💀 {gameObject.name} n'a plus de vies !");
             }
         }
+
+        // Important: check lives after any life loss
+        GameManager.Instance.CheckPlayerLives();
     }
 
-    private void ActivateShield()
-    {
-        shieldActive = true;
-        lives *= 2; //  Double les vies
-        Debug.Log($"🛡️ Shield ACTIVÉ ! Vies : {lives}");
-    }
-
-    private void DeactivateShield()
-    {
-        shieldActive = false;
-
-        // Vérifier si le nombre de vies est impair avant la division
-        if (lives % 2 != 0) // Si impair
-        {
-            // Division avec arrondi supérieur
-            lives = (lives + 1) / 2;
-            Debug.Log($"⚠️ Shield DÉSACTIVÉ ! Vies impaires arrondies vers le haut : {lives}");
-        }
-        else // Si pair
-        {
-            // Division normale pour les nombres pairs
-            lives /= 2;
-            Debug.Log($"⚠️ Shield DÉSACTIVÉ ! Vies : {lives}");
-        }
-    }
     public override void GainLife()
     {
-        GameObject waypoint = GetCurrentWaypoint();
-        if (waypoint != null)
-        {
-            Tile tile = waypoint.GetComponent<Tile>();
-            if (tile != null && tile.region == Tile.Region.Berg)
-            {
-                lives += 2;
-                Debug.Log($"💚 Dans sa région (Berg) → GeoPlayer gagne 2 vies ! Total : {lives}");
-                return;
-            }
-        }
-
+        // Toujours gagner 1 vie, même dans Berg
         lives += 1;
-        Debug.Log($"💚 Hors région → GeoPlayer gagne 1 vie. Total : {lives}");
+        Debug.Log($"💚 {gameObject.name} gagne 1 vie. Total : {lives}");
     }
-
 }
