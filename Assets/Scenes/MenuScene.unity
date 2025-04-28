@@ -4253,16 +4253,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 0}
   sfxSource: {fileID: 0}
-  rightAnswerSound: {fileID: 0}
-  wrongAnswerSound: {fileID: 0}
-  cardTileSound: {fileID: 0}
-  movementSound: {fileID: 0}
-  diceRollingSound: {fileID: 0}
-  winGameSound: {fileID: 0}
-  gameplayBackgroundSound: {fileID: 8300000, guid: fb326014139d22f48aa120e3a23283b8, type: 3}
+  menuBackgroundSound: {fileID: 8300000, guid: a9583d9f8b21ef24184363035f910adf, type: 3}
+  rightAnswerSound: {fileID: 8300000, guid: f47a9711e85b790498f58234a2173efd, type: 3}
+  wrongAnswerSound: {fileID: 8300000, guid: 3bda65431c300f1409f2767f2cbf2320, type: 3}
+  cardTileSound: {fileID: 8300000, guid: 3e737b535bec91148a367538821fa786, type: 3}
+  movementSound: {fileID: 8300000, guid: 75a4e9ff97983444599bbd68e0afd069, type: 3}
+  diceRollingSound: {fileID: 8300000, guid: 957c8fdb6b1d0f24cb6bf149acc091fa, type: 3}
+  winGameSound: {fileID: 8300000, guid: d769f115aa8e5b04280c6082d8c38c4d, type: 3}
+  gameplayBackgroundSound: {fileID: 8300000, guid: 28cf51c66d2604e48a65267596170bc9, type: 3}
   menuButtonSound: {fileID: 8300000, guid: 176ce210092302c43a208c6af21ab396, type: 3}
-  bonusCardSound: {fileID: 0}
-  intersectionTileSound: {fileID: 0}
+  bonusCardSound: {fileID: 8300000, guid: d42158db87df60546abfd3a9a8dae2a7, type: 3}
+  intersectionTileSound: {fileID: 8300000, guid: 83387f8ac08483141a9cf2740a96d451, type: 3}
   musicVolume: 0.5
   sfxVolume: 0.7
 --- !u!4 &1036436409

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -9,7 +10,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
 
+    
+
     [Header("Audio Clips - Assign in Inspector")]
+    [SerializeField] private AudioClip menuBackgroundSound;
     [SerializeField] private AudioClip rightAnswerSound;
     [SerializeField] private AudioClip wrongAnswerSound;
     [SerializeField] private AudioClip cardTileSound;
@@ -42,11 +46,127 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+        private void OnEnable()
+    {
+        // Register for scene change events
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    
+    private void OnDisable()
+    {
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+        private void PlayMusicForCurrentScene()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        
+        // Check which scene is active
+        if (currentSceneName == "MenuScene")
+        {
+            TransitionToMenuMusic();
+        }
+        else // Assume it's the game scene
+        {
+            TransitionToGameplayMusic();
+        }
+    }
+    
     private void Start()
     {
-        // Auto-play background music when game starts
-        PlayGameplayBackground();
+
+        PlayMusicForCurrentScene();
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        PlayMusicForCurrentScene();
+    }
+    
+
+    private float transitionDuration = 1.0f; // Adjust this for faster/slower transition
+    
+    public void TransitionToMenuMusic()
+    {
+        StartCoroutine(CrossFadeMusic(menuBackgroundSound));
+    }
+    
+    public void TransitionToGameplayMusic()
+    {
+        StartCoroutine(CrossFadeMusic(gameplayBackgroundSound));
+    }
+    
+    // Coroutine for smooth music transition
+    private System.Collections.IEnumerator CrossFadeMusic(AudioClip newClip)
+    {
+        // Store the original volume
+        float originalVolume = musicSource.volume;
+        
+        // If a different song is already playing, fade it out
+        if (musicSource.isPlaying && musicSource.clip != newClip)
+        {
+            // Fade out current music
+            float fadeTime = 0f;
+            while (fadeTime < transitionDuration)
+            {
+                fadeTime += Time.deltaTime;
+                musicSource.volume = Mathf.Lerp(originalVolume, 0f, fadeTime / transitionDuration);
+                yield return null;
+            }
+            
+            // Change to new clip
+            musicSource.Stop();
+            musicSource.clip = newClip;
+            musicSource.volume = 0f;
+            musicSource.Play();
+            
+            // Fade in new music
+            fadeTime = 0f;
+            while (fadeTime < transitionDuration)
+            {
+                fadeTime += Time.deltaTime;
+                musicSource.volume = Mathf.Lerp(0f, originalVolume, fadeTime / transitionDuration);
+                yield return null;
+            }
+        }
+        else // No music is playing or same clip
+        {
+            // Just start the music
+            musicSource.clip = newClip;
+            musicSource.volume = originalVolume;
+            musicSource.Play();
+        }
+        
+        // Ensure volume is set back to original
+        musicSource.volume = originalVolume;
+    }
+    
+    // Utility method to manually switch music with transition
+    public void SwitchBackgroundMusic(bool toMenu)
+    {
+        if (toMenu)
+        {
+            TransitionToMenuMusic();
+        }
+        else
+        {
+            TransitionToGameplayMusic();
+        }
+    }
+    
+    // Add these getter methods for UI
+    public float GetMusicVolume()
+    {
+        return musicVolume;
+    }
+    
+    public float GetSFXVolume()
+    {
+        return sfxVolume;
+    }
+
+
 
     private void EnsureSingleAudioListener()
     {
@@ -97,6 +217,15 @@ public class AudioManager : MonoBehaviour
         if (gameplayBackgroundSound != null)
         {
             musicSource.clip = gameplayBackgroundSound;
+            musicSource.Play();
+        }
+    }
+
+    public void PlayMenuBackground()
+    {
+        if (menuBackgroundSound != null)
+        {
+            musicSource.clip = menuBackgroundSound;
             musicSource.Play();
         }
     }
