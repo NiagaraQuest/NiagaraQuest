@@ -143,65 +143,87 @@ public class GameManager : MonoBehaviour
         
         try
         {
-            // Check each player GameObject
-            List<GameObject> activePlayerObjects = new List<GameObject>();
+            // Prepare a list with proper positions for each player
+            GameObject[] orderedPlayers = new GameObject[4]; // Use array to maintain positions
             
-            // Check PyroPlayer
+            // Check each player GameObject - Maintain fixed order: Pyro, Hydro, Anemo, Geo
+            
+            // Check PyroPlayer (position 0)
             GameObject pyroPlayer = GameObject.Find("PyroPlayer");
             if (pyroPlayer != null && PlayerPrefs.GetInt("PyroPlayer_Active", 0) == 1)
             {
                 AssignProfileToPlayer(pyroPlayer, "PyroPlayer");
-                activePlayerObjects.Add(pyroPlayer);
+                orderedPlayers[0] = pyroPlayer;
             }
-            else if (pyroPlayer != null)
+            
+            // Check HydroPlayer (position 1)
+            GameObject hydroPlayer = GameObject.Find("HydroPlayer");
+            if (hydroPlayer != null && PlayerPrefs.GetInt("HydroPlayer_Active", 0) == 1)
+            {
+                AssignProfileToPlayer(hydroPlayer, "HydroPlayer");
+                orderedPlayers[1] = hydroPlayer;
+            }
+            
+            // Check AnemoPlayer (position 2)
+            GameObject anemoPlayer = GameObject.Find("AnemoPlayer");
+            if (anemoPlayer != null && PlayerPrefs.GetInt("AnemoPlayer_Active", 0) == 1)
+            {
+                AssignProfileToPlayer(anemoPlayer, "AnemoPlayer");
+                orderedPlayers[2] = anemoPlayer;
+            }
+            
+            // Check GeoPlayer (position 3)
+            GameObject geoPlayer = GameObject.Find("GeoPlayer");
+            if (geoPlayer != null && PlayerPrefs.GetInt("GeoPlayer_Active", 0) == 1)
+            {
+                AssignProfileToPlayer(geoPlayer, "GeoPlayer");
+                orderedPlayers[3] = geoPlayer;
+            }
+            
+            // Disable inactive players
+            if (pyroPlayer != null && PlayerPrefs.GetInt("PyroPlayer_Active", 0) != 1)
             {
                 pyroPlayer.SetActive(false);
                 Debug.Log($"🚫 Disabling PyroPlayer - not selected in menu");
             }
             
-            // Check GeoPlayer
-            GameObject geoPlayer = GameObject.Find("GeoPlayer");
-            if (geoPlayer != null && PlayerPrefs.GetInt("GeoPlayer_Active", 0) == 1)
-            {
-                AssignProfileToPlayer(geoPlayer, "GeoPlayer");
-                activePlayerObjects.Add(geoPlayer);
-            }
-            else if (geoPlayer != null)
-            {
-                geoPlayer.SetActive(false);
-                Debug.Log($"🚫 Disabling GeoPlayer - not selected in menu");
-            }
-            
-            // Check HydroPlayer
-            GameObject hydroPlayer = GameObject.Find("HydroPlayer");
-            if (hydroPlayer != null && PlayerPrefs.GetInt("HydroPlayer_Active", 0) == 1)
-            {
-                AssignProfileToPlayer(hydroPlayer, "HydroPlayer");
-                activePlayerObjects.Add(hydroPlayer);
-            }
-            else if (hydroPlayer != null)
+            if (hydroPlayer != null && PlayerPrefs.GetInt("HydroPlayer_Active", 0) != 1)
             {
                 hydroPlayer.SetActive(false);
                 Debug.Log($"🚫 Disabling HydroPlayer - not selected in menu");
             }
             
-            // Check AnemoPlayer
-            GameObject anemoPlayer = GameObject.Find("AnemoPlayer");
-            if (anemoPlayer != null && PlayerPrefs.GetInt("AnemoPlayer_Active", 0) == 1)
-            {
-                AssignProfileToPlayer(anemoPlayer, "AnemoPlayer");
-                activePlayerObjects.Add(anemoPlayer);
-            }
-            else if (anemoPlayer != null)
+            if (anemoPlayer != null && PlayerPrefs.GetInt("AnemoPlayer_Active", 0) != 1)
             {
                 anemoPlayer.SetActive(false);
                 Debug.Log($"🚫 Disabling AnemoPlayer - not selected in menu");
             }
             
-            // Update the players list with only active players
-            players = activePlayerObjects;
+            if (geoPlayer != null && PlayerPrefs.GetInt("GeoPlayer_Active", 0) != 1)
+            {
+                geoPlayer.SetActive(false);
+                Debug.Log($"🚫 Disabling GeoPlayer - not selected in menu");
+            }
+            
+            // Update the players list - keep only active players but maintain order
+            players = new List<GameObject>();
+            foreach (GameObject player in orderedPlayers)
+            {
+                if (player != null && player.activeInHierarchy)
+                {
+                    players.Add(player);
+                }
+            }
             
             Debug.Log($"✅ Successfully assigned profiles to {players.Count} active players");
+            
+            // Print player order for debugging
+            string playerOrder = "";
+            for (int i = 0; i < players.Count; i++)
+            {
+                playerOrder += players[i].name + (i < players.Count - 1 ? " -> " : "");
+            }
+            Debug.Log($"🔄 Player turn order: {playerOrder}");
         }
         catch (Exception ex)
         {
