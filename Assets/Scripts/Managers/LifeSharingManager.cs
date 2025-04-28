@@ -143,23 +143,76 @@ public class LifeSharingManager : MonoBehaviour
             }
         }
     }
+
+    public void InitializeWithGameManager(GameManager gm)
+    {
+        // Set the game manager reference
+        gameManager = gm;
+        
+        Debug.Log("🔄 LifeSharingManager initialized with GameManager");
+        
+        // Ensure dice haven't been rolled at initialization
+        hasDiceBeenRolledThisTurn = false;
+        
+        // Force button visibility check
+        bool conditionsMet = CheckAllConditions();
+        Debug.Log($"Life sharing conditions met at initialization: {conditionsMet}");
+        
+        // Force update button visibility
+        if (giveLifeButton != null)
+        {
+            giveLifeButton.gameObject.SetActive(conditionsMet);
+            Debug.Log($"Life sharing button visibility set to: {conditionsMet}");
+            
+            // Log current player status
+            if (gm != null && gm.selectedPlayer != null)
+            {
+                Player currentPlayer = gm.selectedPlayer.GetComponent<Player>();
+                if (currentPlayer != null)
+                {
+                    Debug.Log($"Current player: {currentPlayer.gameObject.name}, Lives: {currentPlayer.lives}");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("Give Life Button reference is missing!");
+        }
+    }
     
     // Check all conditions that must be true for the button to appear
     private bool CheckAllConditions()
     {
+        Debug.Log("🔍 Checking life sharing button conditions:");
+        
         // 1. Check if dice have been rolled
         if (hasDiceBeenRolledThisTurn)
+        {
+            Debug.Log("⛔ Dice have been rolled this turn - cannot share lives");
             return false;
-            
+        }
+        
         // 2. Check if GameManager and current player exist
         if (gameManager == null || gameManager.selectedPlayer == null)
+        {
+            Debug.Log("⛔ GameManager or selected player is null");
             return false;
-            
+        }
+        
         // 3. Check if current player has 3+ lives
         Player currentPlayer = gameManager.selectedPlayer.GetComponent<Player>();
-        if (currentPlayer == null || currentPlayer.lives < 3)
+        if (currentPlayer == null)
+        {
+            Debug.Log("⛔ Current player component is null");
             return false;
-            
+        }
+        
+        if (currentPlayer.lives < 3)
+        {
+            Debug.Log($"⛔ Current player {currentPlayer.gameObject.name} only has {currentPlayer.lives} lives (needs at least 3)");
+            return false;
+        }
+        
         // 4. Check if any player has exactly 1 life
         bool existsPlayerWithOneLife = false;
         foreach (GameObject playerObj in gameManager.players)
@@ -171,8 +224,14 @@ public class LifeSharingManager : MonoBehaviour
             if (otherPlayer != null && otherPlayer.lives == 1)
             {
                 existsPlayerWithOneLife = true;
+                Debug.Log($"✅ Found eligible player {otherPlayer.gameObject.name} with 1 life");
                 break;
             }
+        }
+        
+        if (!existsPlayerWithOneLife)
+        {
+            Debug.Log("⛔ No players found with exactly 1 life");
         }
         
         return existsPlayerWithOneLife;

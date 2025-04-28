@@ -71,7 +71,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Debug.Log("🎲 GameManager starting...");
-        lifeSharingManager = FindObjectOfType<LifeSharingManager>();
         
         // Initialize database and set up profiles
         _ = InitializeDatabaseAndSetupProfiles();
@@ -79,6 +78,18 @@ public class GameManager : MonoBehaviour
         // After profiles are assigned, detect game mode and setup lives
         DetectGameModeBasedOnActivePlayers();
         SetupPlayersInitialLives();
+
+        // Find and initialize LifeSharingManager AFTER players are set up
+        lifeSharingManager = FindObjectOfType<LifeSharingManager>();
+        if (lifeSharingManager != null)
+        {
+            Debug.Log("✅ LifeSharingManager found. Initializing...");
+            lifeSharingManager.InitializeWithGameManager(this);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ LifeSharingManager not found in scene. Life sharing feature won't be available.");
+        }
 
         // Special initialization for certain player types
         foreach (var player in players)
@@ -107,13 +118,24 @@ public class GameManager : MonoBehaviour
             
             // Now load profiles from PlayerPrefs (selected in the menu)
             await AssignProfilesFromPlayerPrefs();
+            
+            // Make sure selectedPlayer is set after players are loaded
+            if (players != null && players.Count > 0)
+            {
+                currentPlayerIndex = 0;
+                selectedPlayer = players[0];
+                Debug.Log($"✅ Selected initial player: {selectedPlayer.name}");
+            }
+            else
+            {
+                Debug.LogError("❌ No players available to select!");
+            }
         }
         catch (Exception ex)
         {
             Debug.LogError($"❌ Database error: {ex.Message}\n{ex.StackTrace}");
         }
     }
-
     // Assign profiles based on selections from the menu
     private async Task AssignProfilesFromPlayerPrefs()
     {
@@ -345,6 +367,40 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("🎮 Game Started! First player: " + (selectedPlayer != null ? selectedPlayer.name : "None"));
+        
+        // Check if any player has exactly 1 life
+        bool anyPlayerHasOneLife = false;
+        foreach (GameObject playerObj in players)
+        {
+            if (playerObj == null || playerObj == selectedPlayer)
+                continue;
+                
+            Player otherPlayer = playerObj.GetComponent<Player>();
+            if (otherPlayer != null && otherPlayer.lives == 1)
+            {
+                anyPlayerHasOneLife = true;
+                Debug.Log($"⚠️ Player {otherPlayer.gameObject.name} has 1 life at game start");
+                break;
+            }
+        }
+        
+        // If current player has enough lives and another player has 1 life
+        if (selectedPlayer != null)
+        {
+            Player currentPlayer = selectedPlayer.GetComponent<Player>();
+            if (currentPlayer != null && currentPlayer.lives >= 3 && anyPlayerHasOneLife)
+            {
+                Debug.Log($"✅ Conditions met for life sharing at game start: {currentPlayer.gameObject.name} has {currentPlayer.lives} lives");
+            }
+        }
+
+        // Update life sharing button visibility at game start
+        if (lifeSharingManager != null)
+        {
+            hasDiceBeenRolledThisTurn = false; // Reset this flag
+            lifeSharingManager.OnNewTurn(); // Notify the LifeSharingManager
+            lifeSharingManager.UpdateGiveLifeButtonVisibility();
+        }
 
         // Activer le bouton de dés au début du jeu
         if (diceManager != null)

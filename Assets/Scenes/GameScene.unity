@@ -1417,7 +1417,6 @@ GameObject:
   - component: {fileID: 70684508}
   - component: {fileID: 70684510}
   - component: {fileID: 70684509}
-  - component: {fileID: 70684511}
   m_Layer: 5
   m_Name: PlayerSelectionPanel
   m_TagString: Untagged
@@ -1484,24 +1483,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 70684507}
   m_CullTransparentMesh: 1
---- !u!114 &70684511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 70684507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca9a834ed483c34eaf9eaa56be63d0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameManager: {fileID: 2031781947}
-  giveLifeButton: {fileID: 2090113749}
-  playerSelectionPanel: {fileID: 70684507}
-  playerOptionsContainer: {fileID: 407171413}
-  playerOptionPrefab: {fileID: 822310287677951904, guid: a05b443ff43ab4d4794ac09967727a0d, type: 3}
-  returnButton: {fileID: 820409098}
 --- !u!1 &77939141
 GameObject:
   m_ObjectHideFlags: 0
@@ -12090,7 +12071,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 117.00091}
+  m_AnchoredPosition: {x: 0, y: 117.00001}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1026817317
@@ -23604,6 +23585,7 @@ GameObject:
   - component: {fileID: 2031781949}
   - component: {fileID: 2031781950}
   - component: {fileID: 2031781951}
+  - component: {fileID: 2031781952}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -23718,6 +23700,24 @@ MonoBehaviour:
   menuSceneName: MenuScene
   gameSceneName: GameScene
   preservePlayerProfiles: 1
+--- !u!114 &2031781952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031781945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aca9a834ed483c34eaf9eaa56be63d0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 2031781947}
+  giveLifeButton: {fileID: 2090113749}
+  playerSelectionPanel: {fileID: 70684507}
+  playerOptionsContainer: {fileID: 407171413}
+  playerOptionPrefab: {fileID: 822310287677951904, guid: a05b443ff43ab4d4794ac09967727a0d, type: 3}
+  returnButton: {fileID: 820409098}
 --- !u!1 &2052419213
 GameObject:
   m_ObjectHideFlags: 0
@@ -24074,8 +24074,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 13838978}
   m_HandleRect: {fileID: 13838977}
   m_Direction: 2
-  m_Value: -0.0000078250205
-  m_Size: 0.61
+  m_Value: 0
+  m_Size: 0.6099774
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
