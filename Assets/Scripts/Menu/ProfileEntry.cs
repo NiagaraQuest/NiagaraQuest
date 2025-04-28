@@ -11,6 +11,14 @@ public class ProfileEntry : MonoBehaviour
 
     private Profile profileData;
     private Action onSelectAction;
+    // Reference to the AudioManager
+    private AudioManager audioManager;
+
+    void Awake()
+    {
+        // Get reference to AudioManager singleton
+        audioManager = AudioManager.Instance;
+    }
 
     public void Initialize(Profile profile)
     {
@@ -23,7 +31,15 @@ public class ProfileEntry : MonoBehaviour
             eloText.text = profile.Elo.ToString();
 
         if (selectButton != null)
-            selectButton.onClick.AddListener(() => { if (onSelectAction != null) onSelectAction(); });
+            selectButton.onClick.AddListener(() => {
+                // Play button sound
+                if (audioManager != null)
+                    audioManager.PlayMenuButton();
+                    
+                // Call the select action
+                if (onSelectAction != null) 
+                    onSelectAction();
+            });
     }
 
     public void SetSelectAction(Action action)

@@ -44,7 +44,8 @@ public class NewGameMenuManager : MonoBehaviour
     public Button clearProfileButton;
     public GameObject noneProfilePrefab;
 
-
+    // Reference to the AudioManager
+    private AudioManager audioManager;
     private int currentPlayerCount = 2;
     private GameObject[] playerElements;
     private int currentEditingElementIndex = -1;
@@ -55,6 +56,9 @@ public class NewGameMenuManager : MonoBehaviour
     void Start()
     {
         Debug.Log("NewGameMenuManager Start called");
+        
+        // Get reference to AudioManager singleton
+        audioManager = AudioManager.Instance;
 
         // Initialize player elements array
         playerElements = new GameObject[] { pyroElement, geoElement, hydroElement, anemoElement };
@@ -98,9 +102,8 @@ public class NewGameMenuManager : MonoBehaviour
         if (returnToPlayersButton != null)
             returnToPlayersButton.onClick.AddListener(ReturnToPlayerSelection);
 
-        if (startGameButton  != null)
+        if (startGameButton != null)
         {
-            
             startGameButton.onClick.AddListener(StartGame);
             Debug.Log("Start Game button listener set up successfully");
         }
@@ -125,6 +128,10 @@ public class NewGameMenuManager : MonoBehaviour
 
     public void ShowCreateProfilePopup()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log("Showing create profile popup");
 
         if (createProfilePopupScript != null)
@@ -144,6 +151,10 @@ public class NewGameMenuManager : MonoBehaviour
 
     public void HideCreateProfilePopup()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log("Hiding create profile popup");
 
         if (createProfilePopupScript != null)
@@ -158,6 +169,10 @@ public class NewGameMenuManager : MonoBehaviour
 
     private async void HandleCreateProfile()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         if (usernameInput == null || string.IsNullOrEmpty(usernameInput.text.Trim()))
         {
             Debug.Log("Username cannot be empty");
@@ -212,6 +227,10 @@ public class NewGameMenuManager : MonoBehaviour
         {
             pyroSelectButton.onClick.RemoveAllListeners();
             pyroSelectButton.onClick.AddListener(() => {
+                // Play button sound
+                if (audioManager != null)
+                    audioManager.PlayMenuButton();
+                    
                 Debug.Log("Pyro select button clicked");
                 ShowProfilesForElement(0);
             });
@@ -225,6 +244,10 @@ public class NewGameMenuManager : MonoBehaviour
         {
             geoSelectButton.onClick.RemoveAllListeners();
             geoSelectButton.onClick.AddListener(() => {
+                // Play button sound
+                if (audioManager != null)
+                    audioManager.PlayMenuButton();
+                    
                 Debug.Log("Geo select button clicked");
                 ShowProfilesForElement(1);
             });
@@ -238,6 +261,10 @@ public class NewGameMenuManager : MonoBehaviour
         {
             hydroSelectButton.onClick.RemoveAllListeners();
             hydroSelectButton.onClick.AddListener(() => {
+                // Play button sound
+                if (audioManager != null)
+                    audioManager.PlayMenuButton();
+                    
                 Debug.Log("Hydro select button clicked");
                 ShowProfilesForElement(2);
             });
@@ -251,6 +278,10 @@ public class NewGameMenuManager : MonoBehaviour
         {
             anemoSelectButton.onClick.RemoveAllListeners();
             anemoSelectButton.onClick.AddListener(() => {
+                // Play button sound
+                if (audioManager != null)
+                    audioManager.PlayMenuButton();
+                    
                 Debug.Log("Anemo select button clicked");
                 ShowProfilesForElement(3);
             });
@@ -260,6 +291,7 @@ public class NewGameMenuManager : MonoBehaviour
             Debug.LogError("Anemo select button is not assigned!");
         }
     }
+    
     private void SetupElementButton(GameObject elementObj, int index)
     {
         if (elementObj == null)
@@ -294,6 +326,10 @@ public class NewGameMenuManager : MonoBehaviour
 
         int capturedIndex = index; // Capture the index for the lambda
         selectButton.onClick.AddListener(() => {
+            // Play button sound
+            if (audioManager != null)
+                audioManager.PlayMenuButton();
+                
             Debug.Log($"Select button clicked for element {capturedIndex}");
             ShowProfilesForElement(capturedIndex);
         });
@@ -303,6 +339,10 @@ public class NewGameMenuManager : MonoBehaviour
 
     public void SetPlayerCount(int count)
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log($"Setting player count to {count}");
         currentPlayerCount = count;
 
@@ -319,6 +359,7 @@ public class NewGameMenuManager : MonoBehaviour
 
     public void ShowProfilesForElement(int elementIndex)
     {
+        // Play button sound is already handled in the calling methods
         Debug.Log($"ShowProfilesForElement called for index {elementIndex}");
 
         // Store which element we're selecting a profile for
@@ -354,6 +395,10 @@ public class NewGameMenuManager : MonoBehaviour
 
     public void ReturnToPlayerSelection()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log("ReturnToPlayerSelection called");
 
         // Make sure create profile popup is hidden
@@ -519,6 +564,7 @@ public class NewGameMenuManager : MonoBehaviour
     // Add this to your SelectProfileForElement method instead of hiding the button
     public void SelectProfileForElement(Profile profile)
     {
+        // Sound is already played in the ProfileEntry button click handler
         Debug.Log($"SelectProfileForElement called for profile {profile.Username}");
 
         if (currentEditingElementIndex >= 0 && currentEditingElementIndex < playerElements.Length)
@@ -599,12 +645,20 @@ public class NewGameMenuManager : MonoBehaviour
 
     public void OnStartGameButtonClick()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log("Start Game button clicked via direct method");
         StartGame();
     }
 
     public void ClearCurrentProfile()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log("ClearCurrentProfile called");
 
         if (currentEditingElementIndex >= 0 && currentEditingElementIndex < playerElements.Length)
@@ -651,6 +705,10 @@ public class NewGameMenuManager : MonoBehaviour
 
     public void StartGame()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log("StartGame called");
 
         // Count how many characters have actual profiles assigned (not None)
@@ -718,9 +776,8 @@ public class NewGameMenuManager : MonoBehaviour
             // You could add a UI element to display this message
         }
     }
+    
     // Manual testing methods
-
-    // Add this method to your class
     private void UpdateElementVisibility(GameObject elementObj, bool profileSelected)
     {
         if (elementObj == null) return;
@@ -770,6 +827,10 @@ public class NewGameMenuManager : MonoBehaviour
 
     public void TestSwitchToProfiles()
     {
+        // Play button sound for testing
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log("Manual test: switching to profiles panel");
         if (playersPanel != null && profilesPanel != null)
         {
@@ -793,6 +854,10 @@ public class NewGameMenuManager : MonoBehaviour
 
     public void TestSwitchToPlayers()
     {
+        // Play button sound for testing
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log("Manual test: switching to players panel");
         if (playersPanel != null && profilesPanel != null)
         {

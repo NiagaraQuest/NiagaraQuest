@@ -22,8 +22,14 @@ public class MainMenu : MonoBehaviour
     public Button newGameButton;
     public Button backFromNewGameButton;
 
+    // Reference to the AudioManager
+    private AudioManager audioManager;
+
     void Start()
     {
+        // Get reference to AudioManager singleton
+        audioManager = AudioManager.Instance;
+
         // Initialize panel states
         MainMenuPanel.SetActive(true);
         creditsPanel.SetActive(false);
@@ -45,52 +51,88 @@ public class MainMenu : MonoBehaviour
 
     void ShowCredits()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+        
         creditsPanel.SetActive(true);
     }
 
     void HideCredits()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         creditsPanel.SetActive(false);
     }
 
     void ShowSettings()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         settingsPanel.SetActive(true);
         news.SetActive(false);
     }
 
     void HideSettings()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         news.SetActive(true);
         settingsPanel.SetActive(false);
     }
 
     void ShowRules()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         RulesPanel.SetActive(true);
         MainMenuPanel.SetActive(false);
     }
 
     void HideRules()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         RulesPanel.SetActive(false);
         MainMenuPanel.SetActive(true);
     }
 
     void ShowNewGame()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         newGamePanel.SetActive(true);
         MainMenuPanel.SetActive(false);
     }
 
     void HideNewGame()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         newGamePanel.SetActive(false);
         MainMenuPanel.SetActive(true);
     }
    
     void ExitGame()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

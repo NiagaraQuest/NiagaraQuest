@@ -10,11 +10,16 @@ public class CreateProfilePopup : MonoBehaviour
     public Button cancelButton;
 
     private NewGameMenuManager menuManager;
+    // Reference to the AudioManager
+    private AudioManager audioManager;
 
     void Start()
     {
         // Get reference to the menu manager
         menuManager = FindObjectOfType<NewGameMenuManager>();
+        
+        // Get reference to AudioManager singleton
+        audioManager = AudioManager.Instance;
 
         // Clear any existing listeners to avoid duplicates
         createButton.onClick.RemoveAllListeners();
@@ -40,12 +45,20 @@ public class CreateProfilePopup : MonoBehaviour
 
     public void ClosePopup()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         Debug.Log("Closing create profile popup");
         popupPanel.SetActive(false);
     }
 
     private void CreateProfile()
     {
+        // Play button sound
+        if (audioManager != null)
+            audioManager.PlayMenuButton();
+            
         string username = usernameInput.text.Trim();
 
         if (string.IsNullOrEmpty(username))
