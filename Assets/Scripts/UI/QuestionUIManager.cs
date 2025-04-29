@@ -27,10 +27,9 @@ public class QuestionUIManager : MonoBehaviour
 
     [Header("Result UI")]
     public GameObject resultPanel;
-    public TextMeshProUGUI resultText;
+    public TextMeshProUGUI resultText;          // Now shows only right/wrong status
+    public TextMeshProUGUI rewardText;          // New TMP for reward/penalty and ELO
     public Button exitButton;
-
-    // Remove the separate skipButtonPanel
 
     [Header("ELO Display")]
     public bool showEloChanges = true;
@@ -111,7 +110,7 @@ public class QuestionUIManager : MonoBehaviour
     private void UpdateSkipButtonsVisibility()
     {
         Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
-        
+
         // Vérifier si le panneau de résultat est actif - ne pas afficher les boutons skip pendant les résultats
         if (resultPanel != null && resultPanel.activeSelf)
         {
@@ -130,7 +129,7 @@ public class QuestionUIManager : MonoBehaviour
     private void SetAllSkipButtonsActive(bool active)
     {
         // Update all skip buttons visibility
-        if (openSkipButton != null) 
+        if (openSkipButton != null)
             openSkipButton.gameObject.SetActive(active);
         if (qcmSkipButton != null)
             qcmSkipButton.gameObject.SetActive(active);
@@ -386,7 +385,8 @@ public class QuestionUIManager : MonoBehaviour
             {
                 isSecondChance = true;
                 resultPanel.SetActive(true);
-                resultText.text = "❌ Wrong!\n🔥 Second chance!";
+                resultText.text = "This sounds wrong!";
+                rewardText.text = " Second chance!";
                 Invoke("RetrySameQuestion", 1.5f);
                 return;
             }
@@ -410,7 +410,7 @@ public class QuestionUIManager : MonoBehaviour
                 lastPlayerEloChange = currentPlayer.playerProfile.Elo - initialPlayerElo;
                 lastQuestionEloChange = currentQuestion.Elo - initialQuestionElo;
 
-                Debug.Log($"⚖️ ELO Change - Player: {initialPlayerElo} → {currentPlayer.playerProfile.Elo} " +
+                Debug.Log($" ELO Change - Player: {initialPlayerElo} → {currentPlayer.playerProfile.Elo} " +
                          $"({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}), " +
                          $"Question: {initialQuestionElo} → {currentQuestion.Elo} " +
                          $"({(lastQuestionEloChange >= 0 ? "+" : "")}{lastQuestionEloChange})");
@@ -435,10 +435,13 @@ public class QuestionUIManager : MonoBehaviour
         resultPanel.SetActive(true);
         string effectDescription = GetEffectDescription(currentQuestion.Difficulty, isCorrect);
 
-        // Generate result text
-        string resultBaseText = isCorrect ?
-            $"✅ Correct!\n\n<b>Reward:</b> {effectDescription}" :
-            $"❌ Wrong!\n\n<b>Penalty:</b> {effectDescription}";
+        // Set the result text to show only if answer is correct or wrong
+        resultText.text = isCorrect ? "You got it right !!" : "This sounds wrong!";
+
+        // Generate reward/penalty text
+        string rewardBaseText = isCorrect ?
+            $"<b>Reward:</b> {effectDescription}" :
+            $"<b>Penalty:</b> {effectDescription}";
 
         // Add ELO information if available and enabled
         if (showEloChanges && currentPlayer != null && currentPlayer.playerProfile != null)
@@ -450,7 +453,7 @@ public class QuestionUIManager : MonoBehaviour
             string eloColorEnd = "</color>";
 
             string eloChangeDisplay = $"\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
-            resultText.text = resultBaseText + eloChangeDisplay;
+            rewardText.text = rewardBaseText + eloChangeDisplay;
 
             // Show separate ELO change text if it exists
             if (eloChangeText != null)
@@ -464,7 +467,7 @@ public class QuestionUIManager : MonoBehaviour
                 else if (lastPlayerEloChange < 0)
                     eloChangeText.color = new Color(0.8f, 0.2f, 0.2f); // Red
                 else
-                    eloChangeText.color = Color.white;
+                    eloChangeText.color = Color.black;
 
                 // Hide ELO text after a few seconds
                 StartCoroutine(HideEloTextAfterDelay(eloDisplayTime));
@@ -472,7 +475,7 @@ public class QuestionUIManager : MonoBehaviour
         }
         else
         {
-            resultText.text = resultBaseText;
+            rewardText.text = rewardBaseText;
         }
 
         isSecondChance = false;
@@ -490,7 +493,8 @@ public class QuestionUIManager : MonoBehaviour
             if (protectionUsed)
             {
                 // Player was protected, show different result text
-                resultText.text = "❌ Wrong!\n\n🛡️ Protection activated! No penalty applied.";
+                resultText.text = "This sounds wrong!";
+                rewardText.text = "Protection activated! No penalty applied.";
             }
             else
             {

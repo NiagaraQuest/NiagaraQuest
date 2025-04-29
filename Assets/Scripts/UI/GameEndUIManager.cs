@@ -6,13 +6,15 @@ public class GameEndUIManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject endPanel;
-    public TextMeshProUGUI endMessageText;
+    public TextMeshProUGUI titleText;       // Title TMP text for "VICTORY" or "DEFEAT"
+    public TextMeshProUGUI subtitleText;    // New subtitle text for "You made it!" or "Better luck next time!"
+    public TextMeshProUGUI endMessageText;  // Detailed message with player name
     public Button exitButton;
     public Button playAgainButton;
-    
+
     [Header("References")]
     public GameEndManager gameEndManager;
-    
+
     private void Awake()
     {
         // Find or add the GameEndManager component
@@ -25,7 +27,7 @@ public class GameEndUIManager : MonoBehaviour
                 return;
             }
         }
-        
+
         // Make sure endPanel is disabled initially
         if (endPanel != null)
         {
@@ -36,12 +38,12 @@ public class GameEndUIManager : MonoBehaviour
             Debug.LogError("❌ End panel not assigned in GameEndUIManager!");
         }
     }
-    
+
     private void Start()
     {
         SetupButtons();
     }
-    
+
     // Setup all UI buttons
     private void SetupButtons()
     {
@@ -50,7 +52,7 @@ public class GameEndUIManager : MonoBehaviour
         {
             FindAndSetupButtons();
         }
-        
+
         // Set up button listeners with the correct references to GameEndManager
         if (exitButton != null && gameEndManager != null)
         {
@@ -63,7 +65,7 @@ public class GameEndUIManager : MonoBehaviour
         {
             Debug.LogError("❌ Exit button not found or GameEndManager not assigned!");
         }
-        
+
         if (playAgainButton != null && gameEndManager != null)
         {
             // Clear existing listeners to avoid duplicates
@@ -76,7 +78,7 @@ public class GameEndUIManager : MonoBehaviour
             Debug.LogError("❌ Play Again button not found or GameEndManager not assigned!");
         }
     }
-    
+
     // Try to find buttons automatically if they're not assigned in the Inspector
     private void FindAndSetupButtons()
     {
@@ -94,7 +96,7 @@ public class GameEndUIManager : MonoBehaviour
                     Debug.LogWarning("⚠️ Could not find 'ExitButton' in end panel");
                 }
             }
-            
+
             if (playAgainButton == null)
             {
                 playAgainButton = endPanel.transform.Find("PlayAgainButton")?.GetComponent<Button>();
@@ -107,9 +109,37 @@ public class GameEndUIManager : MonoBehaviour
                     Debug.LogWarning("⚠️ Could not find 'PlayAgainButton' in end panel");
                 }
             }
+
+            // Try to find title text if not assigned
+            if (titleText == null)
+            {
+                titleText = endPanel.transform.Find("TitleText")?.GetComponent<TextMeshProUGUI>();
+                if (titleText != null)
+                {
+                    Debug.Log("✅ Title text found automatically");
+                }
+                else
+                {
+                    Debug.LogWarning("⚠️ Could not find 'TitleText' in end panel. Make sure to add it to the UI.");
+                }
+            }
+
+            // Try to find subtitle text if not assigned
+            if (subtitleText == null)
+            {
+                subtitleText = endPanel.transform.Find("SubtitleText")?.GetComponent<TextMeshProUGUI>();
+                if (subtitleText != null)
+                {
+                    Debug.Log("✅ Subtitle text found automatically");
+                }
+                else
+                {
+                    Debug.LogWarning("⚠️ Could not find 'SubtitleText' in end panel. Make sure to add it to the UI.");
+                }
+            }
         }
     }
-    
+
     // Show defeat screen with custom message
     public void ShowDefeatScreen(Player losingPlayer)
     {
@@ -118,27 +148,41 @@ public class GameEndUIManager : MonoBehaviour
             Debug.LogError("❌ End panel not assigned in GameEndUIManager!");
             return;
         }
-        
+
         // Clean up all UI panels before showing game end screen
         if (gameEndManager != null)
         {
             gameEndManager.CleanupUIForGameEnd();
         }
-        
+
         // Make sure buttons are set up (in case panel was inactive before)
         SetupButtons();
-        
+
         // Show the panel
         endPanel.SetActive(true);
-        
+
+        // Set the title text to "DEFEAT"
+        if (titleText != null)
+        {
+            titleText.text = "DEFEAT";
+            titleText.color = new Color(0.9f, 0.2f, 0.2f); // Red color for defeat
+        }
+
+        // Set the subtitle text
+        if (subtitleText != null)
+        {
+            subtitleText.text = "Better luck next time!";
+            subtitleText.color = Color.black; // Black color for subtitle
+        }
+
         // Update message text
         if (endMessageText != null)
         {
             string playerName = losingPlayer != null ? losingPlayer.gameObject.name.Replace("Player", "") : "Someone";
-            endMessageText.text = $"You lose!\n{playerName} has lost all lives!";
+            endMessageText.text = $"{playerName} has lost all lives!";
         }
     }
-    
+
     // Show victory screen with custom message
     public void ShowVictoryScreen(Player winningPlayer)
     {
@@ -147,24 +191,38 @@ public class GameEndUIManager : MonoBehaviour
             Debug.LogError("❌ End panel not assigned in GameEndUIManager!");
             return;
         }
-        
+
         // Clean up all UI panels before showing game end screen
         if (gameEndManager != null)
         {
             gameEndManager.CleanupUIForGameEnd();
         }
-        
+
         // Make sure buttons are set up (in case panel was inactive before)
         SetupButtons();
-        
+
         // Show the panel
         endPanel.SetActive(true);
-        
+
+        // Set the title text to "VICTORY"
+        if (titleText != null)
+        {
+            titleText.text = "VICTORY";
+            titleText.color = new Color(0.2f, 0.8f, 0.2f); // Green color for victory
+        }
+
+        // Set the subtitle text
+        if (subtitleText != null)
+        {
+            subtitleText.text = "You made it to the destination!";
+            subtitleText.color = Color.black; // Black color for subtitle
+        }
+
         // Update message text
         if (endMessageText != null)
         {
             string playerName = winningPlayer != null ? winningPlayer.gameObject.name.Replace("Player", "") : "Someone";
-            endMessageText.text = $"Victory!\nWon with the help of {playerName}!";
+            endMessageText.text = $"Won with the help of {playerName}!";
         }
     }
 }
