@@ -86,7 +86,10 @@ public class CardTile : Tile
         CardManager cardManager = CardManager.Instance;
         if (cardManager != null)
         {
+            if (cardType != 2) // If NOT the gambler card
+            {
             cardManager.ApplyCardEffect(cardType, player);
+            }
         }
         
         // Continue the game

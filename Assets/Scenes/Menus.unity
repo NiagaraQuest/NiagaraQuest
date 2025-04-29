@@ -464,21 +464,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce20988159075564cb64d2bd2e098a17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainMenuPanel: {fileID: 29846214}
-  ExitButton: {fileID: 1786967136}
-  creditsPanel: {fileID: 1714681049}
-  creditsButton: {fileID: 187286163}
-  closeButton: {fileID: 318866963}
-  RulesPanel: {fileID: 1621882686}
-  ReturnButton: {fileID: 1989676064}
-  RulesButton: {fileID: 1339000080}
-  exitSettings: {fileID: 1120160228}
-  settings: {fileID: 204092844}
-  settingsPanel: {fileID: 1877877476}
-  news: {fileID: 748371734}
-  newGamePanel: {fileID: 2131113985}
-  newGameButton: {fileID: 469858711}
-  backFromNewGameButton: {fileID: 1332222276}
 --- !u!1 &122466841
 GameObject:
   m_ObjectHideFlags: 0
@@ -8724,7 +8709,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2131113985}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8353f7bda19e00468a476c21e4af856, type: 3}
+  m_Script: {fileID: 11500000, guid: 48deafcf0ddc4e147b5e810bbda37305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playersPanel: {fileID: 801173111}
@@ -8737,20 +8722,20 @@ MonoBehaviour:
   threePlayersButton: {fileID: 422780475}
   fourPlayersButton: {fileID: 322038148}
   profilesContainer: {fileID: 250646881}
-  profileEntryPrefab: {fileID: 7943015724830952614, guid: e51dcd641bf8a6843be8941b7620131b, type: 3}
-  returnToPlayersButton: {fileID: 806934490}
-  startGameButton: {fileID: 2120988057}
+  profileEntryPrefab: {fileID: 0}
+  returnToPlayersButton: {fileID: 0}
+  startGameButton: {fileID: 0}
   createNewProfileButton: {fileID: 582206359}
   createProfilePopup: {fileID: 211102108}
   usernameInput: {fileID: 979799172}
   confirmCreateButton: {fileID: 1532633574}
   cancelCreateButton: {fileID: 139448499}
-  pyroSelectButton: {fileID: 90698464}
-  geoSelectButton: {fileID: 1283174180}
-  hydroSelectButton: {fileID: 1791717171}
-  anemoSelectButton: {fileID: 1614110224}
-  clearProfileButton: {fileID: 802175687}
-  noneProfilePrefab: {fileID: 7943015724830952614, guid: e51dcd641bf8a6843be8941b7620131b, type: 3}
+  pyroSelectButton: {fileID: 0}
+  geoSelectButton: {fileID: 0}
+  hydroSelectButton: {fileID: 0}
+  anemoSelectButton: {fileID: 0}
+  clearProfileButton: {fileID: 0}
+  noneProfilePrefab: {fileID: 0}
 --- !u!1 &2134094920
 GameObject:
   m_ObjectHideFlags: 0

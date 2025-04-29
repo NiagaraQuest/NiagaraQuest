@@ -1,57 +1,41 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using static UnityEngine.UI.GridLayoutGroup;
-using System.IO;
-using UnityEditor;
 
 public class IntersectionUIManager : MonoBehaviour
 {
-    public GameObject panelChoices; // Le premier menu avec Stay / Change Path
-    public GameObject panelPathOptions; // Le menu affichant les chemins disponibles
-    public Button buttonStayOnPath;
-    public Button buttonChangePath;
-    public Button buttonPrefab; // Bouton modèle pour générer les options
+    [Header("Main UI Panel")]
+    public GameObject intersectionPanel; // Single panel containing all buttons
+
+    [Header("Path Buttons")]
+    public Button samePathButton;   // "Same Path" button
+    public Button forwardPathButton; // "Forward Path" button
+    public Button backwardPathButton; // "Backward Path" button
 
     private Player playerScript;
-    private List<GameObject> availablePaths = new List<GameObject>(); // Chemins disponibles
+    private List<GameObject> availablePaths = new List<GameObject>(); // Available paths
 
     void Start()
     {
-        panelChoices.SetActive(false);
-        panelPathOptions.SetActive(false);
-        buttonStayOnPath.onClick.AddListener(StayOnPath);
-        buttonChangePath.onClick.AddListener(ShowPathOptions);
+        // Hide panel at start
+        intersectionPanel.SetActive(false);
+
+        // Set up button listeners
+        samePathButton.onClick.AddListener(StayOnPath);
+        forwardPathButton.onClick.AddListener(() => SelectPath(0));
+        backwardPathButton.onClick.AddListener(() => SelectPath(1));
     }
 
-
-
-    //Displays the path selection menu
+    // Called when player reaches an intersection
     public void ShowUI(Player player)
     {
         playerScript = player;
-        panelChoices.SetActive(true);
-    }
 
-    void StayOnPath()
-    {
-        panelChoices.SetActive(false);
-        playerScript.ResumeMovement(null, true);
-    }
-
-    void ShowPathOptions()
-    {
-        panelChoices.SetActive(false);
-        panelPathOptions.SetActive(true);
-        GeneratePathButtons();
-    }
-
-    void GeneratePathButtons()
-    {
+        // Get available paths at this intersection
         GameObject currentWaypoint = playerScript.GetCurrentWaypoint();
         if (currentWaypoint == null)
         {
-            Debug.LogError("❌ Aucun waypoint actuel trouvé !");
+            Debug.LogError("❌ No current waypoint found!");
             return;
         }
 
@@ -60,49 +44,40 @@ public class IntersectionUIManager : MonoBehaviour
         {
             availablePaths = intersection.GetAvailablePaths(currentWaypoint, playerScript.GetLastPath());
 
-            if (availablePaths.Count == 0)
-            {
-                Debug.LogWarning("❌ Aucun chemin possible trouvé !");
-                return;
-            }
+            // Show the intersection panel
+            intersectionPanel.SetActive(true);
 
-            // Suppression des anciens boutons
-            foreach (Transform child in panelPathOptions.transform)
-            {
-                Destroy(child.gameObject);
-            }
+            // Enable/disable path buttons based on available options
+            samePathButton.gameObject.SetActive(true); // Always show same path option
 
-            // Génération des nouveaux boutons
-            foreach (GameObject path in availablePaths)
-            {
-                Button newButton = Instantiate(buttonPrefab, panelPathOptions.transform);
-                newButton.transform.localScale = Vector3.one;
-
-                var textComponent = newButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-                if (textComponent != null)
-                {
-                    textComponent.text = path.name;
-                }
-
-                // 🔥 FIXED: Passer un GameObject au lieu d'un string
-                newButton.onClick.AddListener(() => SelectPath(path));
-            }
+            // Show other path buttons only if we have paths available
+            forwardPathButton.gameObject.SetActive(availablePaths.Count > 0);
+            backwardPathButton.gameObject.SetActive(availablePaths.Count > 1);
         }
         else
         {
-            Debug.LogError("❌ L'intersection actuelle n'a pas de script IntersectionPoint !");
+            Debug.LogError("❌ The current intersection doesn't have an IntersectionPoint script!");
         }
     }
 
-    void SelectPath(GameObject selectedPath)
+    // Handler for staying on the same path
+    private void StayOnPath()
     {
-        panelPathOptions.SetActive(false);
-        playerScript.ResumeMovement(selectedPath, false);
+        intersectionPanel.SetActive(false);
+        playerScript.ResumeMovement(null, true);
+    }
+
+    // Handler for selecting a different path
+    private void SelectPath(int pathIndex)
+    {
+        if (pathIndex >= 0 && pathIndex < availablePaths.Count)
+        {
+            intersectionPanel.SetActive(false);
+            playerScript.ResumeMovement(availablePaths[pathIndex], false);
+        }
+        else
+        {
+            Debug.LogError($"❌ Invalid path index: {pathIndex}");
+        }
     }
 }
-
-
-
-
-
-
