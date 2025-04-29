@@ -1,157 +1,282 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
 
+// Main controller script for player HUDs - place on your UI manager GameObject
 public class PlayerHUDManager : MonoBehaviour
 {
     [System.Serializable]
-    public class PlayerHUDCorner
+    public class PlayerCorner
     {
-        public GameObject cornerRoot;
+        public GameObject cornerPanel;
         public TextMeshProUGUI playerNameText;
         public TextMeshProUGUI regionText;
         public TextMeshProUGUI eloText;
-        public List<Image> heartImages;
-        public Player associatedPlayer;
+        public Image[] heartImages = new Image[4];
+        public Color activeHeartColor = Color.red;
+        public Color inactiveHeartColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+        [HideInInspector] public GameObject linkedPlayer;
     }
 
-    [Header("Player HUD Corners")]
-    public List<PlayerHUDCorner> playerCorners = new List<PlayerHUDCorner>();
+    [Header("Corner References")]
+    [Tooltip("Top-left corner (usually Pyro)")]
+    public PlayerCorner corner1;
+    [Tooltip("Top-right corner (usually Hydro)")]
+    public PlayerCorner corner2;
+    [Tooltip("Bottom-left corner (usually Anemo)")]
+    public PlayerCorner corner3;
+    [Tooltip("Bottom-right corner (usually Geo)")]
+    public PlayerCorner corner4;
 
-    [Header("Heart Visuals")]
-    public Color activeHeartColor = Color.red;
-    public Color inactiveHeartColor = Color.gray;
-    public bool useGrayscaleInstead = true; // If true, use grayscale instead of changing color
+    [Header("Animation Settings")]
+    public float heartAnimDuration = 0.5f;
+    public float heartPulseScale = 1.5f;
 
-    private void Start()
+    private PlayerCorner[] allCorners;
+    private GameManager gameManager;
+    private Dictionary<GameObject, PlayerCorner> playerCornerMap = new Dictionary<GameObject, PlayerCorner>();
+
+    void Start()
     {
-        // Initialize HUD based on active players
-        InitializeHUD();
-    }
-
-    private void Update()
-    {
-        // Update player HUD info (region, lives, etc.) each frame
-        UpdatePlayerHUDs();
-    }
-
-    private void InitializeHUD()
-    {
-        // Get all active players from GameManager
-        if (GameManager.Instance != null && GameManager.Instance.players != null)
+        gameManager = GameManager.Instance;
+        if (gameManager == null)
         {
-            if (GameManager.Instance.players.Count > playerCorners.Count)
-            {
-                Debug.LogWarning("⚠️ More players than available HUD corners! Some players won't have HUD displays.");
-            }
-
-            // Associate each player with a corner
-            for (int i = 0; i < Mathf.Min(GameManager.Instance.players.Count, playerCorners.Count); i++)
-            {
-                GameObject playerObj = GameManager.Instance.players[i];
-                if (playerObj != null)
-                {
-                    Player player = playerObj.GetComponent<Player>();
-                    if (player != null)
-                    {
-                        playerCorners[i].associatedPlayer = player;
-
-                        // Set initial player name
-                        if (playerCorners[i].playerNameText != null)
-                        {
-                            playerCorners[i].playerNameText.text = playerObj.name.Replace("Player", "");
-                        }
-
-                        Debug.Log($"✅ Associated {playerObj.name} with HUD corner {i + 1}");
-                    }
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("❌ GameManager not found or no players available!");
-        }
-    }
-
-    private void UpdatePlayerHUDs()
-    {
-        foreach (PlayerHUDCorner corner in playerCorners)
-        {
-            if (corner.associatedPlayer == null || corner.cornerRoot == null)
-                continue;
-
-            // Update region text
-            if (corner.regionText != null)
-            {
-                // Get current tile from player
-                GameObject currentWaypoint = corner.associatedPlayer.GetCurrentWaypoint();
-                if (currentWaypoint != null)
-                {
-                    Tile tile = currentWaypoint.GetComponent<Tile>();
-                    if (tile != null)
-                    {
-                        corner.regionText.text = tile.region.ToString();
-                    }
-                }
-            }
-
-            // Update ELO if the player has a profile
-            if (corner.eloText != null && corner.associatedPlayer.playerProfile != null)
-            {
-                corner.eloText.text = "ELO: " + corner.associatedPlayer.playerProfile.Elo.ToString();
-            }
-
-            // Update hearts based on current lives
-            UpdateHearts(corner);
-        }
-    }
-
-    private void UpdateHearts(PlayerHUDCorner corner)
-    {
-        if (corner.heartImages.Count == 0 || corner.associatedPlayer == null)
+            Debug.LogError("PlayerHUDManager: GameManager.Instance not found");
             return;
+        }
 
-        int maxLives = GameManager.Instance.maxLives;
-        int currentLives = corner.associatedPlayer.lives;
+        // Set up corners array
+        allCorners = new PlayerCorner[] { corner1, corner2, corner3, corner4 };
 
-        // Make sure we don't try to update more hearts than we have images for
-        int heartsToUpdate = Mathf.Min(maxLives, corner.heartImages.Count);
+        // Set up the UI for the current game mode
+        SetupCorners();
+    }
 
-        for (int i = 0; i < heartsToUpdate; i++)
+    // Update player information each frame
+    void Update()
+    {
+        UpdateAllCorners();
+    }
+
+    // Set up corner panels based on active players
+    public void SetupCorners()
+    {
+        playerCornerMap.Clear();
+
+        // First, hide all corners
+        foreach (var corner in allCorners)
         {
-            Image heartImage = corner.heartImages[i];
-            if (heartImage != null)
+            if (corner.cornerPanel != null)
             {
-                if (i < currentLives)
+                corner.cornerPanel.SetActive(false);
+            }
+        }
+
+        // Get active players
+        List<GameObject> activePlayers = gameManager.players;
+        if (activePlayers == null || activePlayers.Count == 0)
+        {
+            Debug.LogWarning("PlayerHUDManager: No active players found");
+            return;
+        }
+
+        // Map player types to corners
+        Dictionary<string, PlayerCorner> typeToCorner = new Dictionary<string, PlayerCorner>
+        {
+            { "Pyro", corner1 },
+            { "Hydro", corner2 },
+            { "Anemo", corner3 },
+            { "Geo", corner4 }
+        };
+
+        // Assign players to their appropriate corners
+        foreach (GameObject player in activePlayers)
+        {
+            if (player == null) continue;
+
+            string playerName = player.name;
+
+            // Find matching corner by player type
+            foreach (string type in typeToCorner.Keys)
+            {
+                if (playerName.Contains(type))
                 {
-                    // Heart is active
-                    if (useGrayscaleInstead)
+                    PlayerCorner corner = typeToCorner[type];
+                    if (corner.cornerPanel != null)
                     {
-                        // Remove grayscale effect
-                        heartImage.color = Color.white; // Normal color (no tint)
+                        // Link player to corner
+                        corner.linkedPlayer = player;
+                        playerCornerMap[player] = corner;
+
+                        // Activate corner
+                        corner.cornerPanel.SetActive(true);
+
+                        // Initial update
+                        UpdateCorner(corner);
+
+                        Debug.Log($"PlayerHUDManager: Assigned {playerName} to corner {type}");
                     }
-                    else
-                    {
-                        // Use active color
-                        heartImage.color = activeHeartColor;
-                    }
+                    break;
+                }
+            }
+        }
+
+        // Log which corners are active
+        Debug.Log($"PlayerHUDManager: Active corners: {playerCornerMap.Count}/{allCorners.Length}");
+    }
+
+    // Update all corner displays
+    private void UpdateAllCorners()
+    {
+        foreach (var corner in allCorners)
+        {
+            if (corner.cornerPanel != null && corner.cornerPanel.activeSelf && corner.linkedPlayer != null)
+            {
+                UpdateCorner(corner);
+            }
+        }
+    }
+
+    // Update a specific corner's display
+    private void UpdateCorner(PlayerCorner corner)
+    {
+        if (corner.linkedPlayer == null) return;
+
+        Player playerScript = corner.linkedPlayer.GetComponent<Player>();
+        if (playerScript == null) return;
+
+        // Update player name
+        if (corner.playerNameText != null)
+        {
+            if (playerScript.playerProfile != null)
+            {
+                corner.playerNameText.text = playerScript.playerProfile.Username;
+            }
+            else
+            {
+                corner.playerNameText.text = corner.linkedPlayer.name.Replace("Player", "");
+            }
+        }
+
+        // Update region text
+        if (corner.regionText != null)
+        {
+            GameObject currentWaypoint = playerScript.GetCurrentWaypoint();
+            if (currentWaypoint != null)
+            {
+                Tile tile = currentWaypoint.GetComponent<Tile>();
+                if (tile != null)
+                {
+                    corner.regionText.text = tile.region.ToString();
                 }
                 else
                 {
-                    // Heart is inactive
-                    if (useGrayscaleInstead)
-                    {
-                        // Apply grayscale by using a gray tint
-                        heartImage.color = new Color(0.5f, 0.5f, 0.5f, 0.5f); // Gray with transparency
-                    }
-                    else
-                    {
-                        // Use inactive color
-                        heartImage.color = inactiveHeartColor;
-                    }
+                    corner.regionText.text = "???";
                 }
             }
         }
+
+        // Update ELO text
+        if (corner.eloText != null && playerScript.playerProfile != null)
+        {
+            corner.eloText.text = playerScript.playerProfile.Elo.ToString();
+        }
+
+        // Update hearts
+        UpdateHearts(corner, playerScript.lives);
+
+        // Highlight current player
+        bool isCurrentPlayer = (gameManager.selectedPlayer == corner.linkedPlayer);
+        HighlightCorner(corner, isCurrentPlayer);
+    }
+
+    // Update heart images based on current lives
+    private void UpdateHearts(PlayerCorner corner, int currentLives)
+    {
+        if (corner.heartImages == null) return;
+
+        for (int i = 0; i < corner.heartImages.Length; i++)
+        {
+            if (corner.heartImages[i] != null)
+            {
+                bool isActive = i < currentLives;
+                corner.heartImages[i].color = isActive ? corner.activeHeartColor : corner.inactiveHeartColor;
+            }
+        }
+    }
+
+    // Highlight the current player's corner
+    private void HighlightCorner(PlayerCorner corner, bool isActive)
+    {
+        if (corner.cornerPanel != null)
+        {
+            // Simple highlight - scale up slightly
+            corner.cornerPanel.transform.localScale = isActive ?
+                new Vector3(1.1f, 1.1f, 1.1f) :
+                Vector3.one;
+        }
+    }
+
+    // Called when a player loses/gains a life
+    public void OnPlayerLifeChanged(GameObject player, int oldValue, int newValue)
+    {
+        if (playerCornerMap.TryGetValue(player, out PlayerCorner corner))
+        {
+            // Update hearts with animation
+            UpdateHearts(corner, newValue);
+
+            // Animate hearts that changed
+            int startIndex = Mathf.Min(oldValue, newValue);
+            int endIndex = Mathf.Max(oldValue, newValue);
+            bool isGaining = newValue > oldValue;
+
+            for (int i = startIndex; i < endIndex && i < corner.heartImages.Length; i++)
+            {
+                if (corner.heartImages[i] != null)
+                {
+                    StartCoroutine(AnimateHeart(corner.heartImages[i], isGaining));
+                }
+            }
+        }
+    }
+
+    // Animate heart change
+    private IEnumerator AnimateHeart(Image heartImage, bool isGaining)
+    {
+        float duration = heartAnimDuration;
+        float time = 0;
+        Vector3 originalScale = heartImage.transform.localScale;
+        Vector3 pulseScale = originalScale * heartPulseScale;
+        Color originalColor = heartImage.color;
+        Color flashColor = isGaining ? Color.white : Color.black;
+
+        while (time < duration)
+        {
+            float t = time / duration;
+
+            // First half: pulse out
+            if (t < 0.5f)
+            {
+                float phase = t * 2;
+                heartImage.transform.localScale = Vector3.Lerp(originalScale, pulseScale, phase);
+                heartImage.color = Color.Lerp(originalColor, flashColor, phase);
+            }
+            // Second half: pulse in
+            else
+            {
+                float phase = (t - 0.5f) * 2;
+                heartImage.transform.localScale = Vector3.Lerp(pulseScale, originalScale, phase);
+                heartImage.color = Color.Lerp(flashColor, originalColor, phase);
+            }
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        // Reset to final state
+        heartImage.transform.localScale = originalScale;
+        heartImage.color = originalColor;
     }
 }

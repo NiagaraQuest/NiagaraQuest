@@ -200,7 +200,7 @@ public class CardUIManager : MonoBehaviour
         gambleResultPanel.SetActive(false);
 
         // Set up the prompt text
-        gamblePromptText.text = "Do you want to gamble a life?\n\n50% chance to gain a life\n50% chance to lose a life";
+        gamblePromptText.text = "Are you willing to Gamble one life.";
 
         // Set up button listeners
         gambleYesButton.onClick.RemoveAllListeners();
@@ -282,16 +282,16 @@ public class CardUIManager : MonoBehaviour
         {
             if (moveForward)
             {
-                resultMessage = "<color=#4CAF50>You won!</color>\n\nYou already have maximum lives.\nYou will move forward 8 tiles!";
+                resultMessage = "<color=#4CAF50>You won!</color>\n<size=55>You already have maximum lives.\nYou will move forward 8 tiles!";
             }
             else
             {
-                resultMessage = "<color=#4CAF50>You won!</color>\n\nYou gained 1 life!";
+                resultMessage = "<color=#4CAF50>You won!</color>\nYou gained 1 life!";
             }
         }
         else
         {
-            resultMessage = "<color=#F44336>You lost!</color>\n\nYou lost 1 life!";
+            resultMessage = "<color=#F44336>You lost!</color>\nYou lost 1 life!";
         }
 
         // Set up the result text

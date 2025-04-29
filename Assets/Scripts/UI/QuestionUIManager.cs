@@ -452,7 +452,7 @@ public class QuestionUIManager : MonoBehaviour
             string eloColorStart = lastPlayerEloChange >= 0 ? "<color=#4CAF50>" : "<color=#F44336>";
             string eloColorEnd = "</color>";
 
-            string eloChangeDisplay = $"\n\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
+            string eloChangeDisplay = $"\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
             rewardText.text = rewardBaseText + eloChangeDisplay;
 
             // Show separate ELO change text if it exists
@@ -467,7 +467,7 @@ public class QuestionUIManager : MonoBehaviour
                 else if (lastPlayerEloChange < 0)
                     eloChangeText.color = new Color(0.8f, 0.2f, 0.2f); // Red
                 else
-                    eloChangeText.color = Color.white;
+                    eloChangeText.color = Color.black;
 
                 // Hide ELO text after a few seconds
                 StartCoroutine(HideEloTextAfterDelay(eloDisplayTime));
