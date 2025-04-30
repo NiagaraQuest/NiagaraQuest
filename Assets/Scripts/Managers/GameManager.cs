@@ -145,6 +145,13 @@ public class GameManager : MonoBehaviour
         
         try
         {
+            // Add this to clearly show which players are active at the start
+            Debug.Log("🔍 CHECKING PLAYER ACTIVATION STATUS FROM PLAYERPREFS:");
+            Debug.Log($"PyroPlayer_Active = {PlayerPrefs.GetInt("PyroPlayer_Active", 0)}");
+            Debug.Log($"GeoPlayer_Active = {PlayerPrefs.GetInt("GeoPlayer_Active", 0)}");
+            Debug.Log($"HydroPlayer_Active = {PlayerPrefs.GetInt("HydroPlayer_Active", 0)}");  // Important! Check HydroPlayer
+            Debug.Log($"AnemoPlayer_Active = {PlayerPrefs.GetInt("AnemoPlayer_Active", 0)}");
+            
             // Prepare a list with proper positions for each player
             GameObject[] orderedPlayers = new GameObject[4]; // Use array to maintain positions
             
@@ -160,10 +167,17 @@ public class GameManager : MonoBehaviour
             
             // Check HydroPlayer (position 1)
             GameObject hydroPlayer = GameObject.Find("HydroPlayer");
+            // Add this line to debug if HydroPlayer GameObject is found
+            Debug.Log($"🔍 HydroPlayer GameObject found: {hydroPlayer != null}");
             if (hydroPlayer != null && PlayerPrefs.GetInt("HydroPlayer_Active", 0) == 1)
             {
+                Debug.Log("✅ HydroPlayer is active! Assigning profile...");
                 AssignProfileToPlayer(hydroPlayer, "HydroPlayer");
                 orderedPlayers[1] = hydroPlayer;
+            }
+            else
+            {
+                Debug.Log($"⚠️ HydroPlayer not active. GameObject exists: {hydroPlayer != null}, Active flag: {PlayerPrefs.GetInt("HydroPlayer_Active", 0)}");
             }
             
             // Check AnemoPlayer (position 2)
