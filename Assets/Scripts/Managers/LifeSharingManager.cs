@@ -83,6 +83,39 @@ public class LifeSharingManager : MonoBehaviour
                 ReturnToGame();
             }
         }
+        
+        // Check for F key to activate life sharing
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            // Only process F key if the give life button is active and visible
+            if (giveLifeButton != null && giveLifeButton.gameObject.activeSelf && giveLifeButton.interactable)
+            {
+                Debug.Log("🔑 F key pressed - activating life sharing menu");
+                ShowLifeSharingOptions();
+            }
+        }
+        
+        // If player selection panel is active, check for number keys to select players
+        if (playerSelectionPanel != null && playerSelectionPanel.activeSelf)
+        {
+            // Check for number keys 1-9 for quick selection
+            for (int i = 0; i < 9; i++)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1 + i) || Input.GetKeyDown(KeyCode.Keypad1 + i))
+                {
+                    // If we have that many options, select it
+                    if (i < createdOptionButtons.Count)
+                    {
+                        Button optionButton = createdOptionButtons[i].GetComponent<Button>();
+                        if (optionButton != null && optionButton.interactable)
+                        {
+                            optionButton.onClick.Invoke();
+                            Debug.Log($"🔢 Quick-selected player option {i+1} using number key");
+                        }
+                    }
+                }
+            }
+        }
     }
     
     // Check if dice have been rolled by monitoring the dice button state
@@ -137,7 +170,7 @@ public class LifeSharingManager : MonoBehaviour
                     Text buttonText = giveLifeButton.GetComponentInChildren<Text>();
                     if (buttonText != null)
                     {
-                        buttonText.text = $"Give Life ({currentPlayer.lives})";
+                        buttonText.text = $"Give Life ({currentPlayer.lives}) [F]";
                     }
                 }
             }
@@ -163,6 +196,17 @@ public class LifeSharingManager : MonoBehaviour
         {
             giveLifeButton.gameObject.SetActive(conditionsMet);
             Debug.Log($"Life sharing button visibility set to: {conditionsMet}");
+            
+            // Update button text to include F key hint
+            Text buttonText = giveLifeButton.GetComponentInChildren<Text>();
+            if (buttonText != null)
+            {
+                Player currentPlayer = gm.selectedPlayer?.GetComponent<Player>();
+                if (currentPlayer != null)
+                {
+                    buttonText.text = $"Give Life ({currentPlayer.lives}) [F]";
+                }
+            }
             
             // Log current player status
             if (gm != null && gm.selectedPlayer != null)
@@ -267,6 +311,7 @@ public class LifeSharingManager : MonoBehaviour
         }
         
         // Create option for each eligible player
+        int playerIndex = 1; // For number key shortcuts
         foreach (Player player in eligiblePlayers)
         {
             GameObject optionObj = Instantiate(playerOptionPrefab, playerOptionsContainer);
@@ -275,7 +320,15 @@ public class LifeSharingManager : MonoBehaviour
             Text optionText = optionObj.GetComponentInChildren<Text>();
             if (optionText != null)
             {
-                optionText.text = player.gameObject.name;
+                // Add number for keyboard shortcut if 9 or fewer options
+                if (eligiblePlayers.Count <= 9)
+                {
+                    optionText.text = $"{playerIndex}. {player.gameObject.name}";
+                }
+                else
+                {
+                    optionText.text = player.gameObject.name;
+                }
             }
             
             // Add click handler
@@ -287,6 +340,7 @@ public class LifeSharingManager : MonoBehaviour
             }
             
             createdOptionButtons.Add(optionObj);
+            playerIndex++;
         }
         
         // Show the panel

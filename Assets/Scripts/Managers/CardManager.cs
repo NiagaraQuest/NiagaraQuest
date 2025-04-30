@@ -54,7 +54,7 @@ public class CardManager : MonoBehaviour
     // Draw a random card and return its type
     public int DrawRandomCard()
     {
-        return Random.Range(0, cardNames.Length);
+        return 3;
     }
     
     // Get card name by type
@@ -150,7 +150,6 @@ public class CardManager : MonoBehaviour
         }
     }
     
-    // Swap positions with a specific player
     public void SwapWithSpecificPlayer(Player currentPlayer, Player otherPlayer)
     {
         if (currentPlayer == otherPlayer)
@@ -165,21 +164,40 @@ public class CardManager : MonoBehaviour
         GameObject currentWaypoint = currentPlayer.GetCurrentWaypoint();
         GameObject otherWaypoint = otherPlayer.GetCurrentWaypoint();
         
-        // Store positions
+        // Store current player's data
         string tempPath = currentPlayer.currentPath;
         int tempIndex = currentPlayer.currentWaypointIndex;
+        int tempDirection = currentPlayer.movementDirection;
+        Stack<Player.WaypointData> tempWaypoints = currentPlayer.GetWaypointHistory();
+        string tempLastLandingPath = currentPlayer.GetLastLandingPath();
+        int tempLastLandingIndex = currentPlayer.GetLastLandingIndex();
+        int tempLastLandingDirection = currentPlayer.GetLastLandingDirection();
+        string tempPreviousLandingPath = currentPlayer.GetPreviousLandingPath();
+        int tempPreviousLandingIndex = currentPlayer.GetPreviousLandingIndex();
+        int tempPreviousLandingDirection = currentPlayer.GetPreviousLandingDirection();
         
-        // Move players to each other's positions
+        // Transfer other player's data to current player
         currentPlayer.transform.position = otherWaypoint.transform.position;
         currentPlayer.currentPath = otherPlayer.currentPath;
         currentPlayer.currentWaypointIndex = otherPlayer.currentWaypointIndex;
+        currentPlayer.movementDirection = otherPlayer.movementDirection;
+        currentPlayer.SetWaypointHistory(otherPlayer.GetWaypointHistory());
+        currentPlayer.SetLastLandingPath(otherPlayer.GetLastLandingPath(), otherPlayer.GetLastLandingIndex(), otherPlayer.GetLastLandingDirection());
+        currentPlayer.SetPreviousLandingPath(otherPlayer.GetPreviousLandingPath(), otherPlayer.GetPreviousLandingIndex(), otherPlayer.GetPreviousLandingDirection());
         
+        // Transfer stored current player's data to other player
         otherPlayer.transform.position = currentWaypoint.transform.position;
         otherPlayer.currentPath = tempPath;
         otherPlayer.currentWaypointIndex = tempIndex;
+        otherPlayer.movementDirection = tempDirection;
+        otherPlayer.SetWaypointHistory(tempWaypoints);
+        otherPlayer.SetLastLandingPath(tempLastLandingPath, tempLastLandingIndex, tempLastLandingDirection);
+        otherPlayer.SetPreviousLandingPath(tempPreviousLandingPath, tempPreviousLandingIndex, tempPreviousLandingDirection);
+        
+        Debug.Log($"🔄 Swap completed! Directions: {currentPlayer.gameObject.name}({currentPlayer.movementDirection}) and {otherPlayer.gameObject.name}({otherPlayer.movementDirection})");
     }
     
-    // Original random swap method (kept as fallback)
+
     private void SwapWithRandomPlayer(Player targetPlayer)
     {
         GameManager gameManager = GameManager.Instance;

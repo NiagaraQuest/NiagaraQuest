@@ -15,11 +15,15 @@ public class DiceManager : MonoBehaviour
     
     public int LastRollSum { get; private set; }
     public GameManager gameManager; // Reference to GameManager
-    public bool DiceHaveFinishedRolling { get; private set; } = false;
+    public bool DiceHaveFinishedRolling { get; private set; } = true; // Start as true (not rolling)
     
     // Event that can be subscribed to when dice finish rolling
     public delegate void DiceRollCompleteDelegate(int rollValue);
     public event DiceRollCompleteDelegate OnDiceRollComplete;
+    
+    // New event for when dice start rolling
+    public delegate void DiceRollStartDelegate();
+    public event DiceRollStartDelegate OnDiceRollStart;
 
     private void Awake()
     {
@@ -40,25 +44,48 @@ public class DiceManager : MonoBehaviour
             Debug.LogError("AudioManager not found in the scene. Make sure it's set up properly.");
         }
     }
+    
+    private void Update()
+    {
+        // Check for 'D' key press when roll button is interactive
+        if (Input.GetKeyDown(KeyCode.D) && rollButton.interactable)
+        {
+            RollBothDiceAndShowSum();
+        }
+    }
 
     public void RollBothDiceAndShowSum()
     {
         rollButton.interactable = false;
         DiceHaveFinishedRolling = false;
+        sumText.text = "Lancer en cours...";
+        
+        // Fire event that dice have started rolling (for camera switching)
+        if (OnDiceRollStart != null)
+        {
+            OnDiceRollStart.Invoke();
+        }
+        
+        // Start the coroutine to handle rolling and showing the sum
         StartCoroutine(RollAndShowSum());
     }
 
     private IEnumerator RollAndShowSum()
     {
-        sumText.text = "Lancer en cours...";
+        // Roll the dice
         dice1.RollTheDice();
         dice2.RollTheDice();
         audioManager.PlayDiceRolling();
         
+        // Wait until both dice have stopped
         yield return new WaitUntil(() => dice1.HasStopped && dice2.HasStopped);
         
+        // Get the sum of the dice values
         LastRollSum = dice1.GetRollValue() + dice2.GetRollValue();
         sumText.text = "Somme : " + LastRollSum;
+        
+        // Short delay to view the final dice positions before processing results
+        yield return new WaitForSeconds(0.7f);
         
         // Set flag that dice have finished rolling
         DiceHaveFinishedRolling = true;
