@@ -150,6 +150,17 @@ public class Player : MonoBehaviour
         GameManager.Instance.CheckPlayerLives();
         if (isMoving && !reachedIntersection)
         {
+            GameObject currentWaypoint = GetCurrentWaypoint();
+            if (currentWaypoint != null)
+            {
+                Tile tile = currentWaypoint.GetComponent<Tile>();
+                if (tile != null && CameraManager.Instance != null)
+                {
+                    // Immediately switch to the region camera based on current tile
+                    CameraManager.Instance.OnPlayerLandedOnTile(this, tile.region);
+                    Debug.Log($"🎥 Switching camera to {tile.region} region as player starts moving");
+                }
+            }
             if (targetWaypointIndex < 0)
             {
                 Debug.LogWarning($"⚠️ ATTENTION: Index -1 détecté à l'étape {remainingSteps}. Chemin: {currentPath}, Index actuel: {currentWaypointIndex}, Target: {targetWaypointIndex}");
@@ -189,14 +200,6 @@ public class Player : MonoBehaviour
                         {
                             reachedIntersection = true;
                             isMoving = false;
-
-                            // Switch back to main camera when reaching intersection
-                            if (usingPlayerCamera && CameraManager.Instance != null)
-                            {
-                                CameraManager.Instance.SwitchToMainCamera();
-                                usingPlayerCamera = false;
-                            }
-
                             uiManager.ShowUI(this);
                         }
                         // Si le joueur a encore 2 pas ou plus, continuer automatiquement sur le même chemin
@@ -205,13 +208,7 @@ public class Player : MonoBehaviour
                             Debug.Log($"🔄 Intersection ignorée car remainingSteps = {remainingSteps} > 1. Continuation automatique sur le même chemin.");
 
                             lastWaypointBeforeIntersection = targetWaypoint;
-
-                            // Utiliser la même logique que le bouton "Stay on Path"
-                            // Note: Nous enregistrons d'abord l'intersection comme dernière position
                             ResumeMovement(null, true);
-
-                            // Pas besoin d'ajuster les pas manuellement car ResumeMovement s'en charge
-                            // remainingSteps est toujours géré correctement
                         }
                     }
                     else
@@ -236,13 +233,6 @@ public class Player : MonoBehaviour
                         {
                             isMoving = false;
                             isMovingBack = false;
-
-                            // Switch back to main camera when player stops moving
-                            if (usingPlayerCamera && CameraManager.Instance != null)
-                            {
-                                CameraManager.Instance.SwitchToMainCamera();
-                                usingPlayerCamera = false;
-                            }
 
                             DisplayCurrentRegion();
                         }
@@ -285,6 +275,12 @@ public class Player : MonoBehaviour
 public virtual bool CanGiveLife()
 {
     return lives >= 3;
+}
+
+public void PlayMovementSound(){
+    while(isMoving){
+        AudioManager.Instance.PlayMovement();
+    }
 }
 
 public virtual void GiveLifeTo(Player targetPlayer)
@@ -383,24 +379,12 @@ public virtual void GiveLifeTo(Player targetPlayer)
             remainingSteps = steps;
             targetWaypointIndex = currentWaypointIndex + movementDirection;
             isMoving = true;
-            
-            // Get the current waypoint and its region before movement starts
-            GameObject currentWaypoint = GetCurrentWaypoint();
-            if (currentWaypoint != null)
-            {
-                Tile tile = currentWaypoint.GetComponent<Tile>();
-                if (tile != null && CameraManager.Instance != null)
-                {
-                    // Immediately switch to the region camera based on current tile
-                    CameraManager.Instance.OnPlayerLandedOnTile(this, tile.region);
-                    Debug.Log($"🎥 Switching camera to {tile.region} region as player starts moving");
-                }
-            }
         }
     }
 
     public virtual void MovePlayerBack()
     {
+        CameraManager.Instance.SwitchToMainCamera();
         Debug.Log($"DEBUG: MovePlayerBack called - isMovingBack before: {isMovingBack}");
         if (isMoving || reachedIntersection)
         {

@@ -6277,7 +6277,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -6347,13 +6347,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 412653307}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.48234478, z: -0, w: 0.8759815}
-  m_LocalPosition: {x: 12.38, y: -7.8899994, z: 2.1800003}
+  m_LocalRotation: {x: 0.69635916, y: 0.004517421, z: 0.01673064, w: 0.7174842}
+  m_LocalPosition: {x: -0.27000046, y: 2.8400002, z: 7.8900003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 362815004}
-  m_LocalEulerAnglesHint: {x: 0, y: -57.677, z: 0}
+  m_LocalEulerAnglesHint: {x: 87.572, y: 44.671, z: 45.661}
 --- !u!1 &414621272
 GameObject:
   m_ObjectHideFlags: 0
@@ -26007,6 +26007,7 @@ MonoBehaviour:
   maxLives: 0
   twoPlayersInitialLives: 4
   threeOrFourPlayersInitialLives: 3
+  diceRollToMoveDelay: 1.5
   gameEndUIManager: {fileID: 841796895}
   allowLifeSharing: 1
   hasDiceBeenRolledThisTurn: 0

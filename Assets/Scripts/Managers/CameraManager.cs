@@ -403,15 +403,12 @@ public class CameraManager : MonoBehaviour
         SwitchToDiceCamera();
     }
 
-    // Called when dice have finished rolling
+
     public void OnDiceRollComplete(int rollValue)
     {
-        // No need to switch cameras here - the GameManager will handle this 
-        // by checking the player's current tile before movement starts
-        // This ensures we immediately switch to the correct region camera when the player moves
     }
     
-    // Called when a player lands on a tile
+
     public void OnPlayerLandedOnTile(Player player, Tile.Region region)
     {
         // Switch camera based on the region of the tile

@@ -629,6 +629,7 @@ public class GameManager : MonoBehaviour
 
         if (isExtraTurn){
             diceManager.EnableAndSwitchToMainCamera();
+            isExtraTurn = false;
         }
 
         int attempts = 0;
@@ -688,13 +689,6 @@ public class GameManager : MonoBehaviour
         // Réinitialiser l'état du joueur 
         currentPlayerIndex = players.IndexOf(player.gameObject);
         selectedPlayer = player.gameObject;
-
-        // Activer le bouton de dés pour permettre un nouveau lancer
-        if (diceManager != null)
-        {
-            diceManager.EnableRollButton();
-        }
-
         Debug.Log($"🔄 {player.gameObject.name} obtient un tour supplémentaire!");
     }
 

@@ -404,8 +404,7 @@ public class CardUIManager : MonoBehaviour
     {
         if (diceManager != null)
         {
-            diceManager.EnableRollButton();
-            Debug.Log("Roll button enabled after question");
+            diceManager.EnableAndSwitchToMainCamera();
         }
         else
         {

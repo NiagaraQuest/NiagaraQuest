@@ -44,6 +44,7 @@ public class QuestionUIManager : MonoBehaviour
     private bool lastAnswerCorrect = false; // Store the last answer result
     private int lastPlayerEloChange = 0;
     private int lastQuestionEloChange = 0;
+    private bool protectionUsed = false; // Track if protection was used
 
     [Header("Dice Control")]
     private DiceManager diceManager; // Référence au DiceManager
@@ -160,6 +161,9 @@ public class QuestionUIManager : MonoBehaviour
         isProcessingQuestion = true;
         currentTile = tile;
         currentQuestion = question;
+        
+        // Reset protection used flag
+        protectionUsed = false;
 
         // Désactiver le bouton de lancement de dé pendant qu'une question est traitée
         DisableRollButton();
@@ -437,57 +441,11 @@ public class QuestionUIManager : MonoBehaviour
         // Set the result text to show only if answer is correct or wrong
         resultText.text = isCorrect ? "You got it right !!" : "This sounds wrong!";
 
-        // Generate reward/penalty text
-        string rewardBaseText = isCorrect ?
-            $"<b>Reward:</b> {effectDescription}" :
-            $"<b>Penalty:</b> {effectDescription}";
-
-        // Add ELO information if available and enabled
-        if (showEloChanges && currentPlayer != null && currentPlayer.playerProfile != null)
-        {
-            int currentElo = currentPlayer.playerProfile.Elo;
-            int previousElo = currentElo - lastPlayerEloChange;
-
-            string eloColorStart = lastPlayerEloChange >= 0 ? "<color=#4CAF50>" : "<color=#F44336>";
-            string eloColorEnd = "</color>";
-
-            string eloChangeDisplay = $"\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
-            rewardText.text = rewardBaseText + eloChangeDisplay;
-
-            // Show separate ELO change text if it exists
-            if (eloChangeText != null)
-            {
-                eloChangeText.gameObject.SetActive(true);
-                eloChangeText.text = $"ELO: {previousElo} → {currentElo} ({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange})";
-
-                // Set color based on change
-                if (lastPlayerEloChange > 0)
-                    eloChangeText.color = new Color(0.2f, 0.8f, 0.2f); // Green
-                else if (lastPlayerEloChange < 0)
-                    eloChangeText.color = new Color(0.8f, 0.2f, 0.2f); // Red
-                else
-                    eloChangeText.color = Color.black;
-
-                // Hide ELO text after a few seconds
-                StartCoroutine(HideEloTextAfterDelay(eloDisplayTime));
-            }
-        }
-        else
-        {
-            rewardText.text = rewardBaseText;
-        }
-
-        isSecondChance = false;
-
-        if (currentPlayer != null)
-        {
-            currentPlayer.AnswerQuestion(isCorrect); // Appeler la méthode AnswerQuestion du joueur
-        }
-
+        // Check if protection should be used (only for incorrect answers)
         if (!isCorrect)
         {
             // Check if player has protection
-            bool protectionUsed = CardManager.Instance.UseProtectionIfAvailable(currentPlayer);
+            protectionUsed = CardManager.Instance.UseProtectionIfAvailable(currentPlayer);
 
             if (protectionUsed)
             {
@@ -497,13 +455,77 @@ public class QuestionUIManager : MonoBehaviour
             }
             else
             {
-                // Normal wrong answer handling
-                GameManager.Instance.ApplyQuestionResult(currentPlayer, false, currentQuestion.Difficulty);
+                // Normal wrong answer handling - show the effect that will be applied
+                // Generate reward/penalty text
+                string rewardBaseText = $"<b>Penalty:</b> {effectDescription}";
+
+                // Add ELO information if available and enabled
+                if (showEloChanges && currentPlayer != null && currentPlayer.playerProfile != null)
+                {
+                    int currentElo = currentPlayer.playerProfile.Elo;
+                    int previousElo = currentElo - lastPlayerEloChange;
+
+                    string eloColorStart = lastPlayerEloChange >= 0 ? "<color=#4CAF50>" : "<color=#F44336>";
+                    string eloColorEnd = "</color>";
+
+                    string eloChangeDisplay = $"\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
+                    rewardText.text = rewardBaseText + eloChangeDisplay;
+                }
+                else
+                {
+                    rewardText.text = rewardBaseText;
+                }
             }
         }
         else
         {
-            GameManager.Instance.ApplyQuestionResult(currentPlayer, true, currentQuestion.Difficulty);
+            // For correct answers, just show the reward description
+            string rewardBaseText = $"<b>Reward:</b> {effectDescription}";
+
+            // Add ELO information if available and enabled
+            if (showEloChanges && currentPlayer != null && currentPlayer.playerProfile != null)
+            {
+                int currentElo = currentPlayer.playerProfile.Elo;
+                int previousElo = currentElo - lastPlayerEloChange;
+
+                string eloColorStart = lastPlayerEloChange >= 0 ? "<color=#4CAF50>" : "<color=#F44336>";
+                string eloColorEnd = "</color>";
+
+                string eloChangeDisplay = $"\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
+                rewardText.text = rewardBaseText + eloChangeDisplay;
+            }
+            else
+            {
+                rewardText.text = rewardBaseText;
+            }
+        }
+
+        isSecondChance = false;
+
+        if (currentPlayer != null)
+        {
+            currentPlayer.AnswerQuestion(isCorrect); // Appeler la méthode AnswerQuestion du joueur
+        }
+
+        // Show separate ELO change text if it exists
+        if (eloChangeText != null && showEloChanges && currentPlayer != null && currentPlayer.playerProfile != null)
+        {
+            int currentElo = currentPlayer.playerProfile.Elo;
+            int previousElo = currentElo - lastPlayerEloChange;
+
+            eloChangeText.gameObject.SetActive(true);
+            eloChangeText.text = $"ELO: {previousElo} → {currentElo} ({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange})";
+
+            // Set color based on change
+            if (lastPlayerEloChange > 0)
+                eloChangeText.color = new Color(0.2f, 0.8f, 0.2f); // Green
+            else if (lastPlayerEloChange < 0)
+                eloChangeText.color = new Color(0.8f, 0.2f, 0.2f); // Red
+            else
+                eloChangeText.color = Color.black;
+
+            // Hide ELO text after a few seconds
+            StartCoroutine(HideEloTextAfterDelay(eloDisplayTime));
         }
 
         // Focus on the exit button so Enter key works right away
@@ -567,6 +589,35 @@ public class QuestionUIManager : MonoBehaviour
     {
         HideAllPanels();
 
+        // Now apply the game effects here, AFTER the panel is closed
+        Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
+        
+        if (currentPlayer != null && !isRetrying)
+        {
+            // Apply effects based on answer correctness
+            if (!lastAnswerCorrect)
+            {
+                if (protectionUsed)
+                {
+                    // No penalty if protection was used
+                    Debug.Log($"🛡️ {currentPlayer.gameObject.name} was protected from the penalty!");
+                }
+                else
+                {
+                    // Apply penalty for wrong answer
+                    Debug.Log($"❌ Applying penalty to {currentPlayer.gameObject.name} for wrong answer");
+                    GameManager.Instance.ApplyQuestionResult(currentPlayer, false, currentQuestion.Difficulty);
+                }
+            }
+            else
+            {
+                // Apply reward for correct answer
+                Debug.Log($"✅ Applying reward to {currentPlayer.gameObject.name} for correct answer");
+                GameManager.Instance.ApplyQuestionResult(currentPlayer, true, currentQuestion.Difficulty);
+            }
+        }
+
+        // Re-enable dice button and switch to main camera
         diceManager.EnableAndSwitchToMainCamera();
 
         if (!isRetrying && currentTile != null)
@@ -601,6 +652,4 @@ public class QuestionUIManager : MonoBehaviour
             Debug.LogWarning("❌ Cannot disable roll button: diceManager is null");
         }
     }
-
-
 }
