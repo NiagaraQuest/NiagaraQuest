@@ -111,4 +111,18 @@ public class DiceManager : MonoBehaviour
     {
         rollButton.interactable = false;
     }
+
+    public void EnableAndSwitchToMainCamera(){
+        // Enable the roll button
+        EnableRollButton();
+        
+        if(CameraManager.Instance != null)
+        {
+            CameraManager.Instance.SwitchToMainCamera();
+        }
+        else
+        {
+            Debug.LogError("CameraManager instance not found!");
+        }
+    }
 }

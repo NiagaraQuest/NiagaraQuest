@@ -8,7 +8,15 @@ public class CameraManager : MonoBehaviour
     public Camera mainCamera;
     public Camera diceCamera; // Camera for viewing dice rolls
     public Camera viewCamera; // Additional camera for alternative view
-    private Camera activePlayerCamera;
+    
+    [Header("Region Cameras")]
+    public Camera vulkanCamera; // Camera for Vulkan region
+    public Camera atlantaCamera; // Camera for Atlanta region
+    public Camera celestyelCamera; // Camera for Celestyel region
+    public Camera bergCamera; // Camera for Berg region
+    
+    private Camera activeCamera;
+    private Tile.Region currentRegion = Tile.Region.None;
     private Player activePlayer;
     
     [Header("Camera Settings")]
@@ -95,6 +103,7 @@ public class CameraManager : MonoBehaviour
             mainCamera.enabled = true;
             initialRotation = mainCamera.transform.rotation;
             currentEulerAngles = mainCamera.transform.eulerAngles;
+            activeCamera = mainCamera;
         }
         
         // Store initial view camera rotation
@@ -105,8 +114,8 @@ public class CameraManager : MonoBehaviour
             viewCamera.enabled = false;
         }
         
-        // Disable all player cameras at start
-        DisableAllPlayerCameras();
+        // Disable all region cameras at start
+        DisableAllRegionCameras();
         
         // Disable dice camera at start
         if (diceCamera != null)
@@ -125,13 +134,13 @@ public class CameraManager : MonoBehaviour
     void Update()
     {
         // Process cursor movement for main camera
-        if (isMainCameraActive && enableCursorControl && mainCamera != null)
+        if (isMainCameraActive && enableCursorControl && mainCamera != null && activeCamera == mainCamera)
         {
             HandleCursorCameraMovement(mainCamera, ref currentEulerAngles, initialRotation);
         }
         
         // Process cursor movement for view camera
-        if (isViewCameraActive && enableCursorControl && viewCamera != null)
+        if (isViewCameraActive && enableCursorControl && viewCamera != null && activeCamera == viewCamera)
         {
             HandleCursorCameraMovement(viewCamera, ref viewEulerAngles, initialViewRotation);
         }
@@ -197,15 +206,21 @@ public class CameraManager : MonoBehaviour
         );
     }
     
-    public void SwitchToPlayerCamera(Player player)
+    // Method to switch camera based on region
+    public void SwitchToRegionCamera(Tile.Region region, Player player)
     {
-        if (player == null) return;
-        
-        Camera playerCamera = player.GetComponentInChildren<Camera>();
-        if (playerCamera == null)
+        if (region == currentRegion && activeCamera != mainCamera && activeCamera != viewCamera)
         {
-            Debug.LogWarning($"No camera found on player {player.gameObject.name}");
+            // Already using the correct region camera
             return;
+        }
+        
+        Camera targetCamera = GetCameraForRegion(region);
+        
+        if (targetCamera == null)
+        {
+            Debug.LogWarning($"No camera assigned for region {region}, using main camera");
+            targetCamera = mainCamera;
         }
         
         // Cancel any ongoing transition
@@ -214,21 +229,39 @@ public class CameraManager : MonoBehaviour
             StopCoroutine(cameraTransitionCoroutine);
         }
         
-        Debug.Log($"Switching to {player.gameObject.name}'s camera");
+        Debug.Log($"Switching to {region} region camera");
         
-        // Transition to player camera
-        cameraTransitionCoroutine = StartCoroutine(TransitionToCamera(playerCamera));
+        // Transition to region camera
+        cameraTransitionCoroutine = StartCoroutine(TransitionToCamera(targetCamera));
         
-        // Store active player and camera
+        // Store active player and region
         activePlayer = player;
-        activePlayerCamera = playerCamera;
-        isMainCameraActive = false;
-        isViewCameraActive = false;
+        currentRegion = region;
+        isMainCameraActive = (targetCamera == mainCamera);
+        isViewCameraActive = (targetCamera == viewCamera);
         
         // Update button state
         UpdateViewButtonState();
     }
     
+    private Camera GetCameraForRegion(Tile.Region region)
+    {
+        switch (region)
+        {
+            case Tile.Region.Vulkan:
+                return vulkanCamera;
+            case Tile.Region.Atlanta:
+                return atlantaCamera;
+            case Tile.Region.Celestyel:
+                return celestyelCamera;
+            case Tile.Region.Berg:
+                return bergCamera;
+            default:
+                return mainCamera;
+        }
+    }
+    
+    // This is the method that can be called from any script to switch to main camera
     public void SwitchToMainCamera()
     {
         if (mainCamera == null) return;
@@ -248,7 +281,7 @@ public class CameraManager : MonoBehaviour
         cameraTransitionCoroutine = StartCoroutine(TransitionToCamera(mainCamera));
         
         activePlayer = null;
-        activePlayerCamera = null;
+        currentRegion = Tile.Region.None;
         isMainCameraActive = true;
         isViewCameraActive = false;
         
@@ -275,7 +308,7 @@ public class CameraManager : MonoBehaviour
         // Transition to dice camera
         cameraTransitionCoroutine = StartCoroutine(TransitionToCamera(diceCamera));
         
-        // Not changing activePlayer or activePlayerCamera since this is temporary
+        // Not changing activePlayer or currentRegion since this is temporary
         isMainCameraActive = false;
         isViewCameraActive = false;
         
@@ -283,7 +316,7 @@ public class CameraManager : MonoBehaviour
         UpdateViewButtonState();
     }
     
-    // New method to toggle view camera
+    // Method to toggle view camera
     public void ToggleViewCamera()
     {
         if (viewCamera == null)
@@ -324,9 +357,8 @@ public class CameraManager : MonoBehaviour
     {
         if (viewToggleButton != null)
         {
-            // Enable view button when either main camera or view camera is active
-            // Disable it when player camera or dice camera is active
-            viewToggleButton.interactable = isMainCameraActive || isViewCameraActive;
+            // Enable view button when safe to do so (not during dice roll)
+            viewToggleButton.interactable = (activeCamera != diceCamera);
         }
     }
     
@@ -334,6 +366,7 @@ public class CameraManager : MonoBehaviour
     {
         // Enable the target camera
         targetCamera.enabled = true;
+        activeCamera = targetCamera;
         
         // Disable all other cameras (except the target)
         foreach (Camera cam in Camera.allCameras)
@@ -350,18 +383,12 @@ public class CameraManager : MonoBehaviour
         cameraTransitionCoroutine = null;
     }
     
-    private void DisableAllPlayerCameras()
+    private void DisableAllRegionCameras()
     {
-        // Find all player cameras and disable them
-        Player[] players = FindObjectsOfType<Player>();
-        foreach (Player player in players)
-        {
-            Camera playerCamera = player.GetComponentInChildren<Camera>();
-            if (playerCamera != null)
-            {
-                playerCamera.enabled = false;
-            }
-        }
+        if (vulkanCamera != null) vulkanCamera.enabled = false;
+        if (atlantaCamera != null) atlantaCamera.enabled = false;
+        if (celestyelCamera != null) celestyelCamera.enabled = false;
+        if (bergCamera != null) bergCamera.enabled = false;
     }
     
     // Toggle cursor control on/off
@@ -379,15 +406,15 @@ public class CameraManager : MonoBehaviour
     // Called when dice have finished rolling
     public void OnDiceRollComplete(int rollValue)
     {
-        StartCoroutine(WaitBeforeSwitchingBackToMainCamera());
+        // No need to switch cameras here - the GameManager will handle this 
+        // by checking the player's current tile before movement starts
+        // This ensures we immediately switch to the correct region camera when the player moves
     }
     
-    private IEnumerator WaitBeforeSwitchingBackToMainCamera()
+    // Called when a player lands on a tile
+    public void OnPlayerLandedOnTile(Player player, Tile.Region region)
     {
-        // Add a delay to let the player see the dice result
-        yield return new WaitForSeconds(2.5f);
-        
-        // Switch back to main camera
-        SwitchToMainCamera();
+        // Switch camera based on the region of the tile
+        SwitchToRegionCamera(region, player);
     }
 }

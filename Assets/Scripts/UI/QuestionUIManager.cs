@@ -191,7 +191,7 @@ public class QuestionUIManager : MonoBehaviour
             isProcessingQuestion = false;
 
             // Réactiver le bouton de lancement de dé en cas d'erreur
-            EnableRollButton();
+            diceManager.EnableAndSwitchToMainCamera();
         }
     }
 
@@ -210,8 +210,7 @@ public class QuestionUIManager : MonoBehaviour
     {
         HideAllPanels();
 
-        // Réactiver le bouton de lancement de dé après avoir skippé une question
-        EnableRollButton();
+        diceManager.EnableAndSwitchToMainCamera();
 
         isProcessingQuestion = false;
         currentTile.SkipQuestion();
@@ -568,7 +567,7 @@ public class QuestionUIManager : MonoBehaviour
     {
         HideAllPanels();
 
-        EnableRollButton();
+        diceManager.EnableAndSwitchToMainCamera();
 
         if (!isRetrying && currentTile != null)
         {
@@ -603,17 +602,5 @@ public class QuestionUIManager : MonoBehaviour
         }
     }
 
-    // Méthode pour activer le bouton de lancement de dé
-    public void EnableRollButton()
-    {
-        if (diceManager != null)
-        {
-            diceManager.EnableRollButton();
-            Debug.Log("Roll button enabled after question");
-        }
-        else
-        {
-            Debug.LogWarning("❌ Cannot enable roll button: diceManager is null");
-        }
-    }
+
 }

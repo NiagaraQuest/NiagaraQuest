@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public int maxLives;
     public int twoPlayersInitialLives = 4;
     public int threeOrFourPlayersInitialLives = 3;
+    [Tooltip("Delay in seconds between dice roll and player movement")]
+    public float diceRollToMoveDelay = 0.0f;
 
     [Header("UI References")]
     public GameEndUIManager gameEndUIManager;
@@ -471,8 +473,47 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"🎲 Moving player: {selectedPlayer.name}");
-        MoveSelectedPlayer();
+        // Start a coroutine to add delay before moving the player
+        StartCoroutine(DelayedPlayerMovement());
+    }
+
+    // New coroutine to delay player movement after dice roll
+    private IEnumerator DelayedPlayerMovement()
+    {
+        Player movementScript = selectedPlayer.GetComponent<Player>();
+        if (movementScript != null)
+        {
+            // Find the current tile and its region
+            GameObject currentWaypoint = movementScript.GetCurrentWaypoint();
+            if (currentWaypoint != null)
+            {
+                Tile tile = currentWaypoint.GetComponent<Tile>();
+                if (tile != null && CameraManager.Instance != null)
+                {
+                    // Switch to region camera BEFORE movement starts
+                    CameraManager.Instance.OnPlayerLandedOnTile(movementScript, tile.region);
+                    Debug.Log($"🎥 Switched camera to {tile.region} region before player starts moving");
+                }
+            }
+        
+        Debug.Log($"⏱️ Waiting {diceRollToMoveDelay} seconds before moving player...");
+        
+        // Wait for the specified delay time
+        yield return new WaitForSeconds(diceRollToMoveDelay); 
+        if (selectedPlayer == null)
+        {
+            Debug.LogError("❌ No player selected for movement!");
+            yield break;
+        }
+            Debug.Log($"🎲 Moving player: {selectedPlayer.name} after delay");
+            int moveSteps = diceManager.LastRollSum;
+            movementScript.MovePlayer(moveSteps);
+            StartCoroutine(WaitForMovements(movementScript)); // Wait for movement to complete
+        }
+        else
+        {
+            Debug.LogError("❌ No Player script found on " + selectedPlayer.name);
+        }
     }
 
     private void MoveSelectedPlayer()
@@ -584,6 +625,10 @@ public class GameManager : MonoBehaviour
         if (lifeSharingManager != null)
         {
             lifeSharingManager.OnNewTurn();
+        }
+
+        if (isExtraTurn){
+            diceManager.EnableAndSwitchToMainCamera();
         }
 
         int attempts = 0;

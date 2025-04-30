@@ -383,16 +383,22 @@ public virtual void GiveLifeTo(Player targetPlayer)
             remainingSteps = steps;
             targetWaypointIndex = currentWaypointIndex + movementDirection;
             isMoving = true;
-
-            // Switch to player camera when starting movement
-            if (CameraManager.Instance != null)
+            
+            // Get the current waypoint and its region before movement starts
+            GameObject currentWaypoint = GetCurrentWaypoint();
+            if (currentWaypoint != null)
             {
-                CameraManager.Instance.SwitchToPlayerCamera(this);
-                usingPlayerCamera = true;
+                Tile tile = currentWaypoint.GetComponent<Tile>();
+                if (tile != null && CameraManager.Instance != null)
+                {
+                    // Immediately switch to the region camera based on current tile
+                    CameraManager.Instance.OnPlayerLandedOnTile(this, tile.region);
+                    Debug.Log($"🎥 Switching camera to {tile.region} region as player starts moving");
+                }
             }
         }
     }
-    // Nouvelle méthode pour reculer en utilisant les waypoints stockés
+
     public virtual void MovePlayerBack()
     {
         Debug.Log($"DEBUG: MovePlayerBack called - isMovingBack before: {isMovingBack}");
@@ -525,13 +531,6 @@ public virtual void GiveLifeTo(Player targetPlayer)
 
         reachedIntersection = false;
         isMoving = (remainingSteps > 0);
-
-        // If continuing movement, switch to player camera
-        if (isMoving && CameraManager.Instance != null)
-        {
-            CameraManager.Instance.SwitchToPlayerCamera(this);
-            usingPlayerCamera = true;
-        }
     }
 
     protected virtual void MoveToWaypoint(int index)
@@ -585,6 +584,12 @@ public virtual void GiveLifeTo(Player targetPlayer)
             Tile tile = currentWaypoint.GetComponent<Tile>();
             if (tile != null)
             {
+                // Notify the camera manager about the current region
+                if (CameraManager.Instance != null)
+                {
+                    CameraManager.Instance.OnPlayerLandedOnTile(this, tile.region);
+                }
+                
                 tile.OnPlayerLands();
             }
 
