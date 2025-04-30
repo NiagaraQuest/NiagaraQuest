@@ -4,73 +4,102 @@ using UnityEngine;
 
 public class theDice : MonoBehaviour
 {
-    // Variables de configuration pour le lancer de dé
-    [SerializeField] float torqueMin; // Le minimum de force de rotation du dé
+    // Variables de configuration pour le lancer de dÃ©
+    [SerializeField] float torqueMin; // Le minimum de force de rotation du dÃ©
     [SerializeField] float torqueMax; // Le maximum de force de rotation
-    [SerializeField] float throwStrength; // La force avec laquelle le dé est lancé
+    [SerializeField] float throwStrength; // La force avec laquelle le dÃ© est lancÃ©
 
-    private Rigidbody rb; // Référence au composant Rigidbody du dé
-    private int rollvalue = 0; // La valeur actuelle du dé
-    private bool hasStopped;   // Indique si le dé s'est complètement arrêté
+    private Rigidbody rb; // RÃ©fÃ©rence au composant Rigidbody du dÃ©
+    private int rollvalue = 0; // La valeur actuelle du dÃ©
+    private bool hasStopped;   // Indique si le dÃ© s'est complÃ¨tement arrÃªtÃ©
+    private Vector3 initialPosition; // Position initiale du dÃ©
 
-    // Propriété publique permettant de vérifier si le dé a fini de rouler
+    // PropriÃ©tÃ© publique permettant de vÃ©rifier si le dÃ© a fini de rouler
     public bool HasStopped => hasStopped;
 
-    // Méthode appelée au démarrage pour initialiser les variables
+    // MÃ©thode appelÃ©e au dÃ©marrage pour initialiser les variables
     private void Start()
     {
-        // Récupération du Rigidbody attaché au dé
+        // RÃ©cupÃ©ration du Rigidbody attachÃ© au dÃ©
         rb = GetComponent<Rigidbody>();
+        
+        // Enregistrement de la position initiale du dÃ©
+        initialPosition = transform.position;
+        Debug.Log($"Initial dice position saved: {initialPosition}");
     }
 
-    // Méthode pour lancer le dé
+    // MÃ©thode pour lancer le dÃ©
     public void RollTheDice()
     {
-        // Réinitialisation de l'état du dé
+        // RÃ©initialisation de l'Ã©tat du dÃ©
         hasStopped = false;
-        rollvalue = 0; // Réinitialisation de la valeur
+        rollvalue = 0; // RÃ©initialisation de la valeur
 
-        // Appliquer une force vers le haut pour lancer le dé
+        // Appliquer une force vers le haut pour lancer le dÃ©
         rb.AddForce(Vector3.up * throwStrength, ForceMode.Impulse);
 
-        // Appliquer une rotation aléatoire pour rendre le lancer réaliste
+        // Appliquer une rotation alÃ©atoire pour rendre le lancer rÃ©aliste
         rb.AddTorque(
             transform.forward * Random.Range(torqueMin, torqueMax) +
             transform.up * Random.Range(torqueMin, torqueMax) +
             transform.right * Random.Range(torqueMin, torqueMax)
         );
 
-        // Démarrer la vérification pour voir quand le dé s'arrête
+        // DÃ©marrer la vÃ©rification pour voir quand le dÃ© s'arrÃªte
         StartCoroutine(WaitForStop());
     }
 
-    // Coroutine pour attendre que le dé s'arrête complètement
+    // Coroutine pour attendre que le dÃ© s'arrÃªte complÃ¨tement
     IEnumerator WaitForStop()
     {
-        // Attendre un court instant avant de vérifier l'arrêt
+        // Attendre un court instant avant de vÃ©rifier l'arrÃªt
         yield return new WaitForSeconds(1.5f);
 
-        // Tant que le dé a encore une rotation significative, continuer à attendre
+        // Tant que le dÃ© a encore une rotation significative, continuer Ã  attendre
         while (rb.linearVelocity.sqrMagnitude > 0.01f || rb.angularVelocity.sqrMagnitude > 0.01f)
         {
             yield return new WaitForFixedUpdate();
         }
 
-        // Indiquer que le dé s'est arrêté
+        // Indiquer que le dÃ© s'est arrÃªtÃ©
         hasStopped = true;
 
-        // Vérifier la valeur du dé lorsqu'il s'est arrêté
+        // VÃ©rifier la valeur du dÃ© lorsqu'il s'est arrÃªtÃ©
         CheckRoll();
+        
+        // Reset position but keep rotation
+        yield return new WaitForSeconds(0.5f); // Short delay to see the result
+        ResetPosition();
     }
-    // Méthode pour déterminer la face visible du dé lorsque celui-ci s'arrête
+    
+    // MÃ©thode pour rÃ©initialiser la position du dÃ© tout en conservant sa rotation
+    private void ResetPosition()
+    {
+        // Freeze the rigidbody to prevent further movement
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        
+        // Store current rotation
+        Quaternion currentRotation = transform.rotation;
+        
+        // Reset position
+        transform.position = initialPosition;
+        
+        // Keep current rotation
+        transform.rotation = currentRotation;
+        
+        Debug.Log($"Dice position reset to {initialPosition} while keeping rotation");
+    }
+    
+    // MÃ©thode pour dÃ©terminer la face visible du dÃ© lorsque celui-ci s'arrÃªte
     public void CheckRoll()
     {
-        // Définir les dot products pour comparer l'orientation du dé avec l'axe vertical
+        // DÃ©finir les dot products pour comparer l'orientation du dÃ© avec l'axe vertical
         float yDot = Vector3.Dot(transform.up, Vector3.up);
         float zDot = Vector3.Dot(transform.forward, Vector3.up);
         float xDot = Vector3.Dot(transform.right, Vector3.up);
 
-        // Trouver l'axe le plus aligné avec l'axe vertical
+        // Trouver l'axe le plus alignÃ© avec l'axe vertical
         if (Mathf.Abs(yDot) > Mathf.Abs(xDot) && Mathf.Abs(yDot) > Mathf.Abs(zDot))
         {
             rollvalue = (yDot > 0) ? 2 : 5; // Haut (2) / Bas (5)
@@ -81,18 +110,15 @@ public class theDice : MonoBehaviour
         }
         else
         {
-            rollvalue = (zDot > 0) ? 1 : 6; // Avant (1) / Arrière (6)
+            rollvalue = (zDot > 0) ? 1 : 6; // Avant (1) / ArriÃ¨re (6)
         }
 
-        Debug.Log("Valeur du dé : " + rollvalue);
+        Debug.Log("Valeur du dÃ© : " + rollvalue);
     }
 
-
-    // Méthode publique permettant à d'autres scripts de récupérer la valeur actuelle du dé
+    // MÃ©thode publique permettant Ã  d'autres scripts de rÃ©cupÃ©rer la valeur actuelle du dÃ©
     public int GetRollValue()
     {
         return rollvalue;
     }
-
-
 }

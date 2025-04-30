@@ -50,6 +50,15 @@ public class PlayerHUDManager : MonoBehaviour
         // Set up corners array
         allCorners = new PlayerCorner[] { corner1, corner2, corner3, corner4 };
 
+        // Wait a bit for GameManager to set up players from PlayerPrefs
+        StartCoroutine(SetupCornersDelayed());
+    }
+
+    private IEnumerator SetupCornersDelayed()
+    {
+        // Wait a short time to ensure GameManager has initialized players from PlayerPrefs
+        yield return new WaitForSeconds(0.5f);
+
         // Set up the UI for the current game mode
         SetupCorners();
     }
@@ -74,57 +83,91 @@ public class PlayerHUDManager : MonoBehaviour
             }
         }
 
-        // Get active players
+        // Get active players from GameManager
         List<GameObject> activePlayers = gameManager.players;
         if (activePlayers == null || activePlayers.Count == 0)
         {
-            Debug.LogWarning("PlayerHUDManager: No active players found");
+            Debug.LogWarning("PlayerHUDManager: No active players found in GameManager");
             return;
         }
 
-        // Map player types to corners
+        // Map player types to corners - fixed positions matching menu selection
         Dictionary<string, PlayerCorner> typeToCorner = new Dictionary<string, PlayerCorner>
         {
-            { "Pyro", corner1 },
-            { "Hydro", corner2 },
-            { "Anemo", corner3 },
-            { "Geo", corner4 }
+            { "PyroPlayer", corner1 },  // Top Left
+            { "HydroPlayer", corner2 }, // Top Right
+            { "AnemoPlayer", corner3 }, // Bottom Left
+            { "GeoPlayer", corner4 }    // Bottom Right
         };
 
-        // Assign players to their appropriate corners
+        // Check which corners should be active based on PlayerPrefs and active players
         foreach (GameObject player in activePlayers)
         {
             if (player == null) continue;
 
             string playerName = player.name;
 
-            // Find matching corner by player type
-            foreach (string type in typeToCorner.Keys)
+            if (typeToCorner.TryGetValue(playerName, out PlayerCorner corner))
             {
-                if (playerName.Contains(type))
+                if (corner.cornerPanel != null)
                 {
-                    PlayerCorner corner = typeToCorner[type];
-                    if (corner.cornerPanel != null)
-                    {
-                        // Link player to corner
-                        corner.linkedPlayer = player;
-                        playerCornerMap[player] = corner;
+                    // Link player to corner
+                    corner.linkedPlayer = player;
+                    playerCornerMap[player] = corner;
 
-                        // Activate corner
-                        corner.cornerPanel.SetActive(true);
+                    // Activate corner
+                    corner.cornerPanel.SetActive(true);
 
-                        // Initial update
-                        UpdateCorner(corner);
+                    // Initial update
+                    UpdateCorner(corner);
 
-                        Debug.Log($"PlayerHUDManager: Assigned {playerName} to corner {type}");
-                    }
-                    break;
+                    Debug.Log($"PlayerHUDManager: Assigned {playerName} to corner {playerName}");
                 }
             }
         }
 
+        // Ensure corners match the game mode
+        AdjustCornersForGameMode();
+
         // Log which corners are active
-        Debug.Log($"PlayerHUDManager: Active corners: {playerCornerMap.Count}/{allCorners.Length}");
+        Debug.Log($"PlayerHUDManager: Active corners: {playerCornerMap.Count}/{allCorners.Length} for game mode {gameManager.currentGameMode}");
+    }
+
+    // Adjust corner positions based on game mode if needed
+    private void AdjustCornersForGameMode()
+    {
+        switch (gameManager.currentGameMode)
+        {
+            case GameManager.GameMode.TwoPlayers:
+                // Two players - Check if we need to redistribute corners
+                if (playerCornerMap.Count == 2)
+                {
+                    // Ensure we're using the top corners for better visibility
+                    bool hasTopLeft = corner1.linkedPlayer != null;
+                    bool hasTopRight = corner2.linkedPlayer != null;
+                    bool hasBottomLeft = corner3.linkedPlayer != null;
+                    bool hasBottomRight = corner4.linkedPlayer != null;
+
+                    // If we have only bottom corners active, move them to top
+                    if (!hasTopLeft && !hasTopRight && (hasBottomLeft || hasBottomRight))
+                    {
+                        // In a real implementation, you might want to adjust corner positions
+                        // For now, we'll just log it
+                        Debug.Log("Two player mode with only bottom corners - consider rearranging UI");
+                    }
+                }
+                break;
+
+            case GameManager.GameMode.ThreePlayers:
+                // Three players - potentially adjust corner positions
+                Debug.Log("Three player mode - corners set up according to active players");
+                break;
+
+            case GameManager.GameMode.FourPlayers:
+                // All corners should be active
+                Debug.Log("Four player mode - all corners should be active");
+                break;
+        }
     }
 
     // Update all corner displays
@@ -147,15 +190,17 @@ public class PlayerHUDManager : MonoBehaviour
         Player playerScript = corner.linkedPlayer.GetComponent<Player>();
         if (playerScript == null) return;
 
-        // Update player name
+        // Update player name - use profile from PlayerPrefs if available
         if (corner.playerNameText != null)
         {
             if (playerScript.playerProfile != null)
             {
+                // Use profile name from the assigned profile
                 corner.playerNameText.text = playerScript.playerProfile.Username;
             }
             else
             {
+                // Fallback to element type if profile not available
                 corner.playerNameText.text = corner.linkedPlayer.name.Replace("Player", "");
             }
         }
@@ -178,16 +223,19 @@ public class PlayerHUDManager : MonoBehaviour
             }
         }
 
-        // Update ELO text
+        // Update ELO text - use profile ELO from PlayerPrefs
         if (corner.eloText != null && playerScript.playerProfile != null)
         {
             corner.eloText.text = playerScript.playerProfile.Elo.ToString();
+
+            // Optional: Format ELO with label
+            // corner.eloText.text = $"ELO: {playerScript.playerProfile.Elo}";
         }
 
-        // Update hearts
+        // Update hearts based on current lives
         UpdateHearts(corner, playerScript.lives);
 
-        // Highlight current player
+        // Highlight the current active player
         bool isCurrentPlayer = (gameManager.selectedPlayer == corner.linkedPlayer);
         HighlightCorner(corner, isCurrentPlayer);
     }

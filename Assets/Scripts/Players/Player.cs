@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     // Pile pour stocker les derniers waypoints (maximum 20)
     protected Stack<WaypointData> previousWaypoints = new Stack<WaypointData>();
     protected const int MAX_WAYPOINT_HISTORY = 20;   // Maximum de waypoints à stocker
-    protected const int MAX_MOVE_BACK_STEPS = 7;    // Maximum de pas en arrière à la fois
+    protected const int MAX_MOVE_BACK_STEPS = 8;    // Maximum de pas en arrière à la fois
     protected bool isMovingBack = false; // Pour indiquer que le joueur est en train de reculer
     protected bool hasStoredInitialWaypoint = false; // Pour s'assurer que le waypoint initial est stocké une seule fois
     private bool usingPlayerCamera = false;
@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
     public bool HasFinishedMoving => !isMoving && !reachedIntersection;
 
     // Structure pour stocker les données d'un waypoint avec sa direction
-    protected struct WaypointData
+    public struct WaypointData
     {
         public string pathName;
         public int waypointIndex;
@@ -56,6 +56,38 @@ public class Player : MonoBehaviour
             direction = dir;
             isLandingPoint = isLanding;
         }
+    }
+
+    public Stack<WaypointData> GetWaypointHistory()
+    {
+        return new Stack<WaypointData>(previousWaypoints);
+    }
+
+    public void SetWaypointHistory(Stack<WaypointData> newHistory)
+    {
+        previousWaypoints = new Stack<WaypointData>(newHistory);
+    }
+
+    public string GetLastLandingPath() { return lastLandingPath; }
+    public int GetLastLandingIndex() { return lastLandingIndex; }
+    public int GetLastLandingDirection() { return lastLandingDirection; }
+
+    public string GetPreviousLandingPath() { return previousLandingPath; }
+    public int GetPreviousLandingIndex() { return previousLandingIndex; }
+    public int GetPreviousLandingDirection() { return previousLandingDirection; }
+
+    public void SetLastLandingPath(string path, int index, int direction)
+    {
+        lastLandingPath = path;
+        lastLandingIndex = index;
+        lastLandingDirection = direction;
+    }
+
+    public void SetPreviousLandingPath(string path, int index, int direction)
+    {
+        previousLandingPath = path;
+        previousLandingIndex = index;
+        previousLandingDirection = direction;
     }
 
     protected virtual void Start()
@@ -152,17 +184,35 @@ public class Player : MonoBehaviour
 
                     if (targetWaypoint.CompareTag("Intersection"))
                     {
-                        reachedIntersection = true;
-                        isMoving = false;
-
-                        // Switch back to main camera when reaching intersection
-                        if (usingPlayerCamera && CameraManager.Instance != null)
+                        // Si le joueur n'a plus qu'un seul pas restant, afficher l'UI d'intersection
+                        if (remainingSteps == 1)
                         {
-                            CameraManager.Instance.SwitchToMainCamera();
-                            usingPlayerCamera = false;
-                        }
+                            reachedIntersection = true;
+                            isMoving = false;
 
-                        uiManager.ShowUI(this);
+                            // Switch back to main camera when reaching intersection
+                            if (usingPlayerCamera && CameraManager.Instance != null)
+                            {
+                                CameraManager.Instance.SwitchToMainCamera();
+                                usingPlayerCamera = false;
+                            }
+
+                            uiManager.ShowUI(this);
+                        }
+                        // Si le joueur a encore 2 pas ou plus, continuer automatiquement sur le même chemin
+                        else if (remainingSteps >= 2)
+                        {
+                            Debug.Log($"🔄 Intersection ignorée car remainingSteps = {remainingSteps} > 1. Continuation automatique sur le même chemin.");
+
+                            lastWaypointBeforeIntersection = targetWaypoint;
+
+                            // Utiliser la même logique que le bouton "Stay on Path"
+                            // Note: Nous enregistrons d'abord l'intersection comme dernière position
+                            ResumeMovement(null, true);
+
+                            // Pas besoin d'ajuster les pas manuellement car ResumeMovement s'en charge
+                            // remainingSteps est toujours géré correctement
+                        }
                     }
                     else
                     {

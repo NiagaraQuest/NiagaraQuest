@@ -34,6 +34,7 @@ public class CameraManager : MonoBehaviour
     private bool isMainCameraActive = true;
     private bool isViewCameraActive = false;
     private Coroutine cameraTransitionCoroutine;
+    private DiceManager diceManager;
 
     private void Awake()
     {
@@ -47,10 +48,11 @@ public class CameraManager : MonoBehaviour
         }
         
         // Set up dice camera integration
-        DiceManager diceManager = FindObjectOfType<DiceManager>();
+        diceManager = FindObjectOfType<DiceManager>();
         if (diceManager != null && diceCamera != null)
         {
-            diceManager.rollButton.onClick.AddListener(SwitchToDiceCamera);
+            // Subscribe to both dice roll start and completion events
+            diceManager.OnDiceRollStart += OnDiceRollStart;
             diceManager.OnDiceRollComplete += OnDiceRollComplete;
         }
         else
@@ -72,10 +74,9 @@ public class CameraManager : MonoBehaviour
     private void OnDestroy()
     {
         // Clean up event subscriptions
-        DiceManager diceManager = FindObjectOfType<DiceManager>();
         if (diceManager != null)
         {
-            diceManager.rollButton.onClick.RemoveListener(SwitchToDiceCamera);
+            diceManager.OnDiceRollStart -= OnDiceRollStart;
             diceManager.OnDiceRollComplete -= OnDiceRollComplete;
         }
         
@@ -369,7 +370,14 @@ public class CameraManager : MonoBehaviour
         enableCursorControl = enable;
     }
 
-        public void OnDiceRollComplete(int rollValue)
+    // Called when dice start rolling
+    public void OnDiceRollStart()
+    {
+        SwitchToDiceCamera();
+    }
+
+    // Called when dice have finished rolling
+    public void OnDiceRollComplete(int rollValue)
     {
         StartCoroutine(WaitBeforeSwitchingBackToMainCamera());
     }

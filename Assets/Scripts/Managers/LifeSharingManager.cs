@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class LifeSharingManager : MonoBehaviour
 {
@@ -83,6 +84,39 @@ public class LifeSharingManager : MonoBehaviour
                 ReturnToGame();
             }
         }
+        
+        // Check for F key to activate life sharing
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            // Only process F key if the give life button is active and visible
+            if (giveLifeButton != null && giveLifeButton.gameObject.activeSelf && giveLifeButton.interactable)
+            {
+                Debug.Log("🔑 F key pressed - activating life sharing menu");
+                ShowLifeSharingOptions();
+            }
+        }
+        
+        // If player selection panel is active, check for number keys to select players
+        if (playerSelectionPanel != null && playerSelectionPanel.activeSelf)
+        {
+            // Check for number keys 1-9 for quick selection
+            for (int i = 0; i < 9; i++)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1 + i) || Input.GetKeyDown(KeyCode.Keypad1 + i))
+                {
+                    // If we have that many options, select it
+                    if (i < createdOptionButtons.Count)
+                    {
+                        Button optionButton = createdOptionButtons[i].GetComponent<Button>();
+                        if (optionButton != null && optionButton.interactable)
+                        {
+                            optionButton.onClick.Invoke();
+                            Debug.Log($"🔢 Quick-selected player option {i+1} using number key");
+                        }
+                    }
+                }
+            }
+        }
     }
     
     // Check if dice have been rolled by monitoring the dice button state
@@ -137,29 +171,93 @@ public class LifeSharingManager : MonoBehaviour
                     Text buttonText = giveLifeButton.GetComponentInChildren<Text>();
                     if (buttonText != null)
                     {
-                        buttonText.text = $"Give Life ({currentPlayer.lives})";
+                        buttonText.text = $"Give Life ({currentPlayer.lives}) [F]";
                     }
                 }
             }
+        }
+    }
+
+    public void InitializeWithGameManager(GameManager gm)
+    {
+        // Set the game manager reference
+        gameManager = gm;
+        
+        Debug.Log("🔄 LifeSharingManager initialized with GameManager");
+        
+        // Ensure dice haven't been rolled at initialization
+        hasDiceBeenRolledThisTurn = false;
+        
+        // Force button visibility check
+        bool conditionsMet = CheckAllConditions();
+        Debug.Log($"Life sharing conditions met at initialization: {conditionsMet}");
+        
+        // Force update button visibility
+        if (giveLifeButton != null)
+        {
+            giveLifeButton.gameObject.SetActive(conditionsMet);
+            Debug.Log($"Life sharing button visibility set to: {conditionsMet}");
+            
+            // Update button text to include F key hint
+            Text buttonText = giveLifeButton.GetComponentInChildren<Text>();
+            if (buttonText != null)
+            {
+                Player currentPlayer = gm.selectedPlayer?.GetComponent<Player>();
+                if (currentPlayer != null)
+                {
+                    buttonText.text = $"Give Life ({currentPlayer.lives}) [F]";
+                }
+            }
+            
+            // Log current player status
+            if (gm != null && gm.selectedPlayer != null)
+            {
+                Player currentPlayer = gm.selectedPlayer.GetComponent<Player>();
+                if (currentPlayer != null)
+                {
+                    Debug.Log($"Current player: {currentPlayer.gameObject.name}, Lives: {currentPlayer.lives}");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("Give Life Button reference is missing!");
         }
     }
     
     // Check all conditions that must be true for the button to appear
     private bool CheckAllConditions()
     {
+        Debug.Log("🔍 Checking life sharing button conditions:");
+        
         // 1. Check if dice have been rolled
         if (hasDiceBeenRolledThisTurn)
+        {
+            Debug.Log("⛔ Dice have been rolled this turn - cannot share lives");
             return false;
-            
+        }
+        
         // 2. Check if GameManager and current player exist
         if (gameManager == null || gameManager.selectedPlayer == null)
+        {
+            Debug.Log("⛔ GameManager or selected player is null");
             return false;
-            
+        }
+        
         // 3. Check if current player has 3+ lives
         Player currentPlayer = gameManager.selectedPlayer.GetComponent<Player>();
-        if (currentPlayer == null || currentPlayer.lives < 3)
+        if (currentPlayer == null)
+        {
+            Debug.Log("⛔ Current player component is null");
             return false;
-            
+        }
+        
+        if (currentPlayer.lives < 3)
+        {
+            Debug.Log($"⛔ Current player {currentPlayer.gameObject.name} only has {currentPlayer.lives} lives (needs at least 3)");
+            return false;
+        }
+        
         // 4. Check if any player has exactly 1 life
         bool existsPlayerWithOneLife = false;
         foreach (GameObject playerObj in gameManager.players)
@@ -171,8 +269,14 @@ public class LifeSharingManager : MonoBehaviour
             if (otherPlayer != null && otherPlayer.lives == 1)
             {
                 existsPlayerWithOneLife = true;
+                Debug.Log($"✅ Found eligible player {otherPlayer.gameObject.name} with 1 life");
                 break;
             }
+        }
+        
+        if (!existsPlayerWithOneLife)
+        {
+            Debug.Log("⛔ No players found with exactly 1 life");
         }
         
         return existsPlayerWithOneLife;
@@ -208,19 +312,26 @@ public class LifeSharingManager : MonoBehaviour
         }
         
         // Create option for each eligible player
+        int playerIndex = 1; // For number key shortcuts
         foreach (Player player in eligiblePlayers)
         {
             GameObject optionObj = Instantiate(playerOptionPrefab, playerOptionsContainer);
-            
+
             // Set text
-            Text optionText = optionObj.GetComponentInChildren<Text>();
+            Button optionButton = optionObj.GetComponentInChildren<Button>();
+            TMP_Text optionText = optionButton.GetComponentInChildren<TMP_Text>();
             if (optionText != null)
             {
-                optionText.text = player.gameObject.name;
+               
+                if (eligiblePlayers.Count <= 9)
+                {
+                    optionText.text = $"{playerIndex}. {player.gameObject.name}";
+                }
+                
             }
             
             // Add click handler
-            Button optionButton = optionObj.GetComponent<Button>();
+          
             if (optionButton != null)
             {
                 Player targetPlayer = player; // Important: Create local variable to capture value correctly
@@ -228,6 +339,7 @@ public class LifeSharingManager : MonoBehaviour
             }
             
             createdOptionButtons.Add(optionObj);
+            playerIndex++;
         }
         
         // Show the panel

@@ -46,6 +46,9 @@ public class PlayerMonitor : MonoBehaviour
     {
         if (gameManager.players == null) return;
 
+        // Clear existing cache
+        playerCache.Clear();
+
         foreach (var player in gameManager.players)
         {
             if (player == null) continue;
@@ -57,12 +60,36 @@ public class PlayerMonitor : MonoBehaviour
                 PlayerLifeCache cache = new PlayerLifeCache();
                 cache.previousLives = playerScript.lives;
                 playerCache[player] = cache;
+
+                Debug.Log($"PlayerMonitor: Started tracking lives for {player.name} (current: {playerScript.lives})");
             }
         }
     }
 
     void Update()
     {
+        // Check for players that might have been added after initialization
+        if (gameManager.players != null)
+        {
+            foreach (var player in gameManager.players)
+            {
+                if (player != null && !playerCache.ContainsKey(player))
+                {
+                    Player playerScript = player.GetComponent<Player>();
+                    if (playerScript != null)
+                    {
+                        // Add new player to tracking
+                        PlayerLifeCache cache = new PlayerLifeCache();
+                        cache.previousLives = playerScript.lives;
+                        playerCache[player] = cache;
+
+                        Debug.Log($"PlayerMonitor: Added tracking for {player.name} (current: {playerScript.lives})");
+                    }
+                }
+            }
+        }
+
+        // Check for life changes in all tracked players
         CheckForLifeChanges();
     }
 
