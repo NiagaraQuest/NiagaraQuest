@@ -568,10 +568,8 @@ public class QuestionUIManager : MonoBehaviour
     {
         HideAllPanels();
 
-        // Réactiver le bouton de lancement de dé après avoir terminé la question
         EnableRollButton();
 
-        // Ne pas continuer le jeu si on donne une seconde chance
         if (!isRetrying && currentTile != null)
         {
             currentTile.ContinueGame();

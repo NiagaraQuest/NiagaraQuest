@@ -628,11 +628,6 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"🔄 Prochain joueur : {selectedPlayer.name}");
 
-        // Activer le bouton de dés pour le nouveau joueur
-        if (diceManager != null)
-        {
-            diceManager.EnableRollButton();
-        }
     }
 
 

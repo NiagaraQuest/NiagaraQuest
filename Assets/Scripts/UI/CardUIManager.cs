@@ -36,6 +36,7 @@ public class CardUIManager : MonoBehaviour
     public GameObject gambleResultPanel;
     public TextMeshProUGUI gambleResultText;
     public Button gambleResultOkButton;
+    private DiceManager diceManager;
 
     private void Awake()
     {
@@ -47,6 +48,11 @@ public class CardUIManager : MonoBehaviour
 
     void Start()
     {
+        diceManager = DiceManager.Instance;
+        if (diceManager == null)
+        {
+            Debug.LogWarning("❌ DiceManager not found. Roll button control will not work.");
+        }
         // Hide all panels at start
         cardPanel.SetActive(false);
         playerSelectionPanel.SetActive(false);
@@ -309,6 +315,7 @@ public class CardUIManager : MonoBehaviour
     {
         // Hide the result panel
         gambleResultPanel.SetActive(false);
+        EnableRollButton();
 
         // Move player if needed
         if (win && moveForward)
@@ -330,6 +337,7 @@ public class CardUIManager : MonoBehaviour
     {
         // Close the selection UI
         playerSelectionPanel.SetActive(false);
+        EnableRollButton();
 
         // Perform the swap
         CardManager.Instance.SwapWithSpecificPlayer(currentPlayer, selectedPlayer);
@@ -349,6 +357,9 @@ public class CardUIManager : MonoBehaviour
         {
             StopCoroutine(autoCloseCoroutine);
             autoCloseCoroutine = null;
+        }
+        if (CardManager.Instance.DrawRandomCard() != 3){
+            EnableRollButton();
         }
 
         // Hide the panel
@@ -372,6 +383,33 @@ public class CardUIManager : MonoBehaviour
         {
             StopCoroutine(autoCloseCoroutine);
             autoCloseCoroutine = null;
+        }
+    }
+
+        public void DisableRollButton()
+    {
+        if (diceManager != null)
+        {
+            diceManager.DisableRollButton();
+            Debug.Log("Roll button disabled during question");
+        }
+        else
+        {
+            Debug.LogWarning("❌ Cannot disable roll button: diceManager is null");
+        }
+    }
+
+    // Méthode pour activer le bouton de lancement de dé
+    public void EnableRollButton()
+    {
+        if (diceManager != null)
+        {
+            diceManager.EnableRollButton();
+            Debug.Log("Roll button enabled after question");
+        }
+        else
+        {
+            Debug.LogWarning("❌ Cannot enable roll button: diceManager is null");
         }
     }
 }
