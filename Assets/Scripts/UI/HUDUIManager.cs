@@ -18,7 +18,8 @@ public class HUDUIManager : MonoBehaviour
 
     [Header("Scene References")]
     public string menuSceneName = "MenuScene";
-
+    [Header("UI Scripts")]
+    public CameraUIManager cameraUIManager;
     private bool isPaused = false;
 
     private void Start()
@@ -62,15 +63,21 @@ public class HUDUIManager : MonoBehaviour
     public void TogglePause()
     {
         if (isPaused)
+        {
             ResumeGame();
+        }
         else
+        {
             PauseGame();
+        }
     }
 
     // Pause the game and show the pause panel
     public void PauseGame()
     {
         isPaused = true;
+        CameraManager.Instance.DisableViewToggle();
+        cameraUIManager.HideCameraSelectionPanel();
         
         // Show the pause panel
         if (pausePanel != null)
@@ -89,6 +96,7 @@ public class HUDUIManager : MonoBehaviour
     public void ResumeGame()
     {
         isPaused = false;
+        CameraManager.Instance.EnableViewToggle();
         
         // Hide the pause panel
         if (pausePanel != null)
@@ -206,4 +214,5 @@ public class HUDUIManager : MonoBehaviour
         if (pauseButton != null)
             pauseButton.gameObject.SetActive(visible);
     }
+
 }

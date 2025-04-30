@@ -48,6 +48,8 @@ public class QuestionUIManager : MonoBehaviour
 
     [Header("Dice Control")]
     private DiceManager diceManager; // Référence au DiceManager
+    [Header("UI Scripts")]
+    public CameraUIManager cameraUIManager; // Reference to the camera UI manager
 
     void Start()
     {
@@ -144,6 +146,10 @@ public class QuestionUIManager : MonoBehaviour
         qcmQuestionPanel.SetActive(false);
         tfQuestionPanel.SetActive(false);
         resultPanel.SetActive(false);
+        if (cameraUIManager.cameraSelectionPanel.activeSelf)
+        {
+            cameraUIManager.HideCameraSelectionPanel();
+        }
 
         // Hide ELO change text if it exists
         if (eloChangeText != null)
@@ -172,6 +178,11 @@ public class QuestionUIManager : MonoBehaviour
         openQuestionPanel.SetActive(false);
         qcmQuestionPanel.SetActive(false);
         tfQuestionPanel.SetActive(false);
+        if(cameraUIManager.cameraSelectionPanel.activeInHierarchy)
+        {
+            cameraUIManager.HideCameraSelectionPanel();
+        }
+        CameraManager.Instance.DisableViewToggle();
 
         // Mettre à jour l'affichage des boutons Skip AVANT d'afficher la question
         UpdateSkipButtonsVisibility();
@@ -429,6 +440,14 @@ public class QuestionUIManager : MonoBehaviour
 
     private void ShowResult(bool isCorrect)
     {
+        if (isCorrect)
+        {
+            AudioManager.Instance.PlayRightAnswer();
+        }
+        else
+        {
+            AudioManager.Instance.PlayWrongAnswer();            
+        }
         Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
 
         // S'assurer que les boutons Skip sont cachés quand on affiche le résultat
@@ -437,6 +456,7 @@ public class QuestionUIManager : MonoBehaviour
         // Si réponse correcte OU 2ème échec
         resultPanel.SetActive(true);
         string effectDescription = GetEffectDescription(currentQuestion.Difficulty, isCorrect);
+        
 
         // Set the result text to show only if answer is correct or wrong
         resultText.text = isCorrect ? "You got it right !!" : "This sounds wrong!";
@@ -619,6 +639,7 @@ public class QuestionUIManager : MonoBehaviour
 
         // Re-enable dice button and switch to main camera
         diceManager.EnableAndSwitchToMainCamera();
+        CameraManager.Instance.EnableViewToggle();
 
         if (!isRetrying && currentTile != null)
         {

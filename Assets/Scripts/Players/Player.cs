@@ -156,11 +156,17 @@ public class Player : MonoBehaviour
                 Tile tile = currentWaypoint.GetComponent<Tile>();
                 if (tile != null && CameraManager.Instance != null)
                 {
+                    Camera activeCamera = CameraManager.Instance.GetActiveCamera();
+                    if(activeCamera != CameraManager.Instance.mainCamera)
+                    {
                     // Immediately switch to the region camera based on current tile
                     CameraManager.Instance.OnPlayerLandedOnTile(this, tile.region);
                     Debug.Log($"🎥 Switching camera to {tile.region} region as player starts moving");
+                    }
                 }
             }
+            
+            CameraManager.Instance.DisableViewToggle();
             if (targetWaypointIndex < 0)
             {
                 Debug.LogWarning($"⚠️ ATTENTION: Index -1 détecté à l'étape {remainingSteps}. Chemin: {currentPath}, Index actuel: {currentWaypointIndex}, Target: {targetWaypointIndex}");
@@ -233,6 +239,10 @@ public class Player : MonoBehaviour
                         {
                             isMoving = false;
                             isMovingBack = false;
+                            if(GameManager.Instance.isEffectMovement){
+                                CameraManager.Instance.SwitchToMainCamera();
+                            }
+                            CameraManager.Instance.EnableViewToggle();
 
                             DisplayCurrentRegion();
                         }

@@ -38,6 +38,8 @@ public class CardUIManager : MonoBehaviour
     public Button gambleResultOkButton;
     private DiceManager diceManager;
 
+    [Header("UI Scripts")]
+    public CameraUIManager cameraUIManager;
     private void Awake()
     {
         if (Instance == null)
@@ -58,7 +60,6 @@ public class CardUIManager : MonoBehaviour
         playerSelectionPanel.SetActive(false);
         gambleChoicePanel.SetActive(false);
         gambleResultPanel.SetActive(false);
-
         // Add listener to the Continue button
         continueButton.onClick.AddListener(CloseCardPanel);
 
@@ -97,6 +98,12 @@ public class CardUIManager : MonoBehaviour
         currentTile = tile;
         currentPlayer = player;
         currentCardType = cardType;
+        diceManager.DisableRollButton();
+        if(cameraUIManager.cameraSelectionPanel.activeSelf)
+        {
+            cameraUIManager.cameraSelectionPanel.SetActive(false);
+        }
+
 
         // Check if this is the Gambler card (assuming it's index 2)
         if (cardType == 2) // Gambler card
@@ -316,6 +323,7 @@ public class CardUIManager : MonoBehaviour
         // Hide the result panel
         gambleResultPanel.SetActive(false);
         EnableRollButton();
+        CameraManager.Instance.EnableViewToggle();
 
         // Move player if needed
         if (win && moveForward)
@@ -338,6 +346,7 @@ public class CardUIManager : MonoBehaviour
         // Close the selection UI
         playerSelectionPanel.SetActive(false);
         EnableRollButton();
+        CameraManager.Instance.EnableViewToggle();
 
         // Perform the swap
         CardManager.Instance.SwapWithSpecificPlayer(currentPlayer, selectedPlayer);
@@ -360,6 +369,7 @@ public class CardUIManager : MonoBehaviour
         }
         if (CardManager.Instance.DrawRandomCard() != 3){
             EnableRollButton();
+            CameraManager.Instance.EnableViewToggle();
         }
 
         // Hide the panel

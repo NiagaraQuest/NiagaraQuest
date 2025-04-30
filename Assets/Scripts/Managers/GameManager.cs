@@ -570,16 +570,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void ApplyQuestionResult(Player player, bool isCorrect, string difficulty)
-    {
-        if (isCorrect)
-        {
-            audioManager.PlayRightAnswer();
-        }
-        else
-        {
-            audioManager.PlayWrongAnswer();
-        }
-        
+    {       
         switch (difficulty.ToUpper())
         {
             case "EASY":
