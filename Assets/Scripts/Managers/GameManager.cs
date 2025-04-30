@@ -23,15 +23,17 @@ public class GameManager : MonoBehaviour
     public int maxLives;
     public int twoPlayersInitialLives = 4;
     public int threeOrFourPlayersInitialLives = 3;
+    [Tooltip("Delay in seconds between dice roll and player movement")]
+    public float diceRollToMoveDelay = 0.0f;
 
     [Header("UI References")]
     public GameEndUIManager gameEndUIManager;
     [Header("Life Sharing Settings")]
     public bool allowLifeSharing = true;
     public bool hasDiceBeenRolledThisTurn = false;
-    private LifeSharingManager lifeSharingManager; 
+    private LifeSharingManager lifeSharingManager;
 
-    private AudioManager audioManager; 
+    private AudioManager audioManager;
 
 
     private void Awake()
@@ -45,7 +47,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         audioManager = AudioManager.Instance;
-        
+
         // Check if it exists
         if (audioManager == null)
         {
@@ -71,10 +73,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Debug.Log("🎲 GameManager starting...");
-        
+
         // Initialize database and set up profiles
         _ = InitializeDatabaseAndSetupProfiles();
-        
+
         // After profiles are assigned, detect game mode and setup lives
         DetectGameModeBasedOnActivePlayers();
         SetupPlayersInitialLives();
@@ -115,10 +117,10 @@ public class GameManager : MonoBehaviour
             Debug.Log("🔄 Initializing DatabaseManager...");
             await DatabaseManager.Instance.Initialize();
             Debug.Log("✅ DatabaseManager initialized successfully");
-            
+
             // Now load profiles from PlayerPrefs (selected in the menu)
             await AssignProfilesFromPlayerPrefs();
-            
+
             // Make sure selectedPlayer is set after players are loaded
             if (players != null && players.Count > 0)
             {
@@ -140,14 +142,21 @@ public class GameManager : MonoBehaviour
     private async Task AssignProfilesFromPlayerPrefs()
     {
         Debug.Log("🔄 Assigning profiles from PlayerPrefs to players...");
-        
+
         try
         {
+            // Add this to clearly show which players are active at the start
+            Debug.Log("🔍 CHECKING PLAYER ACTIVATION STATUS FROM PLAYERPREFS:");
+            Debug.Log($"PyroPlayer_Active = {PlayerPrefs.GetInt("PyroPlayer_Active", 0)}");
+            Debug.Log($"GeoPlayer_Active = {PlayerPrefs.GetInt("GeoPlayer_Active", 0)}");
+            Debug.Log($"HydroPlayer_Active = {PlayerPrefs.GetInt("HydroPlayer_Active", 0)}");  // Important! Check HydroPlayer
+            Debug.Log($"AnemoPlayer_Active = {PlayerPrefs.GetInt("AnemoPlayer_Active", 0)}");
+
             // Prepare a list with proper positions for each player
             GameObject[] orderedPlayers = new GameObject[4]; // Use array to maintain positions
-            
+
             // Check each player GameObject - Maintain fixed order: Pyro, Hydro, Anemo, Geo
-            
+
             // Check PyroPlayer (position 0)
             GameObject pyroPlayer = GameObject.Find("PyroPlayer");
             if (pyroPlayer != null && PlayerPrefs.GetInt("PyroPlayer_Active", 0) == 1)
@@ -155,15 +164,22 @@ public class GameManager : MonoBehaviour
                 AssignProfileToPlayer(pyroPlayer, "PyroPlayer");
                 orderedPlayers[0] = pyroPlayer;
             }
-            
+
             // Check HydroPlayer (position 1)
             GameObject hydroPlayer = GameObject.Find("HydroPlayer");
+            // Add this line to debug if HydroPlayer GameObject is found
+            Debug.Log($"🔍 HydroPlayer GameObject found: {hydroPlayer != null}");
             if (hydroPlayer != null && PlayerPrefs.GetInt("HydroPlayer_Active", 0) == 1)
             {
+                Debug.Log("✅ HydroPlayer is active! Assigning profile...");
                 AssignProfileToPlayer(hydroPlayer, "HydroPlayer");
                 orderedPlayers[1] = hydroPlayer;
             }
-            
+            else
+            {
+                Debug.Log($"⚠️ HydroPlayer not active. GameObject exists: {hydroPlayer != null}, Active flag: {PlayerPrefs.GetInt("HydroPlayer_Active", 0)}");
+            }
+
             // Check AnemoPlayer (position 2)
             GameObject anemoPlayer = GameObject.Find("AnemoPlayer");
             if (anemoPlayer != null && PlayerPrefs.GetInt("AnemoPlayer_Active", 0) == 1)
@@ -171,7 +187,7 @@ public class GameManager : MonoBehaviour
                 AssignProfileToPlayer(anemoPlayer, "AnemoPlayer");
                 orderedPlayers[2] = anemoPlayer;
             }
-            
+
             // Check GeoPlayer (position 3)
             GameObject geoPlayer = GameObject.Find("GeoPlayer");
             if (geoPlayer != null && PlayerPrefs.GetInt("GeoPlayer_Active", 0) == 1)
@@ -179,32 +195,32 @@ public class GameManager : MonoBehaviour
                 AssignProfileToPlayer(geoPlayer, "GeoPlayer");
                 orderedPlayers[3] = geoPlayer;
             }
-            
+
             // Disable inactive players
             if (pyroPlayer != null && PlayerPrefs.GetInt("PyroPlayer_Active", 0) != 1)
             {
                 pyroPlayer.SetActive(false);
                 Debug.Log($"🚫 Disabling PyroPlayer - not selected in menu");
             }
-            
+
             if (hydroPlayer != null && PlayerPrefs.GetInt("HydroPlayer_Active", 0) != 1)
             {
                 hydroPlayer.SetActive(false);
                 Debug.Log($"🚫 Disabling HydroPlayer - not selected in menu");
             }
-            
+
             if (anemoPlayer != null && PlayerPrefs.GetInt("AnemoPlayer_Active", 0) != 1)
             {
                 anemoPlayer.SetActive(false);
                 Debug.Log($"🚫 Disabling AnemoPlayer - not selected in menu");
             }
-            
+
             if (geoPlayer != null && PlayerPrefs.GetInt("GeoPlayer_Active", 0) != 1)
             {
                 geoPlayer.SetActive(false);
                 Debug.Log($"🚫 Disabling GeoPlayer - not selected in menu");
             }
-            
+
             // Update the players list - keep only active players but maintain order
             players = new List<GameObject>();
             foreach (GameObject player in orderedPlayers)
@@ -214,9 +230,9 @@ public class GameManager : MonoBehaviour
                     players.Add(player);
                 }
             }
-            
+
             Debug.Log($"✅ Successfully assigned profiles to {players.Count} active players");
-            
+
             // Print player order for debugging
             string playerOrder = "";
             for (int i = 0; i < players.Count; i++)
@@ -235,23 +251,23 @@ public class GameManager : MonoBehaviour
     private void AssignProfileToPlayer(GameObject playerObject, string playerKey)
     {
         if (playerObject == null) return;
-        
+
         Player playerScript = playerObject.GetComponent<Player>();
         if (playerScript == null) return;
-        
+
         int profileId = PlayerPrefs.GetInt($"{playerKey}_ProfileId", -1);
         string username = PlayerPrefs.GetString($"{playerKey}_ProfileName", "Unknown");
         int elo = PlayerPrefs.GetInt($"{playerKey}_ProfileElo", 1000);
-        
+
         // Create and assign profile
         Profile profile = new Profile();
         profile.Id = profileId;
         profile.Username = username;
         profile.Elo = elo;
-        
+
         playerScript.playerProfile = profile;
         playerScript.debugProfileName = username;
-        
+
         Debug.Log($"✅ Assigned profile to {playerObject.name}: {username} (ID: {profileId}, ELO: {elo})");
     }
 
@@ -291,7 +307,7 @@ public class GameManager : MonoBehaviour
             if (playerScript != null)
             {
                 playerScript.lives = maxLives;
-                
+
                 Debug.Log($"❤️ {player.name} initialized with {maxLives} lives");
             }
         }
@@ -302,25 +318,25 @@ public class GameManager : MonoBehaviour
     {
         if (selectedPlayer == null)
             return false;
-            
+
         // Check if current player has 3+ lives
         Player currentPlayer = selectedPlayer.GetComponent<Player>();
         if (currentPlayer == null || currentPlayer.lives < 3)
             return false;
-            
+
         // Check if any player has exactly 1 life
         foreach (GameObject playerObj in players)
         {
             if (playerObj == null || playerObj == selectedPlayer)
                 continue;
-            
+
             Player otherPlayer = playerObj.GetComponent<Player>();
             if (otherPlayer != null && otherPlayer.lives == 1)
             {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -328,32 +344,32 @@ public class GameManager : MonoBehaviour
     {
         if (selectedPlayer == null || targetPlayerObject == null)
             return;
-        
+
         Player currentPlayer = selectedPlayer.GetComponent<Player>();
         Player targetPlayer = targetPlayerObject.GetComponent<Player>();
-        
+
         if (currentPlayer == null || targetPlayer == null)
             return;
-        
+
         // Check requirements
         if (currentPlayer.lives < 3)
         {
             Debug.LogWarning($"⚠️ {currentPlayer.gameObject.name} doesn't have enough lives to give (has {currentPlayer.lives}, needs at least 3)");
             return;
         }
-        
+
         if (targetPlayer.lives != 1)
         {
             Debug.LogWarning($"⚠️ {targetPlayer.gameObject.name} must have exactly 1 life to receive (has {targetPlayer.lives})");
             return;
         }
-        
+
         // Execute life transfer
         currentPlayer.lives--;
         targetPlayer.lives++;
-        
+
         Debug.Log($"❤️ {currentPlayer.gameObject.name} gave a life to {targetPlayer.gameObject.name}!");
-        
+
         // Notify LifeSharingManager if it exists
         if (lifeSharingManager != null)
         {
@@ -389,14 +405,14 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("🎮 Game Started! First player: " + (selectedPlayer != null ? selectedPlayer.name : "None"));
-        
+
         // Check if any player has exactly 1 life
         bool anyPlayerHasOneLife = false;
         foreach (GameObject playerObj in players)
         {
             if (playerObj == null || playerObj == selectedPlayer)
                 continue;
-                
+
             Player otherPlayer = playerObj.GetComponent<Player>();
             if (otherPlayer != null && otherPlayer.lives == 1)
             {
@@ -405,7 +421,7 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-        
+
         // If current player has enough lives and another player has 1 life
         if (selectedPlayer != null)
         {
@@ -471,8 +487,47 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"🎲 Moving player: {selectedPlayer.name}");
-        MoveSelectedPlayer();
+        // Start a coroutine to add delay before moving the player
+        StartCoroutine(DelayedPlayerMovement());
+    }
+
+    // New coroutine to delay player movement after dice roll
+    private IEnumerator DelayedPlayerMovement()
+    {
+        Player movementScript = selectedPlayer.GetComponent<Player>();
+        if (movementScript != null)
+        {
+            // Find the current tile and its region
+            GameObject currentWaypoint = movementScript.GetCurrentWaypoint();
+            if (currentWaypoint != null)
+            {
+                Tile tile = currentWaypoint.GetComponent<Tile>();
+                if (tile != null && CameraManager.Instance != null)
+                {
+                    // Switch to region camera BEFORE movement starts
+                    CameraManager.Instance.OnPlayerLandedOnTile(movementScript, tile.region);
+                    Debug.Log($"🎥 Switched camera to {tile.region} region before player starts moving");
+                }
+            }
+
+            Debug.Log($"⏱️ Waiting {diceRollToMoveDelay} seconds before moving player...");
+
+            // Wait for the specified delay time
+            yield return new WaitForSeconds(diceRollToMoveDelay);
+            if (selectedPlayer == null)
+            {
+                Debug.LogError("❌ No player selected for movement!");
+                yield break;
+            }
+            Debug.Log($"🎲 Moving player: {selectedPlayer.name} after delay");
+            int moveSteps = diceManager.LastRollSum;
+            movementScript.MovePlayer(moveSteps);
+            StartCoroutine(WaitForMovements(movementScript)); // Wait for movement to complete
+        }
+        else
+        {
+            Debug.LogError("❌ No Player script found on " + selectedPlayer.name);
+        }
     }
 
     private void MoveSelectedPlayer()
@@ -524,7 +579,7 @@ public class GameManager : MonoBehaviour
         {
             audioManager.PlayWrongAnswer();
         }
-        
+
         switch (difficulty.ToUpper())
         {
             case "EASY":
@@ -580,10 +635,16 @@ public class GameManager : MonoBehaviour
         hasDiceBeenRolledThisTurn = false;
         isEffectMovement = false;
         SetCurrentQuestionPlayer(selectedPlayer.GetComponent<Player>());
-        
+
         if (lifeSharingManager != null)
         {
             lifeSharingManager.OnNewTurn();
+        }
+
+        if (isExtraTurn)
+        {
+            diceManager.EnableAndSwitchToMainCamera();
+            isExtraTurn = false;
         }
 
         int attempts = 0;
@@ -628,11 +689,6 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"🔄 Prochain joueur : {selectedPlayer.name}");
 
-        // Activer le bouton de dés pour le nouveau joueur
-        if (diceManager != null)
-        {
-            diceManager.EnableRollButton();
-        }
     }
 
 
@@ -648,13 +704,6 @@ public class GameManager : MonoBehaviour
         // Réinitialiser l'état du joueur 
         currentPlayerIndex = players.IndexOf(player.gameObject);
         selectedPlayer = player.gameObject;
-
-        // Activer le bouton de dés pour permettre un nouveau lancer
-        if (diceManager != null)
-        {
-            diceManager.EnableRollButton();
-        }
-
         Debug.Log($"🔄 {player.gameObject.name} obtient un tour supplémentaire!");
     }
 
@@ -662,7 +711,7 @@ public class GameManager : MonoBehaviour
     {
         return gameWon;
     }
-    
+
     public void WinGameOver(Player winningPlayer)
     {
         Debug.Log($"🏆 WinGameOver appelé pour le joueur: {(winningPlayer != null ? winningPlayer.gameObject.name : "null")}");
@@ -705,7 +754,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("⚠️ Panneau de victoire non assigné dans GameManager!");
-            
+
             // Fallback: try to find GameEndManager directly if UI manager is not set
             GameEndManager endManager = FindObjectOfType<GameEndManager>();
             if (endManager != null)
@@ -715,7 +764,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    
+
     public void CheckPlayerLives()
     {
         if (gameLost) return; // Éviter d'appeler plusieurs fois
@@ -731,7 +780,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    
+
 
     public void LoseGame(Player losingPlayer)
     {
@@ -766,7 +815,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("⚠️ gameEndUIManager non assigné dans GameManager. Impossible d'afficher l'écran de défaite!");
-            
+
             // Fallback: try to find GameEndManager directly if UI manager is not set
             GameEndManager endManager = FindObjectOfType<GameEndManager>();
             if (endManager != null)

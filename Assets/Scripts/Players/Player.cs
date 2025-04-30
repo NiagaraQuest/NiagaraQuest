@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     // Pour suivre l'avant-dernière position d'atterrissage
     protected string previousLandingPath;
     protected int previousLandingIndex;
-    protected int previousLandingDirection;  
+    protected int previousLandingDirection;
 
     // Pile pour stocker les derniers waypoints (maximum 20)
     protected Stack<WaypointData> previousWaypoints = new Stack<WaypointData>();
@@ -150,6 +150,17 @@ public class Player : MonoBehaviour
         GameManager.Instance.CheckPlayerLives();
         if (isMoving && !reachedIntersection)
         {
+            GameObject currentWaypoint = GetCurrentWaypoint();
+            if (currentWaypoint != null)
+            {
+                Tile tile = currentWaypoint.GetComponent<Tile>();
+                if (tile != null && CameraManager.Instance != null)
+                {
+                    // Immediately switch to the region camera based on current tile
+                    CameraManager.Instance.OnPlayerLandedOnTile(this, tile.region);
+                    Debug.Log($"🎥 Switching camera to {tile.region} region as player starts moving");
+                }
+            }
             if (targetWaypointIndex < 0)
             {
                 Debug.LogWarning($"⚠️ ATTENTION: Index -1 détecté à l'étape {remainingSteps}. Chemin: {currentPath}, Index actuel: {currentWaypointIndex}, Target: {targetWaypointIndex}");
@@ -189,14 +200,6 @@ public class Player : MonoBehaviour
                         {
                             reachedIntersection = true;
                             isMoving = false;
-
-                            // Switch back to main camera when reaching intersection
-                            if (usingPlayerCamera && CameraManager.Instance != null)
-                            {
-                                CameraManager.Instance.SwitchToMainCamera();
-                                usingPlayerCamera = false;
-                            }
-
                             uiManager.ShowUI(this);
                         }
                         // Si le joueur a encore 2 pas ou plus, continuer automatiquement sur le même chemin
@@ -205,13 +208,7 @@ public class Player : MonoBehaviour
                             Debug.Log($"🔄 Intersection ignorée car remainingSteps = {remainingSteps} > 1. Continuation automatique sur le même chemin.");
 
                             lastWaypointBeforeIntersection = targetWaypoint;
-
-                            // Utiliser la même logique que le bouton "Stay on Path"
-                            // Note: Nous enregistrons d'abord l'intersection comme dernière position
                             ResumeMovement(null, true);
-
-                            // Pas besoin d'ajuster les pas manuellement car ResumeMovement s'en charge
-                            // remainingSteps est toujours géré correctement
                         }
                     }
                     else
@@ -236,13 +233,6 @@ public class Player : MonoBehaviour
                         {
                             isMoving = false;
                             isMovingBack = false;
-
-                            // Switch back to main camera when player stops moving
-                            if (usingPlayerCamera && CameraManager.Instance != null)
-                            {
-                                CameraManager.Instance.SwitchToMainCamera();
-                                usingPlayerCamera = false;
-                            }
 
                             DisplayCurrentRegion();
                         }
@@ -282,36 +272,44 @@ public class Player : MonoBehaviour
     }
 
 
-public virtual bool CanGiveLife()
-{
-    return lives >= 3;
-}
-
-public virtual void GiveLifeTo(Player targetPlayer)
-{
-    if (!CanGiveLife())
+    public virtual bool CanGiveLife()
     {
-        Debug.LogWarning($"⚠️ {gameObject.name} cannot give a life (only has {lives} left, needs at least 3)");
-        return;
+        return lives >= 3;
     }
 
-    if (targetPlayer == null)
+    public void PlayMovementSound()
     {
-        Debug.LogError("❌ Target player is null!");
-        return;
+        while (isMoving)
+        {
+            AudioManager.Instance.PlayMovement();
+        }
     }
-    
-    if (targetPlayer.lives != 1)
+
+    public virtual void GiveLifeTo(Player targetPlayer)
     {
-        Debug.LogWarning($"⚠️ Cannot give life to {targetPlayer.gameObject.name} - they must have exactly 1 life (current: {targetPlayer.lives})");
-        return;
+        if (!CanGiveLife())
+        {
+            Debug.LogWarning($"⚠️ {gameObject.name} cannot give a life (only has {lives} left, needs at least 3)");
+            return;
+        }
+
+        if (targetPlayer == null)
+        {
+            Debug.LogError("❌ Target player is null!");
+            return;
+        }
+
+        if (targetPlayer.lives != 1)
+        {
+            Debug.LogWarning($"⚠️ Cannot give life to {targetPlayer.gameObject.name} - they must have exactly 1 life (current: {targetPlayer.lives})");
+            return;
+        }
+        lives--;
+        targetPlayer.GainLife();
+
+        Debug.Log($"❤️ {gameObject.name} gave a life to {targetPlayer.gameObject.name}! " +
+                  $"{gameObject.name} now has {lives} lives, {targetPlayer.gameObject.name} has {targetPlayer.lives} lives.");
     }
-    lives--;
-    targetPlayer.GainLife();
-    
-    Debug.Log($"❤️ {gameObject.name} gave a life to {targetPlayer.gameObject.name}! " +
-              $"{gameObject.name} now has {lives} lives, {targetPlayer.gameObject.name} has {targetPlayer.lives} lives.");
-}
 
     public virtual void RegisterLandingPosition()
     {
@@ -383,18 +381,12 @@ public virtual void GiveLifeTo(Player targetPlayer)
             remainingSteps = steps;
             targetWaypointIndex = currentWaypointIndex + movementDirection;
             isMoving = true;
-
-            // Switch to player camera when starting movement
-            if (CameraManager.Instance != null)
-            {
-                CameraManager.Instance.SwitchToPlayerCamera(this);
-                usingPlayerCamera = true;
-            }
         }
     }
-    // Nouvelle méthode pour reculer en utilisant les waypoints stockés
+
     public virtual void MovePlayerBack()
     {
+        CameraManager.Instance.SwitchToMainCamera();
         Debug.Log($"DEBUG: MovePlayerBack called - isMovingBack before: {isMovingBack}");
         if (isMoving || reachedIntersection)
         {
@@ -525,13 +517,6 @@ public virtual void GiveLifeTo(Player targetPlayer)
 
         reachedIntersection = false;
         isMoving = (remainingSteps > 0);
-
-        // If continuing movement, switch to player camera
-        if (isMoving && CameraManager.Instance != null)
-        {
-            CameraManager.Instance.SwitchToPlayerCamera(this);
-            usingPlayerCamera = true;
-        }
     }
 
     protected virtual void MoveToWaypoint(int index)
@@ -585,6 +570,12 @@ public virtual void GiveLifeTo(Player targetPlayer)
             Tile tile = currentWaypoint.GetComponent<Tile>();
             if (tile != null)
             {
+                // Notify the camera manager about the current region
+                if (CameraManager.Instance != null)
+                {
+                    CameraManager.Instance.OnPlayerLandedOnTile(this, tile.region);
+                }
+
                 tile.OnPlayerLands();
             }
 

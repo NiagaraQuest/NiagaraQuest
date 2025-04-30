@@ -1615,7 +1615,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &86886266
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -16974,7 +16974,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1313853195}
   - component: {fileID: 1313853197}
-  - component: {fileID: 1313853196}
   m_Layer: 0
   m_Name: Container
   m_TagString: Untagged
@@ -17001,19 +17000,6 @@ Transform:
   - {fileID: 1715086996}
   m_Father: {fileID: 1428506344}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1313853196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1313853194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ace37f2c7a30e449925b02e48a10d7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudManager: {fileID: 1313853197}
 --- !u!114 &1313853197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25991,6 +25977,7 @@ MonoBehaviour:
   maxLives: 0
   twoPlayersInitialLives: 4
   threeOrFourPlayersInitialLives: 3
+  diceRollToMoveDelay: 0
   gameEndUIManager: {fileID: 841796895}
   allowLifeSharing: 1
   hasDiceBeenRolledThisTurn: 0
@@ -26029,6 +26016,10 @@ MonoBehaviour:
   mainCamera: {fileID: 330585545}
   diceCamera: {fileID: 1651804929}
   viewCamera: {fileID: 412653308}
+  vulkanCamera: {fileID: 0}
+  atlantaCamera: {fileID: 0}
+  celestyelCamera: {fileID: 0}
+  bergCamera: {fileID: 0}
   transitionDuration: 0.5
   enableCursorControl: 1
   cursorSensitivity: 2

@@ -94,10 +94,10 @@ public class PlayerHUDManager : MonoBehaviour
         // Map player types to corners - fixed positions matching menu selection
         Dictionary<string, PlayerCorner> typeToCorner = new Dictionary<string, PlayerCorner>
         {
-            { "PyroPlayer", corner1 },  // Top Left
-            { "HydroPlayer", corner2 }, // Top Right
-            { "AnemoPlayer", corner3 }, // Bottom Left
-            { "GeoPlayer", corner4 }    // Bottom Right
+            { "GeoPlayer", corner1 },  // Top Left
+            { "AnemoPlayer", corner2 }, // Top Right
+            { "HydroPlayer", corner3 }, // Bottom Left
+            { "PyroPlayer", corner4 }    // Bottom Right
         };
 
         // Check which corners should be active based on PlayerPrefs and active players
@@ -236,13 +236,13 @@ public class PlayerHUDManager : MonoBehaviour
         UpdateHearts(corner, playerScript.lives);
 
         // Highlight the current active player
-        bool isCurrentPlayer = (gameManager.selectedPlayer == corner.linkedPlayer);
-        HighlightCorner(corner, isCurrentPlayer);
+       
     }
 
     // Update heart images based on current lives
     private void UpdateHearts(PlayerCorner corner, int currentLives)
-    {
+       
+{
         if (corner.heartImages == null) return;
 
         for (int i = 0; i < corner.heartImages.Length; i++)
@@ -253,20 +253,14 @@ public class PlayerHUDManager : MonoBehaviour
                 corner.heartImages[i].color = isActive ? corner.activeHeartColor : corner.inactiveHeartColor;
             }
         }
-    }
-
-    // Highlight the current player's corner
-    private void HighlightCorner(PlayerCorner corner, bool isActive)
-    {
-        if (corner.cornerPanel != null)
+       if (gameManager.currentGameMode == GameManager.GameMode.FourPlayers)
         {
-            // Simple highlight - scale up slightly
-            corner.cornerPanel.transform.localScale = isActive ?
-                new Vector3(1.1f, 1.1f, 1.1f) :
-                Vector3.one;
+            corner.heartImages[corner.heartImages.Length - 1].color =  new Color(0,0,0,0);
         }
+       
     }
 
+    
     // Called when a player loses/gains a life
     public void OnPlayerLifeChanged(GameObject player, int oldValue, int newValue)
     {
