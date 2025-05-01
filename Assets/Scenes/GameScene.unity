@@ -501,7 +501,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &22654304
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,7 +680,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &39505826
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +877,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &57905424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1119,7 +1149,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &64976309
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,7 +1208,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &66705125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,7 +1405,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &70684507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,7 +1662,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &86886265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1735,6 +1805,12 @@ MonoBehaviour:
   isMoving: 0
   movementDirection: 1
   turnsToSkip: 0
+  _debug_isEffectMovement: 0
+  _debug_movementSource: None
+  _debug_stepsToMove: 0
+  _debug_questionShown: 0
+  _debug_landedOnFinalTile: 0
+  _debug_landedOnTileType: None
   lives: 4
   debugProfileName: 
   previousLandingPath: 
@@ -1927,7 +2003,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &93367373
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,7 +2062,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &99125169
 GameObject:
   m_ObjectHideFlags: 0
@@ -2025,7 +2121,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &106700933
 GameObject:
   m_ObjectHideFlags: 0
@@ -2133,7 +2239,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &117471142
 GameObject:
   m_ObjectHideFlags: 0
@@ -2318,7 +2434,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &120458156
 GameObject:
   m_ObjectHideFlags: 0
@@ -2445,7 +2571,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &124554369
 GameObject:
   m_ObjectHideFlags: 0
@@ -2494,7 +2630,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &130617093
 GameObject:
   m_ObjectHideFlags: 0
@@ -2543,7 +2689,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &144777464
 GameObject:
   m_ObjectHideFlags: 0
@@ -2592,7 +2748,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &152006247
 GameObject:
   m_ObjectHideFlags: 0
@@ -2777,7 +2943,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &161029623
 GameObject:
   m_ObjectHideFlags: 0
@@ -2826,7 +3002,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &174391714
 GameObject:
   m_ObjectHideFlags: 0
@@ -2875,7 +3061,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &186183755
 GameObject:
   m_ObjectHideFlags: 0
@@ -3198,7 +3394,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &194185506
 GameObject:
   m_ObjectHideFlags: 0
@@ -3247,7 +3453,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &207336738
 GameObject:
   m_ObjectHideFlags: 0
@@ -3373,7 +3589,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &221040097
 GameObject:
   m_ObjectHideFlags: 0
@@ -3459,7 +3685,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &223432591
 GameObject:
   m_ObjectHideFlags: 0
@@ -3508,7 +3744,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &225825698
 GameObject:
   m_ObjectHideFlags: 0
@@ -3557,7 +3803,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &229903438
 GameObject:
   m_ObjectHideFlags: 0
@@ -3690,6 +3946,12 @@ MonoBehaviour:
   isMoving: 0
   movementDirection: 1
   turnsToSkip: 0
+  _debug_isEffectMovement: 0
+  _debug_movementSource: None
+  _debug_stepsToMove: 0
+  _debug_questionShown: 0
+  _debug_landedOnFinalTile: 0
+  _debug_landedOnTileType: None
   lives: 4
   debugProfileName: normal2
   previousLandingPath: 
@@ -3882,7 +4144,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &236350761
 GameObject:
   m_ObjectHideFlags: 0
@@ -3931,7 +4203,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &237636779
 GameObject:
   m_ObjectHideFlags: 0
@@ -3980,7 +4262,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &247963464
 GameObject:
   m_ObjectHideFlags: 0
@@ -4029,7 +4321,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &253883996
 GameObject:
   m_ObjectHideFlags: 0
@@ -4195,7 +4497,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &256133725
 GameObject:
   m_ObjectHideFlags: 0
@@ -4244,7 +4556,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &259934539
 GameObject:
   m_ObjectHideFlags: 0
@@ -4293,7 +4615,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &261208999
 GameObject:
   m_ObjectHideFlags: 0
@@ -4342,7 +4674,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &271402897
 GameObject:
   m_ObjectHideFlags: 0
@@ -4466,7 +4808,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &285096716
 GameObject:
   m_ObjectHideFlags: 0
@@ -4515,7 +4867,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &286279096
 GameObject:
   m_ObjectHideFlags: 0
@@ -5402,7 +5764,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &339027748
 GameObject:
   m_ObjectHideFlags: 0
@@ -5608,7 +5980,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &353276563
 GameObject:
   m_ObjectHideFlags: 0
@@ -5889,7 +6271,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &386211918
 GameObject:
   m_ObjectHideFlags: 0
@@ -5938,7 +6330,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &399396427
 GameObject:
   m_ObjectHideFlags: 0
@@ -5987,7 +6389,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &401998759
 GameObject:
   m_ObjectHideFlags: 0
@@ -6036,7 +6448,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &407171412
 GameObject:
   m_ObjectHideFlags: 0
@@ -6452,6 +6874,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 414621272}
     paths:
@@ -6517,7 +6944,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &426640705
 GameObject:
   m_ObjectHideFlags: 0
@@ -6566,7 +7003,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &446802528
 GameObject:
   m_ObjectHideFlags: 0
@@ -6751,7 +7198,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &453032791
 GameObject:
   m_ObjectHideFlags: 0
@@ -6800,6 +7257,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 453032791}
     paths:
@@ -6949,6 +7411,12 @@ MonoBehaviour:
   isMoving: 0
   movementDirection: 1
   turnsToSkip: 0
+  _debug_isEffectMovement: 0
+  _debug_movementSource: None
+  _debug_stepsToMove: 0
+  _debug_questionShown: 0
+  _debug_landedOnFinalTile: 0
+  _debug_landedOnTileType: None
   lives: 4
   debugProfileName: normal
   previousLandingPath: 
@@ -7004,7 +7472,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &463437474
 GameObject:
   m_ObjectHideFlags: 0
@@ -7161,7 +7639,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &473751142
 GameObject:
   m_ObjectHideFlags: 0
@@ -7210,7 +7698,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &473915470
 GameObject:
   m_ObjectHideFlags: 0
@@ -7395,7 +7893,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &506146791
 GameObject:
   m_ObjectHideFlags: 0
@@ -7444,7 +7952,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &549760391
 GameObject:
   m_ObjectHideFlags: 0
@@ -7493,7 +8011,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &552886625
 GameObject:
   m_ObjectHideFlags: 0
@@ -7680,7 +8208,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &565796170
 GameObject:
   m_ObjectHideFlags: 0
@@ -7729,7 +8267,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &567544516
 GameObject:
   m_ObjectHideFlags: 0
@@ -7853,7 +8401,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &583660990
 GameObject:
   m_ObjectHideFlags: 0
@@ -7902,7 +8460,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &600345986
 GameObject:
   m_ObjectHideFlags: 0
@@ -7951,7 +8519,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &608264941
 GameObject:
   m_ObjectHideFlags: 0
@@ -8078,7 +8656,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &615547368
 GameObject:
   m_ObjectHideFlags: 0
@@ -8127,7 +8715,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &625433216
 GameObject:
   m_ObjectHideFlags: 0
@@ -8176,7 +8774,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &635338758
 GameObject:
   m_ObjectHideFlags: 0
@@ -8259,7 +8867,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &650744940
 GameObject:
   m_ObjectHideFlags: 0
@@ -8308,6 +8926,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 650744940}
     paths:
@@ -8373,7 +8996,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &660308349
 GameObject:
   m_ObjectHideFlags: 0
@@ -8422,7 +9055,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &664073038
 GameObject:
   m_ObjectHideFlags: 0
@@ -8546,7 +9189,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &683327864
 GameObject:
   m_ObjectHideFlags: 0
@@ -8595,7 +9248,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &684106201
 GameObject:
   m_ObjectHideFlags: 0
@@ -8644,7 +9307,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &684785728
 GameObject:
   m_ObjectHideFlags: 0
@@ -8693,7 +9366,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &689691773
 GameObject:
   m_ObjectHideFlags: 0
@@ -8878,6 +9561,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 691417444}
     paths:
@@ -9122,6 +9810,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 710462973}
     paths:
@@ -9155,7 +9848,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &728584065
 GameObject:
   m_ObjectHideFlags: 0
@@ -9204,7 +9907,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &734892836
 GameObject:
   m_ObjectHideFlags: 0
@@ -9253,7 +9966,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &735718962
 GameObject:
   m_ObjectHideFlags: 0
@@ -9339,7 +10062,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &743785214
 GameObject:
   m_ObjectHideFlags: 0
@@ -9463,7 +10196,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &744728076
 GameObject:
   m_ObjectHideFlags: 0
@@ -9512,6 +10255,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 744728076}
     paths:
@@ -9577,7 +10325,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &747667566
 GameObject:
   m_ObjectHideFlags: 0
@@ -9626,7 +10384,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &751791755
 GameObject:
   m_ObjectHideFlags: 0
@@ -9752,7 +10520,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &772419307
 GameObject:
   m_ObjectHideFlags: 0
@@ -10075,7 +10853,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &776874819
 GameObject:
   m_ObjectHideFlags: 0
@@ -10262,7 +11050,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1001 &791187693
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10297,11 +11095,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4415bf9772e3274fa4f393b6977f922, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99999416
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4415bf9772e3274fa4f393b6977f922, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.003435346
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4415bf9772e3274fa4f393b6977f922, type: 3}
       propertyPath: m_LocalRotation.y
@@ -10309,11 +11107,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4415bf9772e3274fa4f393b6977f922, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4415bf9772e3274fa4f393b6977f922, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -0.394
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4415bf9772e3274fa4f393b6977f922, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -10973,7 +11771,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &820409096
 GameObject:
   m_ObjectHideFlags: 0
@@ -11225,7 +12033,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &826044351
 GameObject:
   m_ObjectHideFlags: 0
@@ -11353,7 +12171,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &828470852
 GameObject:
   m_ObjectHideFlags: 0
@@ -11431,6 +12259,13 @@ MonoBehaviour:
   showEloChanges: 1
   eloDisplayTime: 3
   eloChangeText: {fileID: 0}
+  _debug_questionShown: 0
+  _debug_questionType: None
+  _debug_questionDifficulty: None
+  _debug_isFinalTile: 0
+  _debug_isEffectMovement: 0
+  _debug_playerPosition: -1
+  _debug_playerName: None
   isProcessingQuestion: 0
 --- !u!1 &832575517
 GameObject:
@@ -11530,6 +12365,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 841139410}
     paths:
@@ -11563,7 +12403,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &841796891
 GameObject:
   m_ObjectHideFlags: 0
@@ -11711,6 +12561,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 847127836}
     paths:
@@ -11908,7 +12763,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &863217189
 GameObject:
   m_ObjectHideFlags: 0
@@ -12032,7 +12897,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &865035000
 GameObject:
   m_ObjectHideFlags: 0
@@ -12081,7 +12956,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &875814994
 GameObject:
   m_ObjectHideFlags: 0
@@ -12130,7 +13015,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &876817293
 GameObject:
   m_ObjectHideFlags: 0
@@ -12179,7 +13074,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &885102798
 GameObject:
   m_ObjectHideFlags: 0
@@ -12267,7 +13172,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &905099594
 GameObject:
   m_ObjectHideFlags: 0
@@ -12316,7 +13231,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &915450603
 GameObject:
   m_ObjectHideFlags: 0
@@ -12503,7 +13428,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &937549447
 GameObject:
   m_ObjectHideFlags: 0
@@ -12552,7 +13487,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &941676302
 GameObject:
   m_ObjectHideFlags: 0
@@ -12601,7 +13546,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &960255310
 GameObject:
   m_ObjectHideFlags: 0
@@ -12650,7 +13605,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &966280545
 GameObject:
   m_ObjectHideFlags: 0
@@ -12697,9 +13662,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 16
   type: 0
-  region: 1
+  region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &970364636
 GameObject:
   m_ObjectHideFlags: 0
@@ -13148,7 +14123,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &990255581
 GameObject:
   m_ObjectHideFlags: 0
@@ -13333,7 +14318,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &998765994
 GameObject:
   m_ObjectHideFlags: 0
@@ -13518,6 +14513,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 998987728}
     paths:
@@ -13794,7 +14794,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1039329067
 GameObject:
   m_ObjectHideFlags: 0
@@ -13843,7 +14853,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1056098864
 GameObject:
   m_ObjectHideFlags: 0
@@ -13892,7 +14912,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1056655775
 GameObject:
   m_ObjectHideFlags: 0
@@ -14077,7 +15107,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1062458674
 GameObject:
   m_ObjectHideFlags: 0
@@ -14208,7 +15248,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1084235394
 GameObject:
   m_ObjectHideFlags: 0
@@ -14393,7 +15443,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1089275607
 GameObject:
   m_ObjectHideFlags: 0
@@ -14442,7 +15502,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1101440627
 GameObject:
   m_ObjectHideFlags: 0
@@ -14991,7 +16061,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1124027190
 GameObject:
   m_ObjectHideFlags: 0
@@ -15040,7 +16120,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1124239199
 GameObject:
   m_ObjectHideFlags: 0
@@ -15089,7 +16179,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1128366638
 GameObject:
   m_ObjectHideFlags: 0
@@ -15138,7 +16238,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1128612865
 GameObject:
   m_ObjectHideFlags: 0
@@ -15187,6 +16297,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 1128612865}
     paths:
@@ -15362,7 +16477,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1163943391
 GameObject:
   m_ObjectHideFlags: 0
@@ -15411,7 +16536,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1171605969
 GameObject:
   m_ObjectHideFlags: 0
@@ -15460,7 +16595,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1179630134
 GameObject:
   m_ObjectHideFlags: 0
@@ -15647,7 +16792,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1197514110
 GameObject:
   m_ObjectHideFlags: 0
@@ -15696,7 +16851,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1210637453
 GameObject:
   m_ObjectHideFlags: 0
@@ -15745,7 +16910,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1213759791
 GameObject:
   m_ObjectHideFlags: 0
@@ -15794,7 +16969,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1215987045
 GameObject:
   m_ObjectHideFlags: 0
@@ -15843,7 +17028,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1230621644
 GameObject:
   m_ObjectHideFlags: 0
@@ -16105,7 +17300,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1238142921
 GameObject:
   m_ObjectHideFlags: 0
@@ -16236,7 +17441,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1242478040
 GameObject:
   m_ObjectHideFlags: 0
@@ -16423,7 +17638,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1247891234
 GameObject:
   m_ObjectHideFlags: 0
@@ -16683,7 +17908,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1275368306
 GameObject:
   m_ObjectHideFlags: 0
@@ -17005,7 +18240,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1302938194
 GameObject:
   m_ObjectHideFlags: 0
@@ -17054,7 +18299,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1308916708
 GameObject:
   m_ObjectHideFlags: 0
@@ -17103,7 +18358,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1311876346
 GameObject:
   m_ObjectHideFlags: 0
@@ -17152,7 +18417,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1313853194
 GameObject:
   m_ObjectHideFlags: 0
@@ -17317,7 +18592,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1327801499
 GameObject:
   m_ObjectHideFlags: 0
@@ -17366,7 +18651,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1331437827
 GameObject:
   m_ObjectHideFlags: 0
@@ -17491,7 +18786,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1356186006
 GameObject:
   m_ObjectHideFlags: 0
@@ -17540,7 +18845,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1357898850
 GameObject:
   m_ObjectHideFlags: 0
@@ -17589,7 +18904,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1358253556
 GameObject:
   m_ObjectHideFlags: 0
@@ -17678,7 +19003,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1381216732
 GameObject:
   m_ObjectHideFlags: 0
@@ -17765,7 +19100,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1389345291
 GameObject:
   m_ObjectHideFlags: 0
@@ -18004,7 +19349,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1415307115
 GameObject:
   m_ObjectHideFlags: 0
@@ -18053,6 +19408,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 1415307115}
     paths:
@@ -18118,7 +19478,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1428506343
 GameObject:
   m_ObjectHideFlags: 0
@@ -18237,7 +19607,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1434205776
 GameObject:
   m_ObjectHideFlags: 0
@@ -18286,7 +19666,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1435301014
 GameObject:
   m_ObjectHideFlags: 0
@@ -18335,7 +19725,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1439959032
 GameObject:
   m_ObjectHideFlags: 0
@@ -18384,7 +19784,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1444495244
 GameObject:
   m_ObjectHideFlags: 0
@@ -18433,7 +19843,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1447290509
 GameObject:
   m_ObjectHideFlags: 0
@@ -18693,7 +20113,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1469660066
 GameObject:
   m_ObjectHideFlags: 0
@@ -18821,7 +20251,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1479863353
 GameObject:
   m_ObjectHideFlags: 0
@@ -18905,7 +20345,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1485854391
 GameObject:
   m_ObjectHideFlags: 0
@@ -19228,7 +20678,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1499539202
 GameObject:
   m_ObjectHideFlags: 0
@@ -19446,7 +20906,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1517490041
 GameObject:
   m_ObjectHideFlags: 0
@@ -19495,7 +20965,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1522037767
 GameObject:
   m_ObjectHideFlags: 0
@@ -19544,7 +21024,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1522188388
 GameObject:
   m_ObjectHideFlags: 0
@@ -20089,7 +21579,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1556519441
 GameObject:
   m_ObjectHideFlags: 0
@@ -20138,7 +21638,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1586591905
 GameObject:
   m_ObjectHideFlags: 0
@@ -20187,7 +21697,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1587503403
 GameObject:
   m_ObjectHideFlags: 0
@@ -20364,7 +21884,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1603330338
 GameObject:
   m_ObjectHideFlags: 0
@@ -20530,7 +22060,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1616316234
 GameObject:
   m_ObjectHideFlags: 0
@@ -20852,7 +22392,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1637360588
 GameObject:
   m_ObjectHideFlags: 0
@@ -20901,7 +22451,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1640635739
 GameObject:
   m_ObjectHideFlags: 0
@@ -21086,7 +22646,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1647811986
 GameObject:
   m_ObjectHideFlags: 0
@@ -21567,6 +23137,12 @@ MonoBehaviour:
   isMoving: 0
   movementDirection: 1
   turnsToSkip: 0
+  _debug_isEffectMovement: 0
+  _debug_movementSource: None
+  _debug_stepsToMove: 0
+  _debug_questionShown: 0
+  _debug_landedOnFinalTile: 0
+  _debug_landedOnTileType: None
   lives: 4
   debugProfileName: 
   previousLandingPath: 
@@ -21673,7 +23249,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1670499089
 GameObject:
   m_ObjectHideFlags: 0
@@ -21722,7 +23308,70 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
+--- !u!1 &1672716847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1672716849}
+  - component: {fileID: 1672716848}
+  m_Layer: 0
+  m_Name: PathHighlighter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1672716848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672716847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf133269dfb7e4428e91b6a3e93c3bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pyroPathParent: {fileID: 1737506226}
+  hydroPathParent: {fileID: 1062458674}
+  geoPathParent: {fileID: 1238142921}
+  anemoPathParent: {fileID: 1609578302}
+  pyroHighlightColor: {r: 1, g: 0, b: 0, a: 1}
+  hydroHighlightColor: {r: 0, g: 0, b: 1, a: 1}
+  geoHighlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  anemoHighlightColor: {r: 0, g: 1, b: 0, a: 1}
+  defaultColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+--- !u!4 &1672716849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672716847}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.6053267, y: 69.76261, z: 11.464111}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1674765597
 GameObject:
   m_ObjectHideFlags: 0
@@ -21771,7 +23420,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1676757089
 GameObject:
   m_ObjectHideFlags: 0
@@ -21820,7 +23479,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1683387221
 GameObject:
   m_ObjectHideFlags: 0
@@ -21869,6 +23538,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 1683387221}
     paths:
@@ -22208,7 +23882,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1704777114
 GameObject:
   m_ObjectHideFlags: 0
@@ -22257,7 +23941,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1709492260
 GameObject:
   m_ObjectHideFlags: 0
@@ -22506,7 +24200,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1718438698
 GameObject:
   m_ObjectHideFlags: 0
@@ -22555,7 +24259,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1723898968
 GameObject:
   m_ObjectHideFlags: 0
@@ -22679,7 +24393,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1733566589
 GameObject:
   m_ObjectHideFlags: 0
@@ -22866,7 +24590,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1737506226
 GameObject:
   m_ObjectHideFlags: 0
@@ -23134,7 +24868,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1752999920
 GameObject:
   m_ObjectHideFlags: 0
@@ -23183,7 +24927,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1756469587
 GameObject:
   m_ObjectHideFlags: 0
@@ -23232,7 +24986,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1772844559
 GameObject:
   m_ObjectHideFlags: 0
@@ -23538,6 +25302,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 1786932122}
     paths:
@@ -23739,7 +25508,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1816020781
 GameObject:
   m_ObjectHideFlags: 0
@@ -23788,7 +25567,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1817235643
 GameObject:
   m_ObjectHideFlags: 0
@@ -23837,7 +25626,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1822886116
 GameObject:
   m_ObjectHideFlags: 0
@@ -23886,7 +25685,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1828847173
 GameObject:
   m_ObjectHideFlags: 0
@@ -23935,7 +25744,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1843120571
 GameObject:
   m_ObjectHideFlags: 0
@@ -23984,7 +25803,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1847996996
 GameObject:
   m_ObjectHideFlags: 0
@@ -24153,7 +25982,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1858793579
 GameObject:
   m_ObjectHideFlags: 0
@@ -24277,7 +26116,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1863011935
 GameObject:
   m_ObjectHideFlags: 0
@@ -24326,7 +26175,17 @@ MonoBehaviour:
   type: 0
   region: 2
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1863111467
 GameObject:
   m_ObjectHideFlags: 0
@@ -24375,7 +26234,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1864444334
 GameObject:
   m_ObjectHideFlags: 0
@@ -24424,6 +26293,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 1864444334}
     paths:
@@ -24489,7 +26363,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1870438688
 GameObject:
   m_ObjectHideFlags: 0
@@ -24538,7 +26422,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1870466834
 GameObject:
   m_ObjectHideFlags: 0
@@ -24587,7 +26481,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1875821854
 GameObject:
   m_ObjectHideFlags: 0
@@ -24910,7 +26814,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1878573898
 GameObject:
   m_ObjectHideFlags: 0
@@ -25037,7 +26951,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1900307860
 GameObject:
   m_ObjectHideFlags: 0
@@ -25086,6 +27010,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 1900307860}
     paths:
@@ -25498,7 +27427,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1001 &1942075947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25938,7 +27877,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &1962210300
 GameObject:
   m_ObjectHideFlags: 0
@@ -25987,7 +27936,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2005870254
 GameObject:
   m_ObjectHideFlags: 0
@@ -26036,7 +27995,17 @@ MonoBehaviour:
   type: 0
   region: 1
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2021757559
 GameObject:
   m_ObjectHideFlags: 0
@@ -26085,7 +28054,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2026066382
 GameObject:
   m_ObjectHideFlags: 0
@@ -26134,7 +28113,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2027823862
 GameObject:
   m_ObjectHideFlags: 0
@@ -26183,7 +28172,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2031781945
 GameObject:
   m_ObjectHideFlags: 0
@@ -26249,6 +28248,11 @@ MonoBehaviour:
   currentQuestionPlayer: {fileID: 0}
   isEffectMovement: 0
   gameEndManager: {fileID: 0}
+  _debug_finalTileMovement: 0
+  _debug_effectSource: None
+  _debug_playerPreviousIndex: -1
+  _debug_playerCurrentIndex: -1
+  _debug_questionShown: 0
 --- !u!114 &2031781948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26459,7 +28463,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2052980293
 GameObject:
   m_ObjectHideFlags: 0
@@ -26957,7 +28971,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2093359854
 GameObject:
   m_ObjectHideFlags: 0
@@ -27006,7 +29030,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2096490715
 GameObject:
   m_ObjectHideFlags: 0
@@ -27175,7 +29209,17 @@ MonoBehaviour:
   type: 0
   region: 3
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2126568759
 GameObject:
   m_ObjectHideFlags: 0
@@ -27395,7 +29439,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1 &2139488861
 GameObject:
   m_ObjectHideFlags: 0
@@ -27444,6 +29498,11 @@ MonoBehaviour:
   type: 2
   region: 4
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   intersectionList:
   - intersectionPoint: {fileID: 2139488861}
     paths:
@@ -27647,7 +29706,17 @@ MonoBehaviour:
   type: 0
   region: 0
   pathName: 
+  _debug_isEffectMovement: 0
+  _debug_isFinalTile: 0
+  _debug_playerIndex: -1
+  _debug_effectOverridden: 0
+  _debug_playerName: None
   questionTypePreference: 0
+  _debug_questionAsked: 0
+  _debug_questionSkipped: 0
+  _debug_wasFinalTile: 0
+  _debug_effectOrigin: None
+  _debug_playerPosition: -1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -27672,3 +29741,4 @@ SceneRoots:
   - {fileID: 1953554473}
   - {fileID: 2031781946}
   - {fileID: 106700935}
+  - {fileID: 1672716849}

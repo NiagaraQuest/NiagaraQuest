@@ -299,6 +299,7 @@ public class QuestionTile : Tile
             Debug.LogError($"❌ Error recording answer in database: {ex.Message}");
         }
 
+
         // Cas spécial: Réponse correcte sur case finale - traiter directement par Player.CheckAndTriggerWinCondition
         if (isCorrect && isFinalTile)
         {

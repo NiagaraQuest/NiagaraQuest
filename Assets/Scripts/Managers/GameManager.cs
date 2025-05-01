@@ -703,7 +703,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("❌ Mauvaise réponse ! Pénalité : Reculer de 6 cases.");
                     isEffectMovement = true;
                     _debug_effectSource = "EASY-Wrong";
-                     player.MoveToPreviousAtterrissage();
+                    player.MoveToPreviousAtterrissage();
                 }
                 break;
 
