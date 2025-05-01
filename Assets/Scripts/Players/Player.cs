@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     // Pour suivre l'avant-dernière position d'atterrissage
     protected string previousLandingPath;
     protected int previousLandingIndex;
-    protected int previousLandingDirection;
+    protected int previousLandingDirection;  
 
     // Pile pour stocker les derniers waypoints (maximum 20)
     protected Stack<WaypointData> previousWaypoints = new Stack<WaypointData>();
@@ -156,11 +156,17 @@ public class Player : MonoBehaviour
                 Tile tile = currentWaypoint.GetComponent<Tile>();
                 if (tile != null && CameraManager.Instance != null)
                 {
+                    Camera activeCamera = CameraManager.Instance.GetActiveCamera();
+                    if(activeCamera != CameraManager.Instance.mainCamera)
+                    {
                     // Immediately switch to the region camera based on current tile
                     CameraManager.Instance.OnPlayerLandedOnTile(this, tile.region);
                     Debug.Log($"🎥 Switching camera to {tile.region} region as player starts moving");
+                    }
                 }
             }
+            
+            CameraManager.Instance.DisableViewToggle();
             if (targetWaypointIndex < 0)
             {
                 Debug.LogWarning($"⚠️ ATTENTION: Index -1 détecté à l'étape {remainingSteps}. Chemin: {currentPath}, Index actuel: {currentWaypointIndex}, Target: {targetWaypointIndex}");
@@ -233,6 +239,10 @@ public class Player : MonoBehaviour
                         {
                             isMoving = false;
                             isMovingBack = false;
+                            if(GameManager.Instance.isEffectMovement){
+                                CameraManager.Instance.SwitchToMainCamera();
+                            }
+                            CameraManager.Instance.EnableViewToggle();
 
                             DisplayCurrentRegion();
                         }
@@ -272,44 +282,42 @@ public class Player : MonoBehaviour
     }
 
 
-    public virtual bool CanGiveLife()
+public virtual bool CanGiveLife()
+{
+    return lives >= 3;
+}
+
+public void PlayMovementSound(){
+    while(isMoving){
+        AudioManager.Instance.PlayMovement();
+    }
+}
+
+public virtual void GiveLifeTo(Player targetPlayer)
+{
+    if (!CanGiveLife())
     {
-        return lives >= 3;
+        Debug.LogWarning($"⚠️ {gameObject.name} cannot give a life (only has {lives} left, needs at least 3)");
+        return;
     }
 
-    public void PlayMovementSound()
+    if (targetPlayer == null)
     {
-        while (isMoving)
-        {
-            AudioManager.Instance.PlayMovement();
-        }
+        Debug.LogError("❌ Target player is null!");
+        return;
     }
-
-    public virtual void GiveLifeTo(Player targetPlayer)
+    
+    if (targetPlayer.lives != 1)
     {
-        if (!CanGiveLife())
-        {
-            Debug.LogWarning($"⚠️ {gameObject.name} cannot give a life (only has {lives} left, needs at least 3)");
-            return;
-        }
-
-        if (targetPlayer == null)
-        {
-            Debug.LogError("❌ Target player is null!");
-            return;
-        }
-
-        if (targetPlayer.lives != 1)
-        {
-            Debug.LogWarning($"⚠️ Cannot give life to {targetPlayer.gameObject.name} - they must have exactly 1 life (current: {targetPlayer.lives})");
-            return;
-        }
-        lives--;
-        targetPlayer.GainLife();
-
-        Debug.Log($"❤️ {gameObject.name} gave a life to {targetPlayer.gameObject.name}! " +
-                  $"{gameObject.name} now has {lives} lives, {targetPlayer.gameObject.name} has {targetPlayer.lives} lives.");
+        Debug.LogWarning($"⚠️ Cannot give life to {targetPlayer.gameObject.name} - they must have exactly 1 life (current: {targetPlayer.lives})");
+        return;
     }
+    lives--;
+    targetPlayer.GainLife();
+    
+    Debug.Log($"❤️ {gameObject.name} gave a life to {targetPlayer.gameObject.name}! " +
+              $"{gameObject.name} now has {lives} lives, {targetPlayer.gameObject.name} has {targetPlayer.lives} lives.");
+}
 
     public virtual void RegisterLandingPosition()
     {
@@ -575,7 +583,7 @@ public class Player : MonoBehaviour
                 {
                     CameraManager.Instance.OnPlayerLandedOnTile(this, tile.region);
                 }
-
+                
                 tile.OnPlayerLands();
             }
 

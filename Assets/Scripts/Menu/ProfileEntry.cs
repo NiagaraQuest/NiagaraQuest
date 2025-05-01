@@ -28,7 +28,7 @@ public class ProfileEntry : MonoBehaviour
             usernameText.text = profile.Username;
 
         if (eloText != null)
-            eloText.text = profile.Elo.ToString();
+            eloText.text = "ELO : " + profile.Elo.ToString();
 
         if (selectButton != null)
             selectButton.onClick.AddListener(() => {

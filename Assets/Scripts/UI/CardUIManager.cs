@@ -36,7 +36,10 @@ public class CardUIManager : MonoBehaviour
     public GameObject gambleResultPanel;
     public TextMeshProUGUI gambleResultText;
     public Button gambleResultOkButton;
+    private DiceManager diceManager;
 
+    [Header("UI Scripts")]
+    public CameraUIManager cameraUIManager;
     private void Awake()
     {
         if (Instance == null)
@@ -47,12 +50,16 @@ public class CardUIManager : MonoBehaviour
 
     void Start()
     {
+        diceManager = DiceManager.Instance;
+        if (diceManager == null)
+        {
+            Debug.LogWarning("❌ DiceManager not found. Roll button control will not work.");
+        }
         // Hide all panels at start
         cardPanel.SetActive(false);
         playerSelectionPanel.SetActive(false);
         gambleChoicePanel.SetActive(false);
         gambleResultPanel.SetActive(false);
-
         // Add listener to the Continue button
         continueButton.onClick.AddListener(CloseCardPanel);
 
@@ -91,6 +98,12 @@ public class CardUIManager : MonoBehaviour
         currentTile = tile;
         currentPlayer = player;
         currentCardType = cardType;
+        diceManager.DisableRollButton();
+        if(cameraUIManager.cameraSelectionPanel.activeSelf)
+        {
+            cameraUIManager.cameraSelectionPanel.SetActive(false);
+        }
+
 
         // Check if this is the Gambler card (assuming it's index 2)
         if (cardType == 2) // Gambler card
@@ -309,6 +322,8 @@ public class CardUIManager : MonoBehaviour
     {
         // Hide the result panel
         gambleResultPanel.SetActive(false);
+        EnableRollButton();
+        CameraManager.Instance.EnableViewToggle();
 
         // Move player if needed
         if (win && moveForward)
@@ -330,6 +345,8 @@ public class CardUIManager : MonoBehaviour
     {
         // Close the selection UI
         playerSelectionPanel.SetActive(false);
+        EnableRollButton();
+        CameraManager.Instance.EnableViewToggle();
 
         // Perform the swap
         CardManager.Instance.SwapWithSpecificPlayer(currentPlayer, selectedPlayer);
@@ -349,6 +366,10 @@ public class CardUIManager : MonoBehaviour
         {
             StopCoroutine(autoCloseCoroutine);
             autoCloseCoroutine = null;
+        }
+        if (CardManager.Instance.DrawRandomCard() != 3){
+            EnableRollButton();
+            CameraManager.Instance.EnableViewToggle();
         }
 
         // Hide the panel
@@ -372,6 +393,32 @@ public class CardUIManager : MonoBehaviour
         {
             StopCoroutine(autoCloseCoroutine);
             autoCloseCoroutine = null;
+        }
+    }
+
+        public void DisableRollButton()
+    {
+        if (diceManager != null)
+        {
+            diceManager.DisableRollButton();
+            Debug.Log("Roll button disabled during question");
+        }
+        else
+        {
+            Debug.LogWarning("❌ Cannot disable roll button: diceManager is null");
+        }
+    }
+
+    // Méthode pour activer le bouton de lancement de dé
+    public void EnableRollButton()
+    {
+        if (diceManager != null)
+        {
+            diceManager.EnableAndSwitchToMainCamera();
+        }
+        else
+        {
+            Debug.LogWarning("❌ Cannot enable roll button: diceManager is null");
         }
     }
 }

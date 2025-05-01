@@ -2,7 +2,6 @@
 
 public class Tile : MonoBehaviour
 {
-
     public enum TileType { Question, Card, Intersection }
     public enum Region { Vulkan, Atlanta, Celestyel, Berg, None }
     public int position;
@@ -30,11 +29,16 @@ public class Tile : MonoBehaviour
             if (player != null)
             {
                 player.RegisterLandingPosition();
+                
+                // Also notify the CameraManager about the region
+                if (CameraManager.Instance != null)
+                {
+                    CameraManager.Instance.OnPlayerLandedOnTile(player, region);
+                }
             }
         }
     }
 
-    // Méthode helper pour obtenir le joueur qui vient d'atterrir
     // Méthode helper pour obtenir le joueur qui vient d'atterrir
     private Player GetLandingPlayer()
     {

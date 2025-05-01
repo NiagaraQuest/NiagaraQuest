@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using TMPro;
 
 public class LifeSharingManager : MonoBehaviour
 {
@@ -316,22 +315,24 @@ public class LifeSharingManager : MonoBehaviour
         foreach (Player player in eligiblePlayers)
         {
             GameObject optionObj = Instantiate(playerOptionPrefab, playerOptionsContainer);
-
+            
             // Set text
-            Button optionButton = optionObj.GetComponentInChildren<Button>();
-            TMP_Text optionText = optionButton.GetComponentInChildren<TMP_Text>();
+            Text optionText = optionObj.GetComponentInChildren<Text>();
             if (optionText != null)
             {
-               
+                // Add number for keyboard shortcut if 9 or fewer options
                 if (eligiblePlayers.Count <= 9)
                 {
                     optionText.text = $"{playerIndex}. {player.gameObject.name}";
                 }
-                
+                else
+                {
+                    optionText.text = player.gameObject.name;
+                }
             }
             
             // Add click handler
-          
+            Button optionButton = optionObj.GetComponent<Button>();
             if (optionButton != null)
             {
                 Player targetPlayer = player; // Important: Create local variable to capture value correctly
