@@ -331,7 +331,7 @@ public class CardUIManager : MonoBehaviour
             currentTile.ContinueGame();
         }
     }
-
+    
     // Called when a player is selected from the UI
     private void OnPlayerSelected(Player selectedPlayer)
     {
@@ -340,7 +340,7 @@ public class CardUIManager : MonoBehaviour
         EnableRollButton();
 
         // Perform the swap
-        CardManager.Instance.SwapWithSpecificPlayer(currentPlayer, selectedPlayer);
+      //  CardManager.Instance.SwapWithSpecificPlayer(currentPlayer, selectedPlayer);
 
         // Continue game flow
         if (currentTile != null)
@@ -348,7 +348,7 @@ public class CardUIManager : MonoBehaviour
             currentTile.ContinueGame();
         }
     }
-
+    
     // Close the card panel and apply the effect
     public void CloseCardPanel()
     {

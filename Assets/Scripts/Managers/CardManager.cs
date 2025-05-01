@@ -93,48 +93,48 @@ public class CardManager : MonoBehaviour
             case 2: // The Gambler
                 CardUIManager.Instance.ShowGambleChoice(player);
                 break;
-                
+             /*   
             case 3: // Echo of the Past (Swap position)
                 // Instead of random swap, request player selection
                 RequestPlayerSelection(player, cardType);
                 return; // Exit early - effect will be applied after selection
-                
-            case 4: // Time Freeze
+               */ 
+            case 3: // Time Freeze
                 player.SkipTurns(1);
                 break;
                 
-            case 5: // Mythic Leap
+            case 4: // Mythic Leap
                 gameManager.isEffectMovement = true; 
                 player.MovePlayer(6);
                 break;
                 
-            case 6: // The Punishment
+            case 5: // The Punishment
                 MoveToStart(player);
                 break;
                 
-            case 7: // The Reward
+            case 6: // The Reward
                 Debug.Log($"🎮 {player.gameObject.name} gets an extra turn!");
                 gameManager.isEffectMovement = true;
                 gameManager.RollDiceAgain(player);
                 break;
                 
-            case 8: // Cursed Steps
+            case 7: // Cursed Steps
                 gameManager.isEffectMovement = true;
-                player.MovePlayerBack();
+              //  player.MovePlayerBack();
                 break;
                 
-            case 9: // Shield Bless
+            case 8: // Shield Bless
                 Debug.Log($"🛡️ {player.gameObject.name} is protected by a shield!");
                 ApplyProtectedEffect(player);
                 break;
                 
-            case 10: // Twisted Paths
+            case 9: // Twisted Paths
                 Debug.Log($"🔀 {player.gameObject.name} must change its direction");
                 player.movementDirection = -1 * player.movementDirection;
                 break;
         }
     }
-    
+    /*
     // Request player selection UI
     private void RequestPlayerSelection(Player currentPlayer, int cardType)
     {
@@ -218,7 +218,7 @@ public class CardManager : MonoBehaviour
         // Perform the swap
         SwapWithSpecificPlayer(targetPlayer, otherPlayer);
     }
-    
+    */
     private void MoveToStart(Player player)
     {
         // Move player to start of their path
@@ -229,7 +229,6 @@ public class CardManager : MonoBehaviour
             player.currentWaypointIndex = 0;
         }
     }
-    
 
     public void ApplyProtectedEffect(Player player)
     {

@@ -500,6 +500,7 @@ MonoBehaviour:
   position: 19
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &22654304
 GameObject:
@@ -668,6 +669,7 @@ MonoBehaviour:
   position: 43
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &39505826
 GameObject:
@@ -854,6 +856,7 @@ MonoBehaviour:
   position: 29
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &57905424
 GameObject:
@@ -1115,6 +1118,7 @@ MonoBehaviour:
   position: 7
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &64976309
 GameObject:
@@ -1163,6 +1167,7 @@ MonoBehaviour:
   position: 49
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &66705125
 GameObject:
@@ -1349,6 +1354,7 @@ MonoBehaviour:
   position: 40
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &70684507
 GameObject:
@@ -1595,6 +1601,7 @@ MonoBehaviour:
   position: 40
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &86886265
 GameObject:
@@ -1730,6 +1737,9 @@ MonoBehaviour:
   turnsToSkip: 0
   lives: 4
   debugProfileName: 
+  previousLandingPath: 
+  previousLandingWaypointIndex: 0
+  hasPreviousLanding: 0
   isOnFinalTile: 0
   SkipQuestion: 0
   hasUsedSkipInCurrentRegion: 0
@@ -1916,6 +1926,7 @@ MonoBehaviour:
   position: 40
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &93367373
 GameObject:
@@ -1964,6 +1975,7 @@ MonoBehaviour:
   position: 20
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &99125169
 GameObject:
@@ -2012,6 +2024,7 @@ MonoBehaviour:
   position: 15
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &106700933
 GameObject:
@@ -2119,6 +2132,7 @@ MonoBehaviour:
   position: 18
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &117471142
 GameObject:
@@ -2303,6 +2317,7 @@ MonoBehaviour:
   position: 19
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &120458156
 GameObject:
@@ -2429,6 +2444,7 @@ MonoBehaviour:
   position: 27
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &124554369
 GameObject:
@@ -2477,6 +2493,7 @@ MonoBehaviour:
   position: 32
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &130617093
 GameObject:
@@ -2525,6 +2542,7 @@ MonoBehaviour:
   position: 0
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &144777464
 GameObject:
@@ -2573,6 +2591,7 @@ MonoBehaviour:
   position: 13
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &152006247
 GameObject:
@@ -2751,12 +2770,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 155141089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 46
-  type: 1
+  type: 0
   region: 2
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &161029623
 GameObject:
   m_ObjectHideFlags: 0
@@ -2804,6 +2825,7 @@ MonoBehaviour:
   position: 23
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &174391714
 GameObject:
@@ -2852,6 +2874,7 @@ MonoBehaviour:
   position: 12
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &186183755
 GameObject:
@@ -3174,6 +3197,7 @@ MonoBehaviour:
   position: 7
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &194185506
 GameObject:
@@ -3222,6 +3246,7 @@ MonoBehaviour:
   position: 42
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &207336738
 GameObject:
@@ -3347,6 +3372,7 @@ MonoBehaviour:
   position: 22
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &221040097
 GameObject:
@@ -3432,6 +3458,7 @@ MonoBehaviour:
   position: 13
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &223432591
 GameObject:
@@ -3480,6 +3507,7 @@ MonoBehaviour:
   position: 31
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &225825698
 GameObject:
@@ -3528,6 +3556,7 @@ MonoBehaviour:
   position: 4
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &229903438
 GameObject:
@@ -3663,6 +3692,9 @@ MonoBehaviour:
   turnsToSkip: 0
   lives: 4
   debugProfileName: normal2
+  previousLandingPath: 
+  previousLandingWaypointIndex: 0
+  hasPreviousLanding: 0
   isOnFinalTile: 0
   isInBerg: 0
   shield: 0
@@ -3849,6 +3881,7 @@ MonoBehaviour:
   position: 33
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &236350761
 GameObject:
@@ -3897,6 +3930,7 @@ MonoBehaviour:
   position: 41
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &237636779
 GameObject:
@@ -3945,6 +3979,7 @@ MonoBehaviour:
   position: 15
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &247963464
 GameObject:
@@ -3987,12 +4022,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 247963464}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 46
-  type: 1
+  type: 0
   region: 3
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &253883996
 GameObject:
   m_ObjectHideFlags: 0
@@ -4157,6 +4194,7 @@ MonoBehaviour:
   position: 43
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &256133725
 GameObject:
@@ -4205,6 +4243,7 @@ MonoBehaviour:
   position: 19
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &259934539
 GameObject:
@@ -4253,6 +4292,7 @@ MonoBehaviour:
   position: 4
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &261208999
 GameObject:
@@ -4301,6 +4341,7 @@ MonoBehaviour:
   position: 3
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &271402897
 GameObject:
@@ -4424,6 +4465,7 @@ MonoBehaviour:
   position: 7
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &285096716
 GameObject:
@@ -4472,6 +4514,7 @@ MonoBehaviour:
   position: 2
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &286279096
 GameObject:
@@ -5352,12 +5395,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 331971766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 16
-  type: 1
+  type: 0
   region: 0
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &339027748
 GameObject:
   m_ObjectHideFlags: 0
@@ -5562,6 +5607,7 @@ MonoBehaviour:
   position: 47
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &353276563
 GameObject:
@@ -5842,6 +5888,7 @@ MonoBehaviour:
   position: 13
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &386211918
 GameObject:
@@ -5890,6 +5937,7 @@ MonoBehaviour:
   position: 7
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &399396427
 GameObject:
@@ -5938,6 +5986,7 @@ MonoBehaviour:
   position: 50
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &401998759
 GameObject:
@@ -5986,6 +6035,7 @@ MonoBehaviour:
   position: 45
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &407171412
 GameObject:
@@ -6401,6 +6451,7 @@ MonoBehaviour:
   position: 33
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 414621272}
     paths:
@@ -6465,6 +6516,7 @@ MonoBehaviour:
   position: 8
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &426640705
 GameObject:
@@ -6513,6 +6565,7 @@ MonoBehaviour:
   position: 21
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &446802528
 GameObject:
@@ -6697,6 +6750,7 @@ MonoBehaviour:
   position: 49
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &453032791
 GameObject:
@@ -6745,6 +6799,7 @@ MonoBehaviour:
   position: 26
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 453032791}
     paths:
@@ -6896,6 +6951,9 @@ MonoBehaviour:
   turnsToSkip: 0
   lives: 4
   debugProfileName: normal
+  previousLandingPath: 
+  previousLandingWaypointIndex: 0
+  hasPreviousLanding: 0
   isOnFinalTile: 0
   useSecondChance: 0
 --- !u!1 &460038995
@@ -6945,6 +7003,7 @@ MonoBehaviour:
   position: 10
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &463437474
 GameObject:
@@ -7101,6 +7160,7 @@ MonoBehaviour:
   position: 12
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &473751142
 GameObject:
@@ -7149,6 +7209,7 @@ MonoBehaviour:
   position: 17
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &473915470
 GameObject:
@@ -7327,12 +7388,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 483326824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 16
-  type: 1
+  type: 0
   region: 3
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &506146791
 GameObject:
   m_ObjectHideFlags: 0
@@ -7380,6 +7443,7 @@ MonoBehaviour:
   position: 34
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &549760391
 GameObject:
@@ -7428,6 +7492,7 @@ MonoBehaviour:
   position: 3
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &552886625
 GameObject:
@@ -7614,6 +7679,7 @@ MonoBehaviour:
   position: 30
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &565796170
 GameObject:
@@ -7662,6 +7728,7 @@ MonoBehaviour:
   position: 48
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &567544516
 GameObject:
@@ -7785,6 +7852,7 @@ MonoBehaviour:
   position: 20
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &583660990
 GameObject:
@@ -7833,6 +7901,7 @@ MonoBehaviour:
   position: 37
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &600345986
 GameObject:
@@ -7881,6 +7950,7 @@ MonoBehaviour:
   position: 47
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &608264941
 GameObject:
@@ -8007,6 +8077,7 @@ MonoBehaviour:
   position: 1
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &615547368
 GameObject:
@@ -8055,6 +8126,7 @@ MonoBehaviour:
   position: 32
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &625433216
 GameObject:
@@ -8103,6 +8175,7 @@ MonoBehaviour:
   position: 0
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &635338758
 GameObject:
@@ -8185,6 +8258,7 @@ MonoBehaviour:
   position: 8
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &650744940
 GameObject:
@@ -8233,6 +8307,7 @@ MonoBehaviour:
   position: 0
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 650744940}
     paths:
@@ -8291,12 +8366,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 659824602}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 16
-  type: 1
+  type: 0
   region: 2
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &660308349
 GameObject:
   m_ObjectHideFlags: 0
@@ -8344,6 +8421,7 @@ MonoBehaviour:
   position: 40
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &664073038
 GameObject:
@@ -8467,6 +8545,7 @@ MonoBehaviour:
   position: 17
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &683327864
 GameObject:
@@ -8515,6 +8594,7 @@ MonoBehaviour:
   position: 44
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &684106201
 GameObject:
@@ -8563,6 +8643,7 @@ MonoBehaviour:
   position: 3
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &684785728
 GameObject:
@@ -8611,6 +8692,7 @@ MonoBehaviour:
   position: 49
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &689691773
 GameObject:
@@ -8795,6 +8877,7 @@ MonoBehaviour:
   position: 26
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 691417444}
     paths:
@@ -9038,6 +9121,7 @@ MonoBehaviour:
   position: 47
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 710462973}
     paths:
@@ -9070,6 +9154,7 @@ MonoBehaviour:
   position: 0
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &728584065
 GameObject:
@@ -9118,6 +9203,7 @@ MonoBehaviour:
   position: 29
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &734892836
 GameObject:
@@ -9166,6 +9252,7 @@ MonoBehaviour:
   position: 5
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &735718962
 GameObject:
@@ -9251,6 +9338,7 @@ MonoBehaviour:
   position: 29
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &743785214
 GameObject:
@@ -9374,6 +9462,7 @@ MonoBehaviour:
   position: 41
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &744728076
 GameObject:
@@ -9422,6 +9511,7 @@ MonoBehaviour:
   position: 0
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 744728076}
     paths:
@@ -9480,12 +9570,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 745217850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 36
-  type: 1
+  type: 0
   region: 1
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &747667566
 GameObject:
   m_ObjectHideFlags: 0
@@ -9533,6 +9625,7 @@ MonoBehaviour:
   position: 22
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &751791755
 GameObject:
@@ -9658,6 +9751,7 @@ MonoBehaviour:
   position: 42
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &772419307
 GameObject:
@@ -9980,6 +10074,7 @@ MonoBehaviour:
   position: 39
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &776874819
 GameObject:
@@ -10166,6 +10261,7 @@ MonoBehaviour:
   position: 30
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1001 &791187693
 PrefabInstance:
@@ -10870,12 +10966,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 809272827}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 25
-  type: 1
+  type: 0
   region: 2
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &820409096
 GameObject:
   m_ObjectHideFlags: 0
@@ -11120,12 +11218,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 823611384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 36
-  type: 1
+  type: 0
   region: 3
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &826044351
 GameObject:
   m_ObjectHideFlags: 0
@@ -11252,6 +11352,7 @@ MonoBehaviour:
   position: 3
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &828470852
 GameObject:
@@ -11428,6 +11529,7 @@ MonoBehaviour:
   position: 38
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 841139410}
     paths:
@@ -11460,6 +11562,7 @@ MonoBehaviour:
   position: 0
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &841796891
 GameObject:
@@ -11607,6 +11710,7 @@ MonoBehaviour:
   position: 0
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 847127836}
     paths:
@@ -11797,12 +11901,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 848089441}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 26
-  type: 1
+  type: 0
   region: 3
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &863217189
 GameObject:
   m_ObjectHideFlags: 0
@@ -11925,6 +12031,7 @@ MonoBehaviour:
   position: 18
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &865035000
 GameObject:
@@ -11973,6 +12080,7 @@ MonoBehaviour:
   position: 20
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &875814994
 GameObject:
@@ -12021,6 +12129,7 @@ MonoBehaviour:
   position: 43
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &876817293
 GameObject:
@@ -12069,6 +12178,7 @@ MonoBehaviour:
   position: 4
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &885102798
 GameObject:
@@ -12150,12 +12260,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 895059231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 6
-  type: 1
+  type: 0
   region: 2
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &905099594
 GameObject:
   m_ObjectHideFlags: 0
@@ -12203,6 +12315,7 @@ MonoBehaviour:
   position: 28
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &915450603
 GameObject:
@@ -12389,6 +12502,7 @@ MonoBehaviour:
   position: 45
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &937549447
 GameObject:
@@ -12437,6 +12551,7 @@ MonoBehaviour:
   position: 35
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &941676302
 GameObject:
@@ -12485,6 +12600,7 @@ MonoBehaviour:
   position: 10
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &960255310
 GameObject:
@@ -12533,6 +12649,7 @@ MonoBehaviour:
   position: 21
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &966280545
 GameObject:
@@ -12575,12 +12692,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 966280545}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 16
-  type: 1
-  region: 0
+  type: 0
+  region: 1
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &970364636
 GameObject:
   m_ObjectHideFlags: 0
@@ -13028,6 +13147,7 @@ MonoBehaviour:
   position: 5
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &990255581
 GameObject:
@@ -13206,12 +13326,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 990764831}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 35
-  type: 1
+  type: 0
   region: 2
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &998765994
 GameObject:
   m_ObjectHideFlags: 0
@@ -13395,6 +13517,7 @@ MonoBehaviour:
   position: 47
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 998987728}
     paths:
@@ -13670,6 +13793,7 @@ MonoBehaviour:
   position: 42
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1039329067
 GameObject:
@@ -13718,6 +13842,7 @@ MonoBehaviour:
   position: 24
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1056098864
 GameObject:
@@ -13766,6 +13891,7 @@ MonoBehaviour:
   position: 15
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1056655775
 GameObject:
@@ -13950,6 +14076,7 @@ MonoBehaviour:
   position: 11
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1062458674
 GameObject:
@@ -14080,6 +14207,7 @@ MonoBehaviour:
   position: 5
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1084235394
 GameObject:
@@ -14264,6 +14392,7 @@ MonoBehaviour:
   position: 27
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1089275607
 GameObject:
@@ -14312,6 +14441,7 @@ MonoBehaviour:
   position: 44
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1101440627
 GameObject:
@@ -14860,6 +14990,7 @@ MonoBehaviour:
   position: 37
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1124027190
 GameObject:
@@ -14908,6 +15039,7 @@ MonoBehaviour:
   position: 28
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1124239199
 GameObject:
@@ -14956,6 +15088,7 @@ MonoBehaviour:
   position: 45
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1128366638
 GameObject:
@@ -15004,6 +15137,7 @@ MonoBehaviour:
   position: 14
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1128612865
 GameObject:
@@ -15052,6 +15186,7 @@ MonoBehaviour:
   position: 36
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 1128612865}
     paths:
@@ -15226,6 +15361,7 @@ MonoBehaviour:
   position: 43
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1163943391
 GameObject:
@@ -15268,12 +15404,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1163943391}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 6
-  type: 1
+  type: 0
   region: 1
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &1171605969
 GameObject:
   m_ObjectHideFlags: 0
@@ -15321,6 +15459,7 @@ MonoBehaviour:
   position: 27
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1179630134
 GameObject:
@@ -15507,6 +15646,7 @@ MonoBehaviour:
   position: 20
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1197514110
 GameObject:
@@ -15555,6 +15695,7 @@ MonoBehaviour:
   position: 42
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1210637453
 GameObject:
@@ -15603,6 +15744,7 @@ MonoBehaviour:
   position: 50
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1213759791
 GameObject:
@@ -15651,6 +15793,7 @@ MonoBehaviour:
   position: 2
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1215987045
 GameObject:
@@ -15699,6 +15842,7 @@ MonoBehaviour:
   position: 39
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1230621644
 GameObject:
@@ -15960,6 +16104,7 @@ MonoBehaviour:
   position: 50
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1238142921
 GameObject:
@@ -16084,12 +16229,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1238178468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 6
-  type: 1
+  type: 0
   region: 0
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &1242478040
 GameObject:
   m_ObjectHideFlags: 0
@@ -16275,6 +16422,7 @@ MonoBehaviour:
   position: 30
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1247891234
 GameObject:
@@ -16534,6 +16682,7 @@ MonoBehaviour:
   position: 21
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1275368306
 GameObject:
@@ -16855,6 +17004,7 @@ MonoBehaviour:
   position: 1
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1302938194
 GameObject:
@@ -16903,6 +17053,7 @@ MonoBehaviour:
   position: 22
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1308916708
 GameObject:
@@ -16951,6 +17102,7 @@ MonoBehaviour:
   position: 39
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1311876346
 GameObject:
@@ -16993,12 +17145,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1311876346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 6
-  type: 1
+  type: 0
   region: 3
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &1313853194
 GameObject:
   m_ObjectHideFlags: 0
@@ -17162,6 +17316,7 @@ MonoBehaviour:
   position: 34
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1327801499
 GameObject:
@@ -17210,6 +17365,7 @@ MonoBehaviour:
   position: 24
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1331437827
 GameObject:
@@ -17334,6 +17490,7 @@ MonoBehaviour:
   position: 18
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1356186006
 GameObject:
@@ -17382,6 +17539,7 @@ MonoBehaviour:
   position: 12
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1357898850
 GameObject:
@@ -17430,6 +17588,7 @@ MonoBehaviour:
   position: 41
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1358253556
 GameObject:
@@ -17518,6 +17677,7 @@ MonoBehaviour:
   position: 2
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1381216732
 GameObject:
@@ -17604,6 +17764,7 @@ MonoBehaviour:
   position: 49
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1389345291
 GameObject:
@@ -17842,6 +18003,7 @@ MonoBehaviour:
   position: 44
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1415307115
 GameObject:
@@ -17890,6 +18052,7 @@ MonoBehaviour:
   position: 32
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 1415307115}
     paths:
@@ -17954,6 +18117,7 @@ MonoBehaviour:
   position: 11
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1428506343
 GameObject:
@@ -18072,6 +18236,7 @@ MonoBehaviour:
   position: 9
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1434205776
 GameObject:
@@ -18120,6 +18285,7 @@ MonoBehaviour:
   position: 31
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1435301014
 GameObject:
@@ -18168,6 +18334,7 @@ MonoBehaviour:
   position: 23
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1439959032
 GameObject:
@@ -18216,6 +18383,7 @@ MonoBehaviour:
   position: 31
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1444495244
 GameObject:
@@ -18264,6 +18432,7 @@ MonoBehaviour:
   position: 29
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1447290509
 GameObject:
@@ -18523,6 +18692,7 @@ MonoBehaviour:
   position: 37
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1469660066
 GameObject:
@@ -18650,6 +18820,7 @@ MonoBehaviour:
   position: 1
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1479863353
 GameObject:
@@ -18733,6 +18904,7 @@ MonoBehaviour:
   position: 15
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1485854391
 GameObject:
@@ -19055,6 +19227,7 @@ MonoBehaviour:
   position: 34
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1499539202
 GameObject:
@@ -19272,6 +19445,7 @@ MonoBehaviour:
   position: 8
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1517490041
 GameObject:
@@ -19320,6 +19494,7 @@ MonoBehaviour:
   position: 1
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1522037767
 GameObject:
@@ -19368,6 +19543,7 @@ MonoBehaviour:
   position: 14
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1522188388
 GameObject:
@@ -19912,6 +20088,7 @@ MonoBehaviour:
   position: 35
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1556519441
 GameObject:
@@ -19960,6 +20137,7 @@ MonoBehaviour:
   position: 27
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1586591905
 GameObject:
@@ -20008,6 +20186,7 @@ MonoBehaviour:
   position: 4
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1587503403
 GameObject:
@@ -20178,12 +20357,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1592991033}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 25
-  type: 1
+  type: 0
   region: 1
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &1603330338
 GameObject:
   m_ObjectHideFlags: 0
@@ -20348,6 +20529,7 @@ MonoBehaviour:
   position: 30
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1616316234
 GameObject:
@@ -20669,6 +20851,7 @@ MonoBehaviour:
   position: 13
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1637360588
 GameObject:
@@ -20717,6 +20900,7 @@ MonoBehaviour:
   position: 0
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1640635739
 GameObject:
@@ -20901,6 +21085,7 @@ MonoBehaviour:
   position: 5
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1647811986
 GameObject:
@@ -21384,6 +21569,9 @@ MonoBehaviour:
   turnsToSkip: 0
   lives: 4
   debugProfileName: 
+  previousLandingPath: 
+  previousLandingWaypointIndex: 0
+  hasPreviousLanding: 0
   isOnFinalTile: 0
 --- !u!1 &1664171365
 GameObject:
@@ -21484,6 +21672,7 @@ MonoBehaviour:
   position: 39
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1670499089
 GameObject:
@@ -21532,6 +21721,7 @@ MonoBehaviour:
   position: 2
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1674765597
 GameObject:
@@ -21580,6 +21770,7 @@ MonoBehaviour:
   position: 37
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1676757089
 GameObject:
@@ -21622,12 +21813,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1676757089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 46
-  type: 1
+  type: 0
   region: 3
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &1683387221
 GameObject:
   m_ObjectHideFlags: 0
@@ -21675,6 +21868,7 @@ MonoBehaviour:
   position: 48
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 1683387221}
     paths:
@@ -22013,6 +22207,7 @@ MonoBehaviour:
   position: 24
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1704777114
 GameObject:
@@ -22061,6 +22256,7 @@ MonoBehaviour:
   position: 48
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1709492260
 GameObject:
@@ -22309,6 +22505,7 @@ MonoBehaviour:
   position: 10
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1718438698
 GameObject:
@@ -22357,6 +22554,7 @@ MonoBehaviour:
   position: 24
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1723898968
 GameObject:
@@ -22480,6 +22678,7 @@ MonoBehaviour:
   position: 10
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1733566589
 GameObject:
@@ -22666,6 +22865,7 @@ MonoBehaviour:
   position: 9
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1737506226
 GameObject:
@@ -22933,6 +23133,7 @@ MonoBehaviour:
   position: 19
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1752999920
 GameObject:
@@ -22981,6 +23182,7 @@ MonoBehaviour:
   position: 28
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1756469587
 GameObject:
@@ -23029,6 +23231,7 @@ MonoBehaviour:
   position: 17
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1772844559
 GameObject:
@@ -23334,6 +23537,7 @@ MonoBehaviour:
   position: 38
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 1786932122}
     paths:
@@ -23534,6 +23738,7 @@ MonoBehaviour:
   position: 23
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1816020781
 GameObject:
@@ -23582,6 +23787,7 @@ MonoBehaviour:
   position: 14
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1817235643
 GameObject:
@@ -23630,6 +23836,7 @@ MonoBehaviour:
   position: 32
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1822886116
 GameObject:
@@ -23678,6 +23885,7 @@ MonoBehaviour:
   position: 9
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1828847173
 GameObject:
@@ -23726,6 +23934,7 @@ MonoBehaviour:
   position: 38
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1843120571
 GameObject:
@@ -23774,6 +23983,7 @@ MonoBehaviour:
   position: 45
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1847996996
 GameObject:
@@ -23942,6 +24152,7 @@ MonoBehaviour:
   position: 44
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1858793579
 GameObject:
@@ -24065,6 +24276,7 @@ MonoBehaviour:
   position: 17
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1863011935
 GameObject:
@@ -24113,6 +24325,7 @@ MonoBehaviour:
   position: 0
   type: 0
   region: 2
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1863111467
 GameObject:
@@ -24161,6 +24374,7 @@ MonoBehaviour:
   position: 9
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1864444334
 GameObject:
@@ -24209,6 +24423,7 @@ MonoBehaviour:
   position: 48
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 1864444334}
     paths:
@@ -24267,12 +24482,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1866229983}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 25
-  type: 1
+  type: 0
   region: 0
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &1870438688
 GameObject:
   m_ObjectHideFlags: 0
@@ -24314,12 +24531,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1870438688}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 46
   type: 0
   region: 0
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &1870466834
 GameObject:
   m_ObjectHideFlags: 0
@@ -24367,6 +24586,7 @@ MonoBehaviour:
   position: 14
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1875821854
 GameObject:
@@ -24689,6 +24909,7 @@ MonoBehaviour:
   position: 50
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1878573898
 GameObject:
@@ -24815,6 +25036,7 @@ MonoBehaviour:
   position: 38
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1900307860
 GameObject:
@@ -24863,6 +25085,7 @@ MonoBehaviour:
   position: 25
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 1900307860}
     paths:
@@ -25274,6 +25497,7 @@ MonoBehaviour:
   position: 33
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1001 &1942075947
 PrefabInstance:
@@ -25713,6 +25937,7 @@ MonoBehaviour:
   position: 18
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &1962210300
 GameObject:
@@ -25761,6 +25986,7 @@ MonoBehaviour:
   position: 21
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &2005870254
 GameObject:
@@ -25809,6 +26035,7 @@ MonoBehaviour:
   position: 8
   type: 0
   region: 1
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &2021757559
 GameObject:
@@ -25857,6 +26084,7 @@ MonoBehaviour:
   position: 34
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &2026066382
 GameObject:
@@ -25905,6 +26133,7 @@ MonoBehaviour:
   position: 23
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &2027823862
 GameObject:
@@ -25953,6 +26182,7 @@ MonoBehaviour:
   position: 11
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &2031781945
 GameObject:
@@ -26228,6 +26458,7 @@ MonoBehaviour:
   position: 41
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &2052980293
 GameObject:
@@ -26719,12 +26950,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2090692276}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a48aaf3fbe90434ea0549abf47fd0fb, type: 3}
+  m_Script: {fileID: 11500000, guid: fedde38d817c60547b30075efdbb63e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: 35
   type: 0
   region: 0
+  pathName: 
+  questionTypePreference: 0
 --- !u!1 &2093359854
 GameObject:
   m_ObjectHideFlags: 0
@@ -26772,6 +27005,7 @@ MonoBehaviour:
   position: 28
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &2096490715
 GameObject:
@@ -26940,6 +27174,7 @@ MonoBehaviour:
   position: 12
   type: 0
   region: 3
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &2126568759
 GameObject:
@@ -27159,6 +27394,7 @@ MonoBehaviour:
   position: 22
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1 &2139488861
 GameObject:
@@ -27207,6 +27443,7 @@ MonoBehaviour:
   position: 31
   type: 2
   region: 4
+  pathName: 
   intersectionList:
   - intersectionPoint: {fileID: 2139488861}
     paths:
@@ -27409,6 +27646,7 @@ MonoBehaviour:
   position: 11
   type: 0
   region: 0
+  pathName: 
   questionTypePreference: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
