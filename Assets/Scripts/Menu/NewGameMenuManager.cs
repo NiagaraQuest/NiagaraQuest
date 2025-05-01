@@ -56,12 +56,12 @@ public class NewGameMenuManager : MonoBehaviour
     void Start()
     {
         Debug.Log("NewGameMenuManager Start called");
-        
+
         // Get reference to AudioManager singleton
         audioManager = AudioManager.Instance;
 
         // Initialize player elements array
-        playerElements = new GameObject[] { pyroElement, geoElement, hydroElement, anemoElement };
+        playerElements = new GameObject[] { pyroElement, hydroElement, anemoElement, geoElement };
 
         // Find create profile popup script
         createProfilePopupScript = FindObjectOfType<CreateProfilePopup>();
@@ -131,7 +131,7 @@ public class NewGameMenuManager : MonoBehaviour
         // Play button sound
         if (audioManager != null)
             audioManager.PlayMenuButton();
-            
+
         Debug.Log("Showing create profile popup");
 
         if (createProfilePopupScript != null)
@@ -154,7 +154,7 @@ public class NewGameMenuManager : MonoBehaviour
         // Play button sound
         if (audioManager != null)
             audioManager.PlayMenuButton();
-            
+
         Debug.Log("Hiding create profile popup");
 
         if (createProfilePopupScript != null)
@@ -172,7 +172,7 @@ public class NewGameMenuManager : MonoBehaviour
         // Play button sound
         if (audioManager != null)
             audioManager.PlayMenuButton();
-            
+
         if (usernameInput == null || string.IsNullOrEmpty(usernameInput.text.Trim()))
         {
             Debug.Log("Username cannot be empty");
@@ -230,7 +230,7 @@ public class NewGameMenuManager : MonoBehaviour
                 // Play button sound
                 if (audioManager != null)
                     audioManager.PlayMenuButton();
-                    
+
                 Debug.Log("Pyro select button clicked");
                 ShowProfilesForElement(0);
             });
@@ -240,22 +240,6 @@ public class NewGameMenuManager : MonoBehaviour
             Debug.LogError("Pyro select button is not assigned!");
         }
 
-        if (geoSelectButton != null)
-        {
-            geoSelectButton.onClick.RemoveAllListeners();
-            geoSelectButton.onClick.AddListener(() => {
-                // Play button sound
-                if (audioManager != null)
-                    audioManager.PlayMenuButton();
-                    
-                Debug.Log("Geo select button clicked");
-                ShowProfilesForElement(1);
-            });
-        }
-        else
-        {
-            Debug.LogError("Geo select button is not assigned!");
-        }
 
         if (hydroSelectButton != null)
         {
@@ -264,9 +248,9 @@ public class NewGameMenuManager : MonoBehaviour
                 // Play button sound
                 if (audioManager != null)
                     audioManager.PlayMenuButton();
-                    
+
                 Debug.Log("Hydro select button clicked");
-                ShowProfilesForElement(2);
+                ShowProfilesForElement(1);
             });
         }
         else
@@ -281,17 +265,34 @@ public class NewGameMenuManager : MonoBehaviour
                 // Play button sound
                 if (audioManager != null)
                     audioManager.PlayMenuButton();
-                    
+
                 Debug.Log("Anemo select button clicked");
-                ShowProfilesForElement(3);
+                ShowProfilesForElement(2);
             });
         }
         else
         {
             Debug.LogError("Anemo select button is not assigned!");
         }
+
+        if (geoSelectButton != null)
+        {
+            geoSelectButton.onClick.RemoveAllListeners();
+            geoSelectButton.onClick.AddListener(() => {
+                // Play button sound
+                if (audioManager != null)
+                    audioManager.PlayMenuButton();
+
+                Debug.Log("Geo select button clicked");
+                ShowProfilesForElement(3);
+            });
+        }
+        else
+        {
+            Debug.LogError("Geo select button is not assigned!");
+        }
     }
-    
+
     private void SetupElementButton(GameObject elementObj, int index)
     {
         if (elementObj == null)
@@ -329,7 +330,7 @@ public class NewGameMenuManager : MonoBehaviour
             // Play button sound
             if (audioManager != null)
                 audioManager.PlayMenuButton();
-                
+
             Debug.Log($"Select button clicked for element {capturedIndex}");
             ShowProfilesForElement(capturedIndex);
         });
@@ -342,7 +343,7 @@ public class NewGameMenuManager : MonoBehaviour
         // Play button sound
         if (audioManager != null)
             audioManager.PlayMenuButton();
-            
+
         Debug.Log($"Setting player count to {count}");
         currentPlayerCount = count;
 
@@ -398,7 +399,7 @@ public class NewGameMenuManager : MonoBehaviour
         // Play button sound
         if (audioManager != null)
             audioManager.PlayMenuButton();
-            
+
         Debug.Log("ReturnToPlayerSelection called");
 
         // Make sure create profile popup is hidden
@@ -565,16 +566,16 @@ public class NewGameMenuManager : MonoBehaviour
     public void SelectProfileForElement(Profile profile)
     {
         Debug.Log($"SelectProfileForElement called for profile {profile.Username}");
-        
+
         if (currentEditingElementIndex >= 0 && currentEditingElementIndex < playerElements.Length)
         {
             GameObject elementObj = playerElements[currentEditingElementIndex];
-            
+
             // Add this debug line to track which element is being selected for
             Debug.Log($"Selecting profile for element index {currentEditingElementIndex}, element: {elementObj.name}");
-            
+
             bool isNoneProfile = (profile.Id == -1);
-            
+
             // If selecting a real profile (not None), check player count limit
             if (!isNoneProfile)
             {
@@ -582,14 +583,14 @@ public class NewGameMenuManager : MonoBehaviour
                 int activeProfileCount = 0;
                 foreach (var element in playerElements)
                 {
-                    if (element != elementObj && 
-                        selectedProfiles.ContainsKey(element) && 
+                    if (element != elementObj &&
+                        selectedProfiles.ContainsKey(element) &&
                         selectedProfiles[element].Id != -1)
                     {
                         activeProfileCount++;
                     }
                 }
-                
+
                 // Check if we'd exceed the limit
                 if (activeProfileCount >= currentPlayerCount)
                 {
@@ -598,7 +599,7 @@ public class NewGameMenuManager : MonoBehaviour
                     return;
                 }
             }
-            
+
             try
             {
                 // Update username text
@@ -608,7 +609,7 @@ public class NewGameMenuManager : MonoBehaviour
                     usernameText.text = profile.Username;
                     Debug.Log($"Updated username text to {profile.Username}");
                 }
-                
+
                 // Update elo text
                 TMP_Text eloText = elementObj.transform.Find("Inner/elo").GetComponent<TMP_Text>();
                 if (eloText != null)
@@ -616,7 +617,7 @@ public class NewGameMenuManager : MonoBehaviour
                     eloText.text = isNoneProfile ? "" : profile.Elo.ToString();
                     Debug.Log($"Updated ELO text to {profile.Elo}");
                 }
-                
+
                 // Store the profile in our dictionary (or remove if it's a None profile)
                 if (isNoneProfile)
                 {
@@ -625,7 +626,7 @@ public class NewGameMenuManager : MonoBehaviour
                         selectedProfiles.Remove(elementObj);
                         Debug.Log($"Removed profile for element {elementObj.name}");
                     }
-                    
+
                     // Show the select button for None profile
                     Transform innerTransform = elementObj.transform.Find("Inner");
                     if (innerTransform != null)
@@ -647,7 +648,7 @@ public class NewGameMenuManager : MonoBehaviour
                 {
                     selectedProfiles[elementObj] = profile;
                     Debug.Log($"Stored profile for element {elementObj.name}");
-                    
+
                     // Hide the select button if not a None profile
                     Transform innerTransform = elementObj.transform.Find("Inner");
                     if (innerTransform != null)
@@ -655,7 +656,7 @@ public class NewGameMenuManager : MonoBehaviour
                         // Try different possible names for the select button
                         string[] possibleNames = { "select", "Select", "SELECT" };
                         Transform selectTransform = null;
-                        
+
                         foreach (string name in possibleNames)
                         {
                             selectTransform = innerTransform.Find(name);
@@ -666,14 +667,14 @@ public class NewGameMenuManager : MonoBehaviour
                                 break;
                             }
                         }
-                        
+
                         if (selectTransform == null)
                         {
                             Debug.LogWarning($"Could not find select button for {elementObj.name}");
                         }
                     }
                 }
-                
+
                 // Return to player selection
                 ReturnToPlayerSelection();
             }
@@ -692,7 +693,7 @@ public class NewGameMenuManager : MonoBehaviour
         // Play button sound
         if (audioManager != null)
             audioManager.PlayMenuButton();
-            
+
         Debug.Log("Start Game button clicked via direct method");
         StartGame();
     }
@@ -700,11 +701,11 @@ public class NewGameMenuManager : MonoBehaviour
     public void ClearCurrentProfile()
     {
         Debug.Log("ClearCurrentProfile called");
-        
+
         if (currentEditingElementIndex >= 0 && currentEditingElementIndex < playerElements.Length)
         {
             GameObject elementObj = playerElements[currentEditingElementIndex];
-            
+
             try
             {
                 // Update username text
@@ -714,7 +715,7 @@ public class NewGameMenuManager : MonoBehaviour
                     usernameText.text = "Select Profile";
                     Debug.Log("Cleared username text");
                 }
-                
+
                 // Update elo text
                 TMP_Text eloText = elementObj.transform.Find("Inner/elo").GetComponent<TMP_Text>();
                 if (eloText != null)
@@ -722,7 +723,7 @@ public class NewGameMenuManager : MonoBehaviour
                     eloText.text = "";
                     Debug.Log("Cleared ELO text");
                 }
-                
+
                 // Show the select button
                 Transform innerTransform = elementObj.transform.Find("Inner");
                 if (innerTransform != null)
@@ -739,14 +740,14 @@ public class NewGameMenuManager : MonoBehaviour
                         }
                     }
                 }
-                
+
                 // Remove from selected profiles dictionary
                 if (selectedProfiles.ContainsKey(elementObj))
                 {
                     selectedProfiles.Remove(elementObj);
                     Debug.Log($"Removed profile for element {elementObj.name}");
                 }
-                
+
                 // Return to player selection
                 ReturnToPlayerSelection();
             }
@@ -761,16 +762,16 @@ public class NewGameMenuManager : MonoBehaviour
     {
         if (audioManager != null)
             audioManager.PlayMenuButton();
-            
+
         Debug.Log("StartGame called");
-        
+
         // Debug element references
         Debug.Log("Element references check:");
         Debug.Log($"pyroElement: {(pyroElement != null ? pyroElement.name : "null")}");
         Debug.Log($"hydroElement: {(hydroElement != null ? hydroElement.name : "null")}");
         Debug.Log($"anemoElement: {(anemoElement != null ? anemoElement.name : "null")}");
         Debug.Log($"geoElement: {(geoElement != null ? geoElement.name : "null")}");
-        
+
         // Debug which elements have profiles assigned
         Debug.Log("Checking assigned profiles:");
         foreach (var kvp in selectedProfiles)
@@ -778,7 +779,7 @@ public class NewGameMenuManager : MonoBehaviour
             string elementName = kvp.Key != null ? kvp.Key.name : "null";
             string profileName = kvp.Value != null ? kvp.Value.Username : "null";
             Debug.Log($"Profile assigned: Element={elementName}, Profile={profileName}, ID={kvp.Value.Id}");
-            
+
             // Specifically check if this is the hydroElement
             if (kvp.Key == hydroElement)
             {
@@ -868,7 +869,7 @@ public class NewGameMenuManager : MonoBehaviour
             // You could add a UI element to display this message
         }
     }
-    
+
     // Manual testing methods
     private void UpdateElementVisibility(GameObject elementObj, bool profileSelected)
     {
@@ -922,7 +923,7 @@ public class NewGameMenuManager : MonoBehaviour
         // Play button sound for testing
         if (audioManager != null)
             audioManager.PlayMenuButton();
-            
+
         Debug.Log("Manual test: switching to profiles panel");
         if (playersPanel != null && profilesPanel != null)
         {
@@ -949,7 +950,7 @@ public class NewGameMenuManager : MonoBehaviour
         // Play button sound for testing
         if (audioManager != null)
             audioManager.PlayMenuButton();
-            
+
         Debug.Log("Manual test: switching to players panel");
         if (playersPanel != null && profilesPanel != null)
         {

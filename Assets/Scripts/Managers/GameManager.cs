@@ -184,6 +184,7 @@ public class GameManager : MonoBehaviour
             GameObject anemoPlayer = GameObject.Find("AnemoPlayer");
             if (anemoPlayer != null && PlayerPrefs.GetInt("AnemoPlayer_Active", 0) == 1)
             {
+                Debug.Log("✅ AnemoPlayer is active! Assigning profile...");
                 AssignProfileToPlayer(anemoPlayer, "AnemoPlayer");
                 orderedPlayers[2] = anemoPlayer;
             }
