@@ -233,6 +233,48 @@ public class Player : MonoBehaviour
         }
     }
 
+    public virtual void MovePlayerBack(int tiles)
+    {
+        // Calculate new index by subtracting tiles from current position
+        int newIndex = currentWaypointIndex - tiles;
+        
+        // Make sure we don't go below index 0
+        if (newIndex < 0)
+        {
+            newIndex = 0;
+        }
+        
+        Debug.Log($"🔙 {gameObject.name} → Teleporting back {tiles} tiles: from {currentPath}:{currentWaypointIndex} to {currentPath}:{newIndex}");
+        
+        // Set the teleportation as an effect movement to avoid questions being triggered
+        GameManager.Instance.isEffectMovement = true;
+        
+        // Store current position before teleporting
+        string currentPositionPath = currentPath;
+        int currentPositionIndex = currentWaypointIndex;
+        int currentPositionDirection = movementDirection;
+        
+        // Update current position to new index
+        currentWaypointIndex = newIndex;
+        targetWaypointIndex = newIndex;
+        
+        // Physically move the player
+        MoveToWaypoint(newIndex);
+        
+        // Update previous landing to be the position we just left
+        if (hasPreviousLanding) 
+        {
+            previousLandingPath = currentPositionPath;
+            previousLandingWaypointIndex = currentPositionIndex;
+            previousLandingDirection = currentPositionDirection;
+        }
+        
+        Debug.Log($"🔄 {gameObject.name} → After teleporting back: Current = {currentPath}:{currentWaypointIndex}, Previous = {previousLandingPath}:{previousLandingWaypointIndex}");
+        
+        // Display region info for new position
+        DisplayCurrentRegion();
+    }
+
     // Method to move back to previous landing position
     public virtual void MoveToPreviousAtterrissage()
     {
@@ -497,8 +539,19 @@ public void PlayMovementSound(){
     // ✅ Method to gain a life
     public virtual void GainLife()
     {
-        lives++;
-        Debug.Log($"❤️gained a life! Total lives: {lives}");
+        // Get the maximum lives from GameManager
+        int maxLives = GameManager.Instance.maxLives;
+        
+        // Only add a life if current lives are less than maximum
+        if (lives < maxLives)
+        {
+            lives++;
+            Debug.Log($"❤️ {gameObject.name} gained a life! Total lives: {lives}/{maxLives}");
+        }
+        else
+        {
+            Debug.Log($"⚠️ {gameObject.name} already has maximum lives ({maxLives}). Cannot gain more.");
+        }
     }
 
 

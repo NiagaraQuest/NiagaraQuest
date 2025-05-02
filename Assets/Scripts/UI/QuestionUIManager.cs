@@ -490,9 +490,9 @@ public class QuestionUIManager : MonoBehaviour
 
         // DEBUGGING: Log the result display
         Debug.Log($"🔧 DEBUG ShowResult: Player: {(currentPlayer != null ? currentPlayer.gameObject.name : "null")}, " +
-                  $"Position: {(currentPlayer != null ? currentPlayer.currentWaypointIndex : -1)}, " +
-                  $"IsFinalTile: {isFinalTile}, IsCorrect: {isCorrect}, " +
-                  $"QuestionType: {_debug_questionType}, Difficulty: {_debug_questionDifficulty}");
+                $"Position: {(currentPlayer != null ? currentPlayer.currentWaypointIndex : -1)}, " +
+                $"IsFinalTile: {isFinalTile}, IsCorrect: {isCorrect}, " +
+                $"QuestionType: {_debug_questionType}, Difficulty: {_debug_questionDifficulty}");
 
         // CAS SPÉCIAL: Réponse correcte sur case finale → victoire immédiate !
         if (isCorrect && isFinalTile)
@@ -510,14 +510,22 @@ public class QuestionUIManager : MonoBehaviour
             return; // Sortir de la méthode pour éviter d'afficher le panneau de récompense
         }
 
-
         // Si réponse correcte OU 2ème échec
         resultPanel.SetActive(true);
         string effectDescription = GetEffectDescription(currentQuestion.Difficulty, isCorrect);
         
-
-        // Set the result text to show only if answer is correct or wrong
-        resultText.text = isCorrect ? "You got it right !!" : "This sounds wrong!";
+        // Get the correct answer text, with appropriate color
+        string correctAnswerText = GetCorrectAnswerText(currentQuestion, isCorrect);
+        
+        // Set the result text based on whether the answer was correct
+        if (isCorrect)
+        {
+            resultText.text = $"You got it right!!\n{correctAnswerText}";
+        }
+        else
+        {
+            resultText.text = $"This sounds wrong!\n{correctAnswerText}";
+        }
 
         // Check if protection should be used (only for incorrect answers)
         if (!isCorrect)
@@ -527,14 +535,12 @@ public class QuestionUIManager : MonoBehaviour
 
             if (protectionUsed)
             {
-                // Player was protected, show different result text
-                resultText.text = "This sounds wrong!";
+                // Player was protected, show different reward text
                 rewardText.text = "Protection activated! No penalty applied.";
             }
             else
             {
-                // Normal wrong answer handling - show the effect that will be applied
-                // Generate reward/penalty text
+                // Normal wrong answer handling - show the penalty that will be applied
                 string rewardBaseText = $"<b>Penalty:</b> {effectDescription}";
 
                 // Add ELO information if available and enabled
@@ -608,6 +614,58 @@ public class QuestionUIManager : MonoBehaviour
 
         // Focus on the exit button so Enter key works right away
         StartCoroutine(FocusExitButton());
+    }
+
+// Helper method to extract the correct answer based on question type
+private string GetCorrectAnswerText(Question question, bool isCorrect)
+{
+    string correctAnswer = "";
+    
+    if (question is OpenQuestion openQuestion)
+    {
+        correctAnswer = openQuestion.Answer;
+    }
+    else if (question is QCMQuestion qcmQuestion)
+    {
+        int correctIndex = qcmQuestion.CorrectChoice;
+        if (correctIndex >= 0 && correctIndex < qcmQuestion.Choices.Length)
+        {
+            correctAnswer = qcmQuestion.Choices[correctIndex];
+        }
+    }
+    else if (question is TrueFalseQuestion tfQuestion)
+    {
+        correctAnswer = tfQuestion.IsTrue ? "True" : "False";
+    }
+    
+    // Use green color for correct answers, red for incorrect
+    string colorCode = isCorrect ? "#4CAF50" : "#F44336";
+    return $"<color={colorCode}>Answer: {correctAnswer}</color>";
+}
+
+    // Helper method to extract the correct answer based on question type
+    private string GetCorrectAnswerText(Question question)
+    {
+        string correctAnswer = "";
+        
+        if (question is OpenQuestion openQuestion)
+        {
+            correctAnswer = openQuestion.Answer;
+        }
+        else if (question is QCMQuestion qcmQuestion)
+        {
+            int correctIndex = qcmQuestion.CorrectChoice;
+            if (correctIndex >= 0 && correctIndex < qcmQuestion.Choices.Length)
+            {
+                correctAnswer = qcmQuestion.Choices[correctIndex];
+            }
+        }
+        else if (question is TrueFalseQuestion tfQuestion)
+        {
+            correctAnswer = tfQuestion.IsTrue ? "True" : "False";
+        }
+        
+        return $"<color=#F44336>Answer: {correctAnswer}</color>";
     }
 
     private IEnumerator HideEloTextAfterDelay(float delay)

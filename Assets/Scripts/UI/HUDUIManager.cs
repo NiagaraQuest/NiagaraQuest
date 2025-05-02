@@ -9,6 +9,7 @@ public class HUDUIManager : MonoBehaviour
     public GameObject pausePanel;
     public Button pauseButton;
     public Button resumeButton;
+    public Button restartButton;  // Add new restart button reference
     public Button settingsButton;
     public Button exitButton;
 
@@ -45,6 +46,10 @@ public class HUDUIManager : MonoBehaviour
         // Resume button
         if (resumeButton != null)
             resumeButton.onClick.AddListener(ResumeGame);
+            
+        // Restart button
+        if (restartButton != null)
+            restartButton.onClick.AddListener(RestartGame);
 
         // Settings button
         if (settingsButton != null)
@@ -113,6 +118,36 @@ public class HUDUIManager : MonoBehaviour
         EnableDiceRollButtonIfNeeded();
         
         Debug.Log("▶️ Game resumed");
+    }
+
+    public void RestartGame()
+    {
+        Debug.Log("🔄 Restarting game with same player profiles");
+        
+        // Ensure time scale is normal before scene reload
+        Time.timeScale = 1f;
+        
+        // Cache the current active player data
+        SaveCurrentPlayerProfiles();
+        
+        // Reload the current scene
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
+    
+
+    private void SaveCurrentPlayerProfiles()
+    {
+        // Get GameManager instance
+        GameManager gameManager = GameManager.Instance;
+        if (gameManager == null || gameManager.players == null)
+        {
+            Debug.LogWarning("⚠️ GameManager or players list not available!");
+            return;
+        }
+        PlayerPrefs.Save();
+        
+        Debug.Log("✅ Player profiles preserved for scene reload");
     }
 
     // Open the settings panel
@@ -214,5 +249,4 @@ public class HUDUIManager : MonoBehaviour
         if (pauseButton != null)
             pauseButton.gameObject.SetActive(visible);
     }
-
 }

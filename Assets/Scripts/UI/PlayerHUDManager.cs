@@ -33,10 +33,15 @@ public class PlayerHUDManager : MonoBehaviour
     [Header("Animation Settings")]
     public float heartAnimDuration = 0.5f;
     public float heartPulseScale = 1.5f;
+    
+    [Header("Setup Settings")]
+    [Tooltip("Delay in seconds before setting up HUD corners")]
+    public float setupDelay = 0.5f;
 
     private PlayerCorner[] allCorners;
     private GameManager gameManager;
     private Dictionary<GameObject, PlayerCorner> playerCornerMap = new Dictionary<GameObject, PlayerCorner>();
+    private bool cornersSetup = false;
 
     void Start()
     {
@@ -50,38 +55,49 @@ public class PlayerHUDManager : MonoBehaviour
         // Set up corners array
         allCorners = new PlayerCorner[] { corner1, corner2, corner3, corner4 };
 
-        // Wait a bit for GameManager to set up players from PlayerPrefs
+        // Hide all HUD corners at the start
+        HideAllCorners();
+        
+        // Wait for GameManager to set up players from PlayerPrefs
         StartCoroutine(SetupCornersDelayed());
+    }
+
+    // Hide all corner panels
+    private void HideAllCorners()
+    {
+        foreach (var corner in allCorners)
+        {
+            if (corner != null && corner.cornerPanel != null)
+            {
+                corner.cornerPanel.SetActive(false);
+            }
+        }
+        Debug.Log("PlayerHUDManager: All HUD corners hidden at start");
     }
 
     private IEnumerator SetupCornersDelayed()
     {
-        // Wait a short time to ensure GameManager has initialized players from PlayerPrefs
-        yield return new WaitForSeconds(0.5f);
+        // Wait for GameManager to initialize players from PlayerPrefs
+        yield return new WaitForSeconds(setupDelay);
 
         // Set up the UI for the current game mode
         SetupCorners();
+        cornersSetup = true;
     }
 
-    // Update player information each frame
+    // Update player information each frame (only after setup is complete)
     void Update()
     {
-        UpdateAllCorners();
+        if (cornersSetup)
+        {
+            UpdateAllCorners();
+        }
     }
 
     // Set up corner panels based on active players
     public void SetupCorners()
     {
         playerCornerMap.Clear();
-
-        // First, hide all corners
-        foreach (var corner in allCorners)
-        {
-            if (corner.cornerPanel != null)
-            {
-                corner.cornerPanel.SetActive(false);
-            }
-        }
 
         // Get active players from GameManager
         List<GameObject> activePlayers = gameManager.players;
@@ -94,13 +110,13 @@ public class PlayerHUDManager : MonoBehaviour
         // Map player types to corners - fixed positions matching menu selection
         Dictionary<string, PlayerCorner> typeToCorner = new Dictionary<string, PlayerCorner>
         {
-            { "GeoPlayer", corner1 },  // Top Left
-            { "AnemoPlayer", corner2 }, // Top Right
-            { "HydroPlayer", corner3 }, // Bottom Left
-            { "PyroPlayer", corner4 }    // Bottom Right
+            { "PyroPlayer", corner1 },  // Top Left
+            { "HydroPlayer", corner2 }, // Top Right
+            { "AnemoPlayer", corner3 }, // Bottom Left
+            { "GeoPlayer", corner4 }    // Bottom Right
         };
 
-        // Check which corners should be active based on PlayerPrefs and active players
+        // Check which corners should be active based on active players
         foreach (GameObject player in activePlayers)
         {
             if (player == null) continue;
@@ -121,7 +137,7 @@ public class PlayerHUDManager : MonoBehaviour
                     // Initial update
                     UpdateCorner(corner);
 
-                    Debug.Log($"PlayerHUDManager: Assigned {playerName} to corner {playerName}");
+                    Debug.Log($"PlayerHUDManager: Assigned {playerName} to corner and activated HUD");
                 }
             }
         }
@@ -237,13 +253,31 @@ public class PlayerHUDManager : MonoBehaviour
         UpdateHearts(corner, playerScript.lives);
 
         // Highlight the current active player
-       
+        HighlightActivePlayer();
+    }
+    
+    // Highlight the currently active player
+    private void HighlightActivePlayer()
+    {
+        if (gameManager.selectedPlayer == null) return;
+        
+        foreach (var entry in playerCornerMap)
+        {
+            GameObject player = entry.Key;
+            PlayerCorner corner = entry.Value;
+            
+            if (corner.cornerPanel != null)
+            {
+                bool isActive = (player == gameManager.selectedPlayer);
+                // You could add visual indication that this is the active player
+                // For example, adding a glow effect or changing the panel color
+            }
+        }
     }
 
     // Update heart images based on current lives
     private void UpdateHearts(PlayerCorner corner, int currentLives)
-       
-{
+    {
         if (corner.heartImages == null) return;
 
         for (int i = 0; i < corner.heartImages.Length; i++)
@@ -254,14 +288,13 @@ public class PlayerHUDManager : MonoBehaviour
                 corner.heartImages[i].color = isActive ? corner.activeHeartColor : corner.inactiveHeartColor;
             }
         }
-       if (gameManager.currentGameMode == GameManager.GameMode.FourPlayers)
+        
+        if (gameManager.currentGameMode == GameManager.GameMode.FourPlayers)
         {
-            corner.heartImages[corner.heartImages.Length - 1].color =  new Color(0,0,0,0);
+            corner.heartImages[corner.heartImages.Length - 1].color = new Color(0,0,0,0);
         }
-       
     }
 
-    
     // Called when a player loses/gains a life
     public void OnPlayerLifeChanged(GameObject player, int oldValue, int newValue)
     {

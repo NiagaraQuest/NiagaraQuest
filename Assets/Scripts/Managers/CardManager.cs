@@ -54,7 +54,7 @@ public class CardManager : MonoBehaviour
     // Draw a random card and return its type
     public int DrawRandomCard()
     {
-        return 3;
+        return 0;
     }
     
     // Get card name by type
@@ -118,6 +118,8 @@ public class CardManager : MonoBehaviour
                 break;
                 
             case 8: // Cursed Steps
+                gameManager.isEffectMovement = true;
+                player.MovePlayerBack(6);
                 break;
                 
             case 9: // Shield Bless
