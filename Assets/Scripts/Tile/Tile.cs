@@ -39,6 +39,7 @@ public class Tile : MonoBehaviour
         // C'est CRUCIAL pour s'assurer que le bon joueur est traité
         if (landingPlayer != null)
         {
+            landingPlayer.isMoving = false; 
             GameManager.Instance.SetCurrentQuestionPlayer(landingPlayer);
 
             // Vérifier si c'est une case finale

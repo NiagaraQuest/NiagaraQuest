@@ -6,7 +6,7 @@ using System.Collections;
 public class DiceManager : MonoBehaviour
 {
     public static DiceManager Instance { get; private set; }
-    private AudioManager audioManager;
+    private DiceSound diceSound; // New reference to DiceSound
     
     [SerializeField] private TextMeshProUGUI sumText;
     [SerializeField] private theDice dice1;
@@ -36,12 +36,13 @@ public class DiceManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        audioManager = AudioManager.Instance;
+        // Find the DiceSound instance
+        diceSound = DiceSound.Instance;
         
         // Check if it exists
-        if (audioManager == null)
+        if (diceSound == null)
         {
-            Debug.LogError("AudioManager not found in the scene. Make sure it's set up properly.");
+            Debug.LogError("DiceSound not found in the scene. Make sure it's set up properly.");
         }
     }
     
@@ -72,13 +73,24 @@ public class DiceManager : MonoBehaviour
 
     private IEnumerator RollAndShowSum()
     {
+        // Play the rolling sound using our new DiceSound
+        if (diceSound != null)
+        {
+            diceSound.PlayDiceRolling();
+        }
+        
         // Roll the dice
         dice1.RollTheDice();
         dice2.RollTheDice();
-        audioManager.PlayDiceRolling();
         
-        // Wait until both dice have stopped
+        // Wait until both dice have stopped - landing sound is handled by each die
         yield return new WaitUntil(() => dice1.HasStopped && dice2.HasStopped);
+        
+        // Stop the rolling sound
+        if (diceSound != null)
+        {
+            diceSound.StopDiceRolling();
+        }
         
         // Get the sum of the dice values
         LastRollSum = dice1.GetRollValue() + dice2.GetRollValue();

@@ -514,10 +514,10 @@ public class QuestionUIManager : MonoBehaviour
         resultPanel.SetActive(true);
         string effectDescription = GetEffectDescription(currentQuestion.Difficulty, isCorrect);
         
-        // Get the correct answer text, with appropriate color
+        // Get the correct answer text, with appropriate color based on result
         string correctAnswerText = GetCorrectAnswerText(currentQuestion, isCorrect);
         
-        // Set the result text based on whether the answer was correct
+        // Set the result text with the answer included
         if (isCorrect)
         {
             resultText.text = $"You got it right!!\n{correctAnswerText}";
@@ -563,7 +563,7 @@ public class QuestionUIManager : MonoBehaviour
         }
         else
         {
-            // Pour les réponses correctes sur des cases non-finales, afficher la récompense
+            // For correct answers on non-final tiles, just show the reward description
             string rewardBaseText = $"<b>Reward:</b> {effectDescription}";
 
             // Add ELO information if available and enabled

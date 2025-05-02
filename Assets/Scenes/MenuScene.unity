@@ -4261,11 +4261,14 @@ MonoBehaviour:
   diceRollingSound: {fileID: 8300000, guid: 957c8fdb6b1d0f24cb6bf149acc091fa, type: 3}
   winGameSound: {fileID: 8300000, guid: d769f115aa8e5b04280c6082d8c38c4d, type: 3}
   gameplayBackgroundSound: {fileID: 8300000, guid: 28cf51c66d2604e48a65267596170bc9, type: 3}
+  gameplayIntenseBackgroundSound: {fileID: 8300000, guid: c57e0976cf469ba4e98e448f803534a3, type: 3}
   menuButtonSound: {fileID: 8300000, guid: 176ce210092302c43a208c6af21ab396, type: 3}
   bonusCardSound: {fileID: 8300000, guid: d42158db87df60546abfd3a9a8dae2a7, type: 3}
   intersectionTileSound: {fileID: 8300000, guid: 83387f8ac08483141a9cf2740a96d451, type: 3}
   musicVolume: 0.5
   sfxVolume: 0.7
+  musicChangeTimeThreshold: 300
+  lowLifeThreshold: 1
 --- !u!4 &1036436409
 Transform:
   m_ObjectHideFlags: 0

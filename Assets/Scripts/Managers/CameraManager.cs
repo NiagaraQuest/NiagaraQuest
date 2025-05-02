@@ -83,6 +83,9 @@ public class CameraManager : MonoBehaviour
             viewToggleButton.onClick.AddListener(OnViewToggleButtonClicked);
             UpdateViewButtonState();
         }
+        
+        // Initialize audio listeners state
+        SetupAudioListeners();
     }
 
     private void OnDestroy()
@@ -127,6 +130,99 @@ public class CameraManager : MonoBehaviour
         isViewCameraActive = false;
         
         UpdateViewButtonState();
+        
+        // Make sure audio listeners are set up correctly at start
+        UpdateAudioListeners(mainCamera);
+    }
+    
+    // New method to set up audio listeners
+    private void SetupAudioListeners()
+    {
+        // Get all cameras with their audio listeners
+        Camera[] allCameras = new Camera[] { 
+            mainCamera, 
+            diceCamera, 
+            viewCamera, 
+            vulkanCamera, 
+            atlantaCamera, 
+            celestyelCamera, 
+            bergCamera 
+        };
+        
+        // Disable all audio listeners initially
+        foreach (Camera cam in allCameras)
+        {
+            if (cam != null)
+            {
+                AudioListener listener = cam.GetComponent<AudioListener>();
+                
+                // Add an audio listener if it doesn't exist
+                if (listener == null)
+                {
+                    listener = cam.gameObject.AddComponent<AudioListener>();
+                    Debug.Log($"Added AudioListener to {cam.name}");
+                }
+                
+                // Disable all listeners initially
+                listener.enabled = false;
+            }
+        }
+        
+        // Enable only the main camera's audio listener
+        if (mainCamera != null)
+        {
+            AudioListener mainListener = mainCamera.GetComponent<AudioListener>();
+            if (mainListener != null)
+            {
+                mainListener.enabled = true;
+                Debug.Log($"Enabled AudioListener on {mainCamera.name}");
+            }
+        }
+    }
+    
+    // New method to update audio listeners when camera changes
+    private void UpdateAudioListeners(Camera newActiveCamera)
+    {
+        if (newActiveCamera == null) return;
+        
+        // Get all cameras with their audio listeners
+        Camera[] allCameras = new Camera[] { 
+            mainCamera, 
+            diceCamera, 
+            viewCamera, 
+            vulkanCamera, 
+            atlantaCamera, 
+            celestyelCamera, 
+            bergCamera 
+        };
+        
+        // Disable all audio listeners first
+        foreach (Camera cam in allCameras)
+        {
+            if (cam != null)
+            {
+                AudioListener listener = cam.GetComponent<AudioListener>();
+                if (listener != null)
+                {
+                    listener.enabled = false;
+                }
+            }
+        }
+        
+        // Enable only the active camera's audio listener
+        AudioListener activeListener = newActiveCamera.GetComponent<AudioListener>();
+        if (activeListener != null)
+        {
+            activeListener.enabled = true;
+            Debug.Log($"Enabled AudioListener on {newActiveCamera.name}");
+        }
+        else
+        {
+            // Add an audio listener if it doesn't exist
+            activeListener = newActiveCamera.gameObject.AddComponent<AudioListener>();
+            activeListener.enabled = true;
+            Debug.Log($"Added and enabled AudioListener on {newActiveCamera.name}");
+        }
     }
     
     void Update()
@@ -228,6 +324,9 @@ public class CameraManager : MonoBehaviour
         isViewCameraActive = (targetCamera == viewCamera);
         
         UpdateViewButtonState();
+        
+        // Update audio listeners when changing cameras
+        UpdateAudioListeners(targetCamera);
     }
     
     private Camera GetCameraForRegion(Tile.Region region)
@@ -268,6 +367,9 @@ public class CameraManager : MonoBehaviour
         isViewCameraActive = false;
         
         UpdateViewButtonState();
+        
+        // Update audio listeners when changing to main camera
+        UpdateAudioListeners(mainCamera);
     }
     
     public void SwitchToDiceCamera()
@@ -291,6 +393,9 @@ public class CameraManager : MonoBehaviour
         isViewCameraActive = false;
         
         UpdateViewButtonState();
+        
+        // Update audio listeners when changing to dice camera
+        UpdateAudioListeners(diceCamera);
     }
     
     public void ToggleViewCamera()
@@ -320,6 +425,9 @@ public class CameraManager : MonoBehaviour
             isViewCameraActive = true;
             
             UpdateViewButtonState();
+            
+            // Update audio listeners when changing to view camera
+            UpdateAudioListeners(viewCamera);
         }
     }
     
@@ -343,6 +451,9 @@ public class CameraManager : MonoBehaviour
                 cam.enabled = false;
             }
         }
+        
+        // Update audio listeners during the transition as well
+        UpdateAudioListeners(targetCamera);
         
         yield return null;
         

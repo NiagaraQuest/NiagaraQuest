@@ -175,7 +175,7 @@ public class Player : MonoBehaviour
                         }
                         else
                         {
-                            isMoving = false;
+                            StopMoving();
                             if(GameManager.Instance.isEffectMovement){
                                 CameraManager.Instance.SwitchToMainCamera();
                             }
@@ -210,6 +210,13 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void StopMoving()
+    {
+        isMoving = false;
+        
+        PlayerSound.Instance.StopMovementSound(gameObject);
     }
 
 
@@ -333,12 +340,6 @@ public class Player : MonoBehaviour
 public virtual bool CanGiveLife()
 {
     return lives >= 3;
-}
-
-public void PlayMovementSound(){
-    while(isMoving){
-        AudioManager.Instance.PlayMovement();
-    }
 }
 
     public virtual void GiveLifeTo(Player targetPlayer)
