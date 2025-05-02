@@ -107,10 +107,10 @@ public class PlayerSound : MonoBehaviour
         
         // Make sure we have an audio source
         AudioSource audioSource;
-        if (!playerAudioSources.TryGetValue(currentPlayer, out audioSource))
+        audioSource = currentPlayer.GetComponent<AudioSource>();
+        if (audioSource != null)
         {
-            // Try to get the audio source directly
-            audioSource = currentPlayer.GetComponent<AudioSource>();
+           
             if (audioSource == null) return;
             
             // Add it to our dictionary
