@@ -13,10 +13,11 @@ public class CreateProfilePopup : MonoBehaviour
     // Reference to the AudioManager
     private AudioManager audioManager;
 
+   
     void Start()
     {
         // Get reference to the menu manager
-        menuManager = FindObjectOfType<NewGameMenuManager>();
+        menuManager = FindAnyObjectByType<NewGameMenuManager>();
         
         // Get reference to AudioManager singleton
         audioManager = AudioManager.Instance;

@@ -27,9 +27,9 @@ public class AudioManager : MonoBehaviour
 
     [Header("Volume Settings")]
     [Range(0f, 1f)]
-    [SerializeField] private float musicVolume = 0.5f;
+    [SerializeField] private float musicVolume = 0.1f;
     [Range(0f, 1f)]
-    [SerializeField] private float sfxVolume = 0.7f;
+    [SerializeField] private float sfxVolume = 0.5f;
 
     private void Awake()
     {

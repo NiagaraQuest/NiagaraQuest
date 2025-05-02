@@ -74,7 +74,7 @@ public class MainMenu : MonoBehaviour
             audioManager.PlayMenuButton();
             
         settingsPanel.SetActive(true);
-        news.SetActive(false);
+        
     }
 
     void HideSettings()
@@ -83,7 +83,7 @@ public class MainMenu : MonoBehaviour
         if (audioManager != null)
             audioManager.PlayMenuButton();
             
-        news.SetActive(true);
+        
         settingsPanel.SetActive(false);
     }
 

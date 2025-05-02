@@ -39,7 +39,7 @@ public class Profile
     }
     
     // Validate username format
-    private bool IsValidUsername(string username)
+    public bool IsValidUsername(string username)
     {
         string pattern = @"^[a-zA-Z][a-zA-Z0-9_]{2,15}$";
         return Regex.IsMatch(username, pattern);

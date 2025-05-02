@@ -25,7 +25,7 @@ public class ProfileEntry : MonoBehaviour
         this.profileData = profile;
 
         if (usernameText != null)
-            usernameText.text = profile.Username;
+            usernameText.text ="name : " + profile.Username;
 
         if (eloText != null)
             eloText.text = "ELO : " + profile.Elo.ToString();

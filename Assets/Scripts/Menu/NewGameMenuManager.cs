@@ -42,7 +42,7 @@ public class NewGameMenuManager : MonoBehaviour
 
     [Header("Profile Selection")]
     public Button clearProfileButton;
-    public GameObject noneProfilePrefab;
+   
 
     // Reference to the AudioManager
     private AudioManager audioManager;
@@ -387,7 +387,7 @@ public class NewGameMenuManager : MonoBehaviour
     {
         Debug.Log("LoadProfiles called");
 
-        // Clear existing profiles
+        
         if (profilesContainer != null)
         {
             foreach (Transform child in profilesContainer)
@@ -401,45 +401,7 @@ public class NewGameMenuManager : MonoBehaviour
             return;
         }
 
-        // First, add the "None" option
-        if (noneProfilePrefab != null)
-        {
-            GameObject noneEntry = Instantiate(noneProfilePrefab, profilesContainer);
-            ProfileEntry entry = noneEntry.GetComponent<ProfileEntry>();
-            if (entry != null)
-            {
-                Profile noneProfile = CreateNoneProfile();
-                entry.Initialize(noneProfile);
-                entry.SetSelectAction(() => SelectProfileForElement(noneProfile));
-            }
-            else
-            {
-                Debug.LogError("None profile prefab does not have a ProfileEntry component!");
-            }
-        }
-        else
-        {
-            // If no special prefab is provided, create a None profile with the regular prefab
-            if (profileEntryPrefab != null)
-            {
-                GameObject noneEntry = Instantiate(profileEntryPrefab, profilesContainer);
-                ProfileEntry entry = noneEntry.GetComponent<ProfileEntry>();
-                if (entry != null)
-                {
-                    Profile noneProfile = CreateNoneProfile();
-                    entry.Initialize(noneProfile);
-                    entry.SetSelectAction(() => SelectProfileForElement(noneProfile));
-                }
-            }
-        }
-
-        // Check if database is initialized
-        if (!databaseInitialized || ProfileManager.Instance == null)
-        {
-            Debug.LogWarning("Database not initialized yet, using test profiles instead");
-            CreateTestProfiles();
-            return;
-        }
+        
 
         try
         {
@@ -447,12 +409,7 @@ public class NewGameMenuManager : MonoBehaviour
             List<Profile> profiles = await ProfileManager.Instance.GetAllProfiles();
             Debug.Log($"Loaded {profiles.Count} profiles from database");
 
-            if (profiles.Count == 0)
-            {
-                // If no profiles in database, use test profiles
-                CreateTestProfiles();
-                return;
-            }
+            
 
             // Create profile entries from database
             CreateProfileEntries(profiles);
@@ -460,38 +417,13 @@ public class NewGameMenuManager : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.LogError($"Failed to load profiles: {e.Message}");
-            // Fall back to test profiles
-            CreateTestProfiles();
+           
         }
     }
 
     // Method to create test profiles for testing
-    private void CreateTestProfiles()
-    {
-        Debug.Log("Creating test profiles for UI testing");
-        List<Profile> testProfiles = new List<Profile>();
-
-        // Create test profiles with different properties
-        Profile profile1 = new Profile();
-        profile1.Id = 1;
-        profile1.Username = "TestUser1";
-        profile1.Elo = 1000;
-        testProfiles.Add(profile1);
-
-        Profile profile2 = new Profile();
-        profile2.Id = 2;
-        profile2.Username = "TestUser2";
-        profile2.Elo = 1200;
-        testProfiles.Add(profile2);
-
-        Profile profile3 = new Profile();
-        profile3.Id = 3;
-        profile3.Username = "TestUser3";
-        profile3.Elo = 1500;
-        testProfiles.Add(profile3);
-
-        CreateProfileEntries(testProfiles);
-    }
+   
+ 
 
     // Method to create UI entries for profiles
     private void CreateProfileEntries(List<Profile> profiles)
@@ -530,11 +462,11 @@ public class NewGameMenuManager : MonoBehaviour
             GameObject elementObj = playerElements[currentEditingElementIndex];
             Debug.Log($"Selecting profile for element index {currentEditingElementIndex}, element: {elementObj.name}");
 
-            bool isNoneProfile = (profile.Id == -1);
+            
 
-            // If selecting a real profile (not None), check for duplicate assignment
-            if (!isNoneProfile)
-            {
+           
+           
+            
                 // Check if this profile is already assigned to another element
                 foreach (var kvp in selectedProfiles)
                 {
@@ -566,7 +498,7 @@ public class NewGameMenuManager : MonoBehaviour
                     ReturnToPlayerSelection();
                     return;
                 }
-            }
+            
 
             try
             {
@@ -582,26 +514,17 @@ public class NewGameMenuManager : MonoBehaviour
                 TMP_Text eloText = elementObj.transform.Find("elo").GetComponent<TMP_Text>();
                 if (eloText != null)
                 {
-                    eloText.text = isNoneProfile ? "" : "ELO : " + profile.Elo.ToString();
+                    eloText.text =  "ELO : " + profile.Elo.ToString();
                     Debug.Log($"Updated ELO text to {profile.Elo}");
                 }
 
-                // Store the profile in our dictionary (or remove if it's a None profile)
-                if (isNoneProfile)
-                {
-                    if (selectedProfiles.ContainsKey(elementObj))
-                    {
-                        usernameText.text = "";
-                        selectedProfiles.Remove(elementObj);
-                        Debug.Log($"Removed profile for element {elementObj.name}");
-                    }
-                }
-                else
-                {
+               
+               
+                
                     // We already checked for duplicates above, so we can safely assign here
                     selectedProfiles[elementObj] = profile;
                     Debug.Log($"Stored profile for element {elementObj.name}");
-                }
+                
 
                 // Return to player selection
                 ReturnToPlayerSelection();
@@ -782,18 +705,5 @@ public class NewGameMenuManager : MonoBehaviour
             // You could add a UI element to display this message
         }
     }
-
-    
-    
-
-    private Profile CreateNoneProfile()
-    {
-        Profile noneProfile = new Profile();
-        noneProfile.Id = -1; // Special ID for None profile
-        noneProfile.Username = "None";
-        noneProfile.Elo = 0;
-        return noneProfile;
-    }
-
-    
+ 
 }
