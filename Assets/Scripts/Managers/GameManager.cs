@@ -70,6 +70,13 @@ public class GameManager : MonoBehaviour
     private bool gameLost = false;
     public GameEndManager gameEndManager;
 
+    [Header("DEBUG INFO")]
+    [SerializeField] private bool _debug_finalTileMovement = false;
+    [SerializeField] private string _debug_effectSource = "None";
+    [SerializeField] private int _debug_playerPreviousIndex = -1;
+    [SerializeField] private int _debug_playerCurrentIndex = -1;
+    [SerializeField] private bool _debug_questionShown = false;
+
     void Start()
     {
         Debug.Log("🎲 GameManager starting...");
@@ -571,22 +578,114 @@ public class GameManager : MonoBehaviour
     }
 
     public void ApplyQuestionResult(Player player, bool isCorrect, string difficulty)
-    {       
+    {
+        _debug_playerPreviousIndex = player.currentWaypointIndex;
+        Debug.Log($"🔧 DEBUG: ApplyQuestionResult START - Player: {player.gameObject.name}, Position: {_debug_playerPreviousIndex}, isCorrect: {isCorrect}, difficulty: {difficulty}");
+        bool isOnFinalTile = (player != null && player.currentWaypointIndex >= 50);
+
+        // DEBUGGER: Track final tile status
+        _debug_finalTileMovement = isOnFinalTile;
+        Debug.Log($"🔧 DEBUG: Player is on final tile: {isOnFinalTile} (index: {player.currentWaypointIndex})");
+
+        // 1. TRAITEMENT SPÉCIAL POUR LES CASES FINALES
+        if (isOnFinalTile)
+        {
+            Debug.Log($"🏁 Player {player.gameObject.name} a répondu à une question finale ({(isCorrect ? "correctement ✓" : "incorrectement ✗")})");
+
+            if (isCorrect)
+            {
+                // Si réponse correcte, déclencher la victoire IMMÉDIATEMENT sans afficher la récompense
+                Debug.Log($"🏆 CONDITIONS DE VICTOIRE REMPLIES: {player.gameObject.name} a atteint l'index {player.currentWaypointIndex} et répondu correctement!");
+
+                // IMPORTANT: Vérifier si le GameEndUIManager est assigné pour afficher l'écran de victoire
+                if (gameEndUIManager != null)
+                {
+                    // Appeler ShowVictoryScreen du GameEndUIManager
+                    gameEndUIManager.ShowVictoryScreen(player);
+
+                    // Mettre gameWon à true
+                    gameWon = true;
+                }
+                else if (gameEndManager != null)
+                {
+                    // Si gameEndUIManager n'est pas disponible, au moins nettoyer l'UI
+                    gameEndManager.CleanupUIForGameEnd();
+
+                    // Mettre gameWon à true
+                    gameWon = true;
+
+                    Debug.LogWarning("⚠️ gameEndUIManager non assigné! Seul le nettoyage de l'UI a été effectué. L'écran de victoire ne sera pas affiché.");
+                }
+                else
+                {
+                    Debug.LogError("❌ Ni gameEndUIManager ni gameEndManager ne sont assignés! Impossible de gérer la victoire correctement!");
+                }
+
+                return; // SORTIR immédiatement sans appliquer la récompense normale
+            }
+            else
+            {
+                // Si réponse incorrecte:
+                Debug.Log($"⛔ {player.gameObject.name} a atteint l'index {player.currentWaypointIndex} mais n'a pas répondu correctement.");
+
+                // 1. D'abord revenir à la position précédente
+                Debug.Log("⬅️ Retour à la position précédente d'abord...");
+                player.MoveToPreviousAtterrissage();
+
+                // 2. PUIS appliquer la pénalité normale selon la difficulté
+                Debug.Log($"⚠️ Application de la pénalité additionnelle selon difficulté {difficulty}");
+
+                switch (difficulty.ToUpper())
+                {
+                    /*
+                    case "EASY":
+                        Debug.Log("❌ Pénalité additionnelle: Reculer de 6 cases de plus");
+                        isEffectMovement = true;
+                        _debug_effectSource = "EASY-Wrong-Final";
+                        player.MovePlayerBack(); // Recule de 6 cases supplémentaires
+                        break;
+                    */
+                    case "MEDIUM":
+                        Debug.Log("❌ Pénalité additionnelle: Perdre 1 vie");
+                        player.LoseLife();
+                        break;
+
+                    case "HARD":
+                        int turnsSkipped = 1;
+                        Debug.Log($"❌ Pénalité additionnelle: Passer {turnsSkipped} tours");
+                        player.SkipTurns(turnsSkipped);
+                        break;
+                }
+            }
+
+            return; // Sortir de la méthode après avoir traité la question finale
+        }
+
+        // 2. TRAITEMENT STANDARD POUR TOUTES LES AUTRES CASES (NON-FINALES)
+        // Ces récompenses et pénalités s'appliquent partout dans le jeu
         switch (difficulty.ToUpper())
         {
             case "EASY":
                 if (isCorrect)
                 {
-                    // CA MARCHE 
                     Debug.Log("✅ Bonne réponse ! Récompense : Avancer de 2 cases.");
+
+                    // IMPORTANT DEBUGGER: Check if moving forward would land on a final tile
+                    if (player.currentWaypointIndex + 2 >= 50)
+                    {
+                        Debug.Log($"🔧 DEBUG: CRITICAL POINT - Moving player forward by 2 spaces will land on final tile! Current index: {player.currentWaypointIndex}");
+                    }
+
                     isEffectMovement = true;
-                    player.MovePlayer(2);
+                    _debug_effectSource = "EASY-Correct";
+                    player.MovePlayer(2); // CHANGED FROM 50 TO 2 (This was likely a bug in original code!)
                 }
                 else
                 {
                     Debug.Log("❌ Mauvaise réponse ! Pénalité : Reculer de 6 cases.");
                     isEffectMovement = true;
-                    player.MovePlayerBack();
+                    _debug_effectSource = "EASY-Wrong";
+                    player.MoveToPreviousAtterrissage();
                 }
                 break;
 
@@ -595,8 +694,9 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("✅ Bonne réponse ! Récompense : Lancer les dés une nouvelle fois.");
                     isEffectMovement = true;
+                    _debug_effectSource = "MEDIUM-Correct";
                     RollDiceAgain(player);
-                    return;
+                    return; // Important pour éviter d'exécuter le code après
                 }
                 else
                 {
@@ -611,7 +711,6 @@ public class GameManager : MonoBehaviour
                     Debug.Log("✅ Bonne réponse ! Récompense : Gagner 1 vie.");
                     player.GainLife();
                 }
-
                 else
                 {
                     int turnsSkipped = 1;
@@ -620,20 +719,25 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
+
+        // DEBUGGER: Final log to track player position after effects
+        Debug.Log($"🔧 DEBUG: ApplyQuestionResult END - Player: {player.gameObject.name}, Position before: {_debug_playerPreviousIndex}, Position after: {player.currentWaypointIndex}, Effect source: {_debug_effectSource}");
     }
 
     private void NextTurn()
     {
         hasDiceBeenRolledThisTurn = false;
         isEffectMovement = false;
+        _debug_effectSource = "None"; // Reset debugger
         SetCurrentQuestionPlayer(selectedPlayer.GetComponent<Player>());
-        
+
         if (lifeSharingManager != null)
         {
             lifeSharingManager.OnNewTurn();
         }
 
-        if (isExtraTurn){
+        if (isExtraTurn)
+        {
             diceManager.EnableAndSwitchToMainCamera();
             isExtraTurn = false;
         }

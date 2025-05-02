@@ -95,9 +95,8 @@ public class CardManager : MonoBehaviour
                 break;
                 
             case 3: // Echo of the Past (Swap position)
-                // Instead of random swap, request player selection
                 RequestPlayerSelection(player, cardType);
-                return; // Exit early - effect will be applied after selection
+                return;
                 
             case 4: // Time Freeze
                 player.SkipTurns(1);
@@ -119,8 +118,6 @@ public class CardManager : MonoBehaviour
                 break;
                 
             case 8: // Cursed Steps
-                gameManager.isEffectMovement = true;
-                player.MovePlayerBack();
                 break;
                 
             case 9: // Shield Bless
@@ -168,31 +165,18 @@ public class CardManager : MonoBehaviour
         string tempPath = currentPlayer.currentPath;
         int tempIndex = currentPlayer.currentWaypointIndex;
         int tempDirection = currentPlayer.movementDirection;
-        Stack<Player.WaypointData> tempWaypoints = currentPlayer.GetWaypointHistory();
-        string tempLastLandingPath = currentPlayer.GetLastLandingPath();
-        int tempLastLandingIndex = currentPlayer.GetLastLandingIndex();
-        int tempLastLandingDirection = currentPlayer.GetLastLandingDirection();
-        string tempPreviousLandingPath = currentPlayer.GetPreviousLandingPath();
-        int tempPreviousLandingIndex = currentPlayer.GetPreviousLandingIndex();
-        int tempPreviousLandingDirection = currentPlayer.GetPreviousLandingDirection();
+
         
         // Transfer other player's data to current player
         currentPlayer.transform.position = otherWaypoint.transform.position;
         currentPlayer.currentPath = otherPlayer.currentPath;
         currentPlayer.currentWaypointIndex = otherPlayer.currentWaypointIndex;
         currentPlayer.movementDirection = otherPlayer.movementDirection;
-        currentPlayer.SetWaypointHistory(otherPlayer.GetWaypointHistory());
-        currentPlayer.SetLastLandingPath(otherPlayer.GetLastLandingPath(), otherPlayer.GetLastLandingIndex(), otherPlayer.GetLastLandingDirection());
-        currentPlayer.SetPreviousLandingPath(otherPlayer.GetPreviousLandingPath(), otherPlayer.GetPreviousLandingIndex(), otherPlayer.GetPreviousLandingDirection());
-        
         // Transfer stored current player's data to other player
         otherPlayer.transform.position = currentWaypoint.transform.position;
         otherPlayer.currentPath = tempPath;
         otherPlayer.currentWaypointIndex = tempIndex;
         otherPlayer.movementDirection = tempDirection;
-        otherPlayer.SetWaypointHistory(tempWaypoints);
-        otherPlayer.SetLastLandingPath(tempLastLandingPath, tempLastLandingIndex, tempLastLandingDirection);
-        otherPlayer.SetPreviousLandingPath(tempPreviousLandingPath, tempPreviousLandingIndex, tempPreviousLandingDirection);
         
         Debug.Log($"🔄 Swap completed! Directions: {currentPlayer.gameObject.name}({currentPlayer.movementDirection}) and {otherPlayer.gameObject.name}({otherPlayer.movementDirection})");
     }
