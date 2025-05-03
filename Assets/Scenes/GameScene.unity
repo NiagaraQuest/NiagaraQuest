@@ -2001,10 +2001,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.5
+  m_fontSize: 53.4
   m_fontSizeBase: 52.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -2401,7 +2401,6 @@ MonoBehaviour:
   rightAnswerSound: {fileID: 8300000, guid: f47a9711e85b790498f58234a2173efd, type: 3}
   wrongAnswerSound: {fileID: 8300000, guid: 3bda65431c300f1409f2767f2cbf2320, type: 3}
   cardTileSound: {fileID: 8300000, guid: 3e737b535bec91148a367538821fa786, type: 3}
-  movementSound: {fileID: 8300000, guid: 75a4e9ff97983444599bbd68e0afd069, type: 3}
   winGameSound: {fileID: 8300000, guid: d769f115aa8e5b04280c6082d8c38c4d, type: 3}
   gameplayBackgroundSound: {fileID: 8300000, guid: 28cf51c66d2604e48a65267596170bc9, type: 3}
   gameplayIntenseBackgroundSound: {fileID: 0}
@@ -7338,10 +7337,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.5
+  m_fontSize: 53.4
   m_fontSizeBase: 52.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -9444,7 +9443,7 @@ MonoBehaviour:
   diceRollingSource: {fileID: 0}
   diceLandingSource: {fileID: 0}
   diceRollingSound: {fileID: 8300000, guid: 957c8fdb6b1d0f24cb6bf149acc091fa, type: 3}
-  diceLandingSound: {fileID: 8300000, guid: d42158db87df60546abfd3a9a8dae2a7, type: 3}
+  diceLandingSound: {fileID: 8300000, guid: b57005fede6f5df45b8ed185164ea26f, type: 3}
 --- !u!1 &639843352
 GameObject:
   m_ObjectHideFlags: 0
@@ -10081,10 +10080,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.5
+  m_fontSize: 53.4
   m_fontSizeBase: 52.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -11365,10 +11364,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.5
+  m_fontSize: 53.4
   m_fontSizeBase: 52.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -12254,10 +12253,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.5
+  m_fontSize: 53.4
   m_fontSizeBase: 52.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -14764,10 +14763,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.5
+  m_fontSize: 53.4
   m_fontSizeBase: 52.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -15095,10 +15094,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.5
+  m_fontSize: 53.4
   m_fontSizeBase: 52.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -16272,10 +16271,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.5
+  m_fontSize: 53.4
   m_fontSizeBase: 52.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -19874,19 +19873,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   corner1:
-    cornerPanel: {fileID: 1542827495}
-    playerNameText: {fileID: 2052980295}
-    regionText: {fileID: 973448821}
-    eloText: {fileID: 990255583}
-    heartImages:
-    - {fileID: 1723898970}
-    - {fileID: 805383741}
-    - {fileID: 1247891236}
-    - {fileID: 567544518}
-    activeHeartColor: {r: 1, g: 0, b: 0, a: 1}
-    inactiveHeartColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
-    linkedPlayer: {fileID: 0}
-  corner2:
     cornerPanel: {fileID: 1358253556}
     playerNameText: {fileID: 1402521676}
     regionText: {fileID: 689691775}
@@ -19899,7 +19885,7 @@ MonoBehaviour:
     activeHeartColor: {r: 1, g: 0, b: 0, a: 1}
     inactiveHeartColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
     linkedPlayer: {fileID: 0}
-  corner3:
+  corner2:
     cornerPanel: {fileID: 1709492260}
     playerNameText: {fileID: 2142142820}
     regionText: {fileID: 88424651}
@@ -19909,6 +19895,19 @@ MonoBehaviour:
     - {fileID: 664073040}
     - {fileID: 271402899}
     - {fileID: 57905426}
+    activeHeartColor: {r: 1, g: 0, b: 0, a: 1}
+    inactiveHeartColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    linkedPlayer: {fileID: 0}
+  corner3:
+    cornerPanel: {fileID: 1542827495}
+    playerNameText: {fileID: 2052980295}
+    regionText: {fileID: 973448821}
+    eloText: {fileID: 990255583}
+    heartImages:
+    - {fileID: 1723898970}
+    - {fileID: 805383741}
+    - {fileID: 1247891236}
+    - {fileID: 567544518}
     activeHeartColor: {r: 1, g: 0, b: 0, a: 1}
     inactiveHeartColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
     linkedPlayer: {fileID: 0}
@@ -20309,7 +20308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1358253557}
   m_Layer: 0
-  m_Name: anemo
+  m_Name: Anemo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20336,7 +20335,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1400, y: 0}
+  m_AnchoredPosition: {x: 14, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1372502179
@@ -22978,7 +22977,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1542827496}
   m_Layer: 0
-  m_Name: geo
+  m_Name: Geo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22993,7 +22992,7 @@ Transform:
   m_GameObject: {fileID: 1542827495}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 76, y: -898, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -26078,7 +26077,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1709492261}
   m_Layer: 0
-  m_Name: hydro
+  m_Name: Hydro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26105,7 +26104,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1400, y: -909}
+  m_AnchoredPosition: {x: 1400, y: -0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1715086995
@@ -26118,7 +26117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1715086996}
   m_Layer: 0
-  m_Name: pyro
+  m_Name: Pyro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26145,7 +26144,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -909}
+  m_AnchoredPosition: {x: 1498, y: -943}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1716886480

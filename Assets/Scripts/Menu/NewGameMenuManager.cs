@@ -42,7 +42,7 @@ public class NewGameMenuManager : MonoBehaviour
 
     [Header("Profile Selection")]
     public Button clearProfileButton;
-    public GameObject noneProfilePrefab;
+   
 
     // Reference to the AudioManager
     private AudioManager audioManager;
@@ -293,50 +293,7 @@ public class NewGameMenuManager : MonoBehaviour
         }
     }
 
-    private void SetupElementButton(GameObject elementObj, int index)
-    {
-        if (elementObj == null)
-        {
-            Debug.LogError($"Element object at index {index} is null!");
-            return;
-        }
-
-        Transform innerTransform = elementObj.transform.Find("Inner");
-        if (innerTransform == null)
-        {
-            Debug.LogError($"Cannot find 'Inner' transform in {elementObj.name}");
-            return;
-        }
-
-        Transform selectTransform = innerTransform.Find("select");
-        if (selectTransform == null)
-        {
-            Debug.LogError($"Cannot find 'select' transform in {elementObj.name}/Inner");
-            return;
-        }
-
-        Button selectButton = selectTransform.GetComponent<Button>();
-        if (selectButton == null)
-        {
-            Debug.LogError($"No Button component on {elementObj.name}/Inner/select");
-            return;
-        }
-
-        // Remove any existing listeners to avoid duplicates
-        selectButton.onClick.RemoveAllListeners();
-
-        int capturedIndex = index; // Capture the index for the lambda
-        selectButton.onClick.AddListener(() => {
-            // Play button sound
-            if (audioManager != null)
-                audioManager.PlayMenuButton();
-
-            Debug.Log($"Select button clicked for element {capturedIndex}");
-            ShowProfilesForElement(capturedIndex);
-        });
-
-        Debug.Log($"Set up button listener for element {elementObj.name} at index {index}");
-    }
+    
 
     public void SetPlayerCount(int count)
     {
@@ -430,7 +387,7 @@ public class NewGameMenuManager : MonoBehaviour
     {
         Debug.Log("LoadProfiles called");
 
-        // Clear existing profiles
+        
         if (profilesContainer != null)
         {
             foreach (Transform child in profilesContainer)
@@ -444,45 +401,7 @@ public class NewGameMenuManager : MonoBehaviour
             return;
         }
 
-        // First, add the "None" option
-        if (noneProfilePrefab != null)
-        {
-            GameObject noneEntry = Instantiate(noneProfilePrefab, profilesContainer);
-            ProfileEntry entry = noneEntry.GetComponent<ProfileEntry>();
-            if (entry != null)
-            {
-                Profile noneProfile = CreateNoneProfile();
-                entry.Initialize(noneProfile);
-                entry.SetSelectAction(() => SelectProfileForElement(noneProfile));
-            }
-            else
-            {
-                Debug.LogError("None profile prefab does not have a ProfileEntry component!");
-            }
-        }
-        else
-        {
-            // If no special prefab is provided, create a None profile with the regular prefab
-            if (profileEntryPrefab != null)
-            {
-                GameObject noneEntry = Instantiate(profileEntryPrefab, profilesContainer);
-                ProfileEntry entry = noneEntry.GetComponent<ProfileEntry>();
-                if (entry != null)
-                {
-                    Profile noneProfile = CreateNoneProfile();
-                    entry.Initialize(noneProfile);
-                    entry.SetSelectAction(() => SelectProfileForElement(noneProfile));
-                }
-            }
-        }
-
-        // Check if database is initialized
-        if (!databaseInitialized || ProfileManager.Instance == null)
-        {
-            Debug.LogWarning("Database not initialized yet, using test profiles instead");
-            CreateTestProfiles();
-            return;
-        }
+        
 
         try
         {
@@ -490,12 +409,7 @@ public class NewGameMenuManager : MonoBehaviour
             List<Profile> profiles = await ProfileManager.Instance.GetAllProfiles();
             Debug.Log($"Loaded {profiles.Count} profiles from database");
 
-            if (profiles.Count == 0)
-            {
-                // If no profiles in database, use test profiles
-                CreateTestProfiles();
-                return;
-            }
+            
 
             // Create profile entries from database
             CreateProfileEntries(profiles);
@@ -503,38 +417,13 @@ public class NewGameMenuManager : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.LogError($"Failed to load profiles: {e.Message}");
-            // Fall back to test profiles
-            CreateTestProfiles();
+           
         }
     }
 
     // Method to create test profiles for testing
-    private void CreateTestProfiles()
-    {
-        Debug.Log("Creating test profiles for UI testing");
-        List<Profile> testProfiles = new List<Profile>();
-
-        // Create test profiles with different properties
-        Profile profile1 = new Profile();
-        profile1.Id = 1;
-        profile1.Username = "TestUser1";
-        profile1.Elo = 1000;
-        testProfiles.Add(profile1);
-
-        Profile profile2 = new Profile();
-        profile2.Id = 2;
-        profile2.Username = "TestUser2";
-        profile2.Elo = 1200;
-        testProfiles.Add(profile2);
-
-        Profile profile3 = new Profile();
-        profile3.Id = 3;
-        profile3.Username = "TestUser3";
-        profile3.Elo = 1500;
-        testProfiles.Add(profile3);
-
-        CreateProfileEntries(testProfiles);
-    }
+   
+ 
 
     // Method to create UI entries for profiles
     private void CreateProfileEntries(List<Profile> profiles)
@@ -562,6 +451,7 @@ public class NewGameMenuManager : MonoBehaviour
         }
     }
 
+
     // Add this to your SelectProfileForElement method instead of hiding the button
     public void SelectProfileForElement(Profile profile)
     {
@@ -570,16 +460,26 @@ public class NewGameMenuManager : MonoBehaviour
         if (currentEditingElementIndex >= 0 && currentEditingElementIndex < playerElements.Length)
         {
             GameObject elementObj = playerElements[currentEditingElementIndex];
-
-            // Add this debug line to track which element is being selected for
             Debug.Log($"Selecting profile for element index {currentEditingElementIndex}, element: {elementObj.name}");
 
-            bool isNoneProfile = (profile.Id == -1);
+            
 
-            // If selecting a real profile (not None), check player count limit
-            if (!isNoneProfile)
-            {
-                // Count existing active profiles (excluding current element)
+           
+           
+            
+                // Check if this profile is already assigned to another element
+                foreach (var kvp in selectedProfiles)
+                {
+                    if (kvp.Key != elementObj && kvp.Value.Id == profile.Id)
+                    {
+                        Debug.LogWarning($"Profile {profile.Username} is already assigned to {kvp.Key.name}");
+                      
+                        ReturnToPlayerSelection();
+                        return;
+                    }
+                }
+
+                
                 int activeProfileCount = 0;
                 foreach (var element in playerElements)
                 {
@@ -598,12 +498,12 @@ public class NewGameMenuManager : MonoBehaviour
                     ReturnToPlayerSelection();
                     return;
                 }
-            }
+            
 
             try
             {
                 // Update username text
-                TMP_Text usernameText = elementObj.transform.Find("Inner/User").GetComponent<TMP_Text>();
+                TMP_Text usernameText = elementObj.transform.Find("User").GetComponent<TMP_Text>();
                 if (usernameText != null)
                 {
                     usernameText.text = profile.Username;
@@ -611,69 +511,20 @@ public class NewGameMenuManager : MonoBehaviour
                 }
 
                 // Update elo text
-                TMP_Text eloText = elementObj.transform.Find("Inner/elo").GetComponent<TMP_Text>();
+                TMP_Text eloText = elementObj.transform.Find("elo").GetComponent<TMP_Text>();
                 if (eloText != null)
                 {
-                    eloText.text = isNoneProfile ? "" : profile.Elo.ToString();
+                    eloText.text =  "ELO : " + profile.Elo.ToString();
                     Debug.Log($"Updated ELO text to {profile.Elo}");
                 }
 
-                // Store the profile in our dictionary (or remove if it's a None profile)
-                if (isNoneProfile)
-                {
-                    if (selectedProfiles.ContainsKey(elementObj))
-                    {
-                        selectedProfiles.Remove(elementObj);
-                        Debug.Log($"Removed profile for element {elementObj.name}");
-                    }
-
-                    // Show the select button for None profile
-                    Transform innerTransform = elementObj.transform.Find("Inner");
-                    if (innerTransform != null)
-                    {
-                        string[] possibleNames = { "select", "Select", "SELECT" };
-                        foreach (string name in possibleNames)
-                        {
-                            Transform selectTransform = innerTransform.Find(name);
-                            if (selectTransform != null)
-                            {
-                                selectTransform.gameObject.SetActive(true);
-                                Debug.Log($"Showed select button for {elementObj.name}");
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
+               
+               
+                
+                    // We already checked for duplicates above, so we can safely assign here
                     selectedProfiles[elementObj] = profile;
                     Debug.Log($"Stored profile for element {elementObj.name}");
-
-                    // Hide the select button if not a None profile
-                    Transform innerTransform = elementObj.transform.Find("Inner");
-                    if (innerTransform != null)
-                    {
-                        // Try different possible names for the select button
-                        string[] possibleNames = { "select", "Select", "SELECT" };
-                        Transform selectTransform = null;
-
-                        foreach (string name in possibleNames)
-                        {
-                            selectTransform = innerTransform.Find(name);
-                            if (selectTransform != null)
-                            {
-                                selectTransform.gameObject.SetActive(false);
-                                Debug.Log($"Hid select button for {elementObj.name}");
-                                break;
-                            }
-                        }
-
-                        if (selectTransform == null)
-                        {
-                            Debug.LogWarning($"Could not find select button for {elementObj.name}");
-                        }
-                    }
-                }
+                
 
                 // Return to player selection
                 ReturnToPlayerSelection();
@@ -709,46 +560,31 @@ public class NewGameMenuManager : MonoBehaviour
             try
             {
                 // Update username text
-                TMP_Text usernameText = elementObj.transform.Find("Inner/User").GetComponent<TMP_Text>();
+                TMP_Text usernameText = elementObj.transform.Find("User").GetComponent<TMP_Text>();
                 if (usernameText != null)
                 {
-                    usernameText.text = "Select Profile";
+                    usernameText.text = "";
                     Debug.Log("Cleared username text");
                 }
 
                 // Update elo text
-                TMP_Text eloText = elementObj.transform.Find("Inner/elo").GetComponent<TMP_Text>();
+                TMP_Text eloText = elementObj.transform.Find("elo").GetComponent<TMP_Text>();
                 if (eloText != null)
                 {
                     eloText.text = "";
                     Debug.Log("Cleared ELO text");
                 }
 
-                // Show the select button
-                Transform innerTransform = elementObj.transform.Find("Inner");
-                if (innerTransform != null)
-                {
-                    string[] possibleNames = { "select", "Select", "SELECT" };
-                    foreach (string name in possibleNames)
-                    {
-                        Transform selectTransform = innerTransform.Find(name);
-                        if (selectTransform != null)
-                        {
-                            selectTransform.gameObject.SetActive(true);
-                            Debug.Log($"Showed select button for {elementObj.name}");
-                            break;
-                        }
-                    }
-                }
+               
 
-                // Remove from selected profiles dictionary
+               
                 if (selectedProfiles.ContainsKey(elementObj))
                 {
                     selectedProfiles.Remove(elementObj);
                     Debug.Log($"Removed profile for element {elementObj.name}");
                 }
 
-                // Return to player selection
+              
                 ReturnToPlayerSelection();
             }
             catch (System.Exception e)
@@ -826,7 +662,7 @@ public class NewGameMenuManager : MonoBehaviour
 
                 // Debug which element we're processing
                 Debug.Log($"Processing element: {element.name}, playerName: {playerName}");
-
+               
                 // Check if this element has a real profile assigned (not None)
                 if (selectedProfiles.ContainsKey(element) && selectedProfiles[element].Id != -1)
                 {
@@ -869,97 +705,5 @@ public class NewGameMenuManager : MonoBehaviour
             // You could add a UI element to display this message
         }
     }
-
-    // Manual testing methods
-    private void UpdateElementVisibility(GameObject elementObj, bool profileSelected)
-    {
-        if (elementObj == null) return;
-
-        Debug.Log($"Updating visibility for {elementObj.name}, profileSelected: {profileSelected}");
-
-        // Try different naming conventions for the select button
-        Transform selectTransform = null;
-        Transform innerTransform = elementObj.transform.Find("Inner");
-
-        if (innerTransform != null)
-        {
-            // Try different variations of the name
-            string[] possibleNames = { "select", "Select", "SELECT" };
-
-            foreach (string name in possibleNames)
-            {
-                selectTransform = innerTransform.Find(name);
-                if (selectTransform != null)
-                {
-                    Debug.Log($"Found select button as '{name}' in {elementObj.name}");
-                    break;
-                }
-            }
-
-            if (selectTransform != null)
-            {
-                selectTransform.gameObject.SetActive(!profileSelected);
-                Debug.Log($"Set {elementObj.name} select button active: {!profileSelected}");
-            }
-            else
-            {
-                // If we can't find it by name, try looking for a Button component
-                Button[] buttons = innerTransform.GetComponentsInChildren<Button>(true);
-                foreach (Button button in buttons)
-                {
-                    if (button.name.ToLower().Contains("select"))
-                    {
-                        button.gameObject.SetActive(!profileSelected);
-                        Debug.Log($"Found and set {button.name} button in {elementObj.name} active: {!profileSelected}");
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    public void TestSwitchToProfiles()
-    {
-        // Play button sound for testing
-        if (audioManager != null)
-            audioManager.PlayMenuButton();
-
-        Debug.Log("Manual test: switching to profiles panel");
-        if (playersPanel != null && profilesPanel != null)
-        {
-            playersPanel.SetActive(false);
-            profilesPanel.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("Cannot perform test because panels are not assigned");
-        }
-    }
-
-    private Profile CreateNoneProfile()
-    {
-        Profile noneProfile = new Profile();
-        noneProfile.Id = -1; // Special ID for None profile
-        noneProfile.Username = "None";
-        noneProfile.Elo = 0;
-        return noneProfile;
-    }
-
-    public void TestSwitchToPlayers()
-    {
-        // Play button sound for testing
-        if (audioManager != null)
-            audioManager.PlayMenuButton();
-
-        Debug.Log("Manual test: switching to players panel");
-        if (playersPanel != null && profilesPanel != null)
-        {
-            playersPanel.SetActive(true);
-            profilesPanel.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("Cannot perform test because panels are not assigned");
-        }
-    }
+ 
 }

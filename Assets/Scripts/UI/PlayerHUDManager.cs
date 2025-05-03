@@ -21,13 +21,13 @@ public class PlayerHUDManager : MonoBehaviour
     }
 
     [Header("Corner References")]
-    [Tooltip("Top-left corner (usually Pyro)")]
+    [Tooltip("Top-left corner (Anemo)")]
     public PlayerCorner corner1;
-    [Tooltip("Top-right corner (usually Hydro)")]
+    [Tooltip("Top-right corner (Hydro)")]
     public PlayerCorner corner2;
-    [Tooltip("Bottom-left corner (usually Anemo)")]
+    [Tooltip("Bottom-left corner (Geo)")]
     public PlayerCorner corner3;
-    [Tooltip("Bottom-right corner (usually Geo)")]
+    [Tooltip("Bottom-right corner (Pyro)")]
     public PlayerCorner corner4;
 
     [Header("Animation Settings")]
@@ -107,13 +107,13 @@ public class PlayerHUDManager : MonoBehaviour
             return;
         }
 
-        // Map player types to corners - fixed positions matching menu selection
+
         Dictionary<string, PlayerCorner> typeToCorner = new Dictionary<string, PlayerCorner>
         {
-            { "PyroPlayer", corner1 },  // Top Left
-            { "HydroPlayer", corner2 }, // Top Right
-            { "AnemoPlayer", corner3 }, // Bottom Left
-            { "GeoPlayer", corner4 }    // Bottom Right
+            { "AnemoPlayer", corner1 },  // Top Left
+            { "HydroPlayer", corner2 },  // Top Right
+            { "GeoPlayer", corner3 },    // Bottom Left
+            { "PyroPlayer", corner4 }    // Bottom Right
         };
 
         // Check which corners should be active based on active players
@@ -269,8 +269,17 @@ public class PlayerHUDManager : MonoBehaviour
             if (corner.cornerPanel != null)
             {
                 bool isActive = (player == gameManager.selectedPlayer);
-                // You could add visual indication that this is the active player
-                // For example, adding a glow effect or changing the panel color
+                // Apply visual highlight to the active player's corner
+                if (isActive)
+                {
+                    // Scale up slightly
+                    corner.cornerPanel.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+                }
+                else
+                {
+                    // Reset scale
+                    corner.cornerPanel.transform.localScale = Vector3.one;
+                }
             }
         }
     }
@@ -289,9 +298,14 @@ public class PlayerHUDManager : MonoBehaviour
             }
         }
         
+        // Handle 4-player mode where we show one less heart
         if (gameManager.currentGameMode == GameManager.GameMode.FourPlayers)
         {
-            corner.heartImages[corner.heartImages.Length - 1].color = new Color(0,0,0,0);
+            // Make the last heart invisible in 4-player mode (since max lives is 3)
+            if (corner.heartImages.Length > 3 && corner.heartImages[3] != null)
+            {
+                corner.heartImages[3].color = new Color(0, 0, 0, 0);
+            }
         }
     }
 

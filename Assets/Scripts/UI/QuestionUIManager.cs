@@ -419,7 +419,6 @@ public class QuestionUIManager : MonoBehaviour
         lastPlayerEloChange = 0;
         lastQuestionEloChange = 0;
 
-        // Check for second chance with PyroPlayer
         if (!isCorrect && currentPlayer is PyroPlayer pyroPlayer &&
             pyroPlayer.useSecondChance && !isSecondChance)
         {
@@ -432,7 +431,12 @@ public class QuestionUIManager : MonoBehaviour
                 resultPanel.SetActive(true);
                 resultText.text = "This sounds wrong!";
                 rewardText.text = " Second chance!";
-                Invoke("RetrySameQuestion", 1.5f);
+                
+                // Hide the exit button during second chance message
+                exitButton.gameObject.SetActive(false);
+                
+                // Automatically retry after a delay instead of requiring button press
+                Invoke("RetrySameQuestion", 2.5f);
                 return;
             }
         }
@@ -767,6 +771,10 @@ private string GetCorrectAnswerText(Question question, bool isCorrect)
     private void RetrySameQuestion()
     {
         resultPanel.SetActive(false);
+        
+        // Make sure exit button is active for future panels
+        exitButton.gameObject.SetActive(true);
+        
         if (currentQuestion is OpenQuestion)
             ShowOpenQuestion((OpenQuestion)currentQuestion);
         else if (currentQuestion is QCMQuestion)

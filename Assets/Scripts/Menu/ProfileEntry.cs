@@ -25,10 +25,10 @@ public class ProfileEntry : MonoBehaviour
         this.profileData = profile;
 
         if (usernameText != null)
-            usernameText.text = profile.Username;
+            usernameText.text ="name : " + profile.Username;
 
         if (eloText != null)
-            eloText.text = profile.Elo.ToString();
+            eloText.text = "ELO : " + profile.Elo.ToString();
 
         if (selectButton != null)
             selectButton.onClick.AddListener(() => {
