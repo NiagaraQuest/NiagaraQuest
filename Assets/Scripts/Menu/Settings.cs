@@ -223,6 +223,12 @@ public class Settings : MonoBehaviour
             {
                 await SaveProfile(profileToUpdate, newUsername);
             });
+
+            // Set the delete action
+            entry.SetDeleteAction(async (profileToDelete) =>
+            {
+                await DeleteProfile(profileToDelete);
+            });
         }
         else if (entry.GetType().GetMethod("SetSavAction") != null)
         {
@@ -239,16 +245,7 @@ public class Settings : MonoBehaviour
         }
     }
 
-    // Helper methods to wrap async operations for non-async delegates
-    private async void SaveProfileWrapper(Profile profile, string newUsername)
-    {
-        await SaveProfile(profile, newUsername);
-    }
-
-    private async void DeleteProfileWrapper(Profile profile)
-    {
-        await DeleteProfile(profile);
-    }
+  
 
     private async Task SaveProfile(Profile profile, string newUsername)
     {
@@ -295,7 +292,7 @@ public class Settings : MonoBehaviour
         try
         {
             // Delete the profile from the database
-            await DatabaseManager.Instance.Delete<Profile>(profile.Id);
+            await ProfileManager.Instance.DeleteProfile(profile.Id);
 
             // Reload the profiles
             await LoadProfiles();

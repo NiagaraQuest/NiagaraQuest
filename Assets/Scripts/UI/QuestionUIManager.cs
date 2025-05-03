@@ -36,6 +36,15 @@ public class QuestionUIManager : MonoBehaviour
     public float eloDisplayTime = 3f;
     public TextMeshProUGUI eloChangeText;
 
+    [Header("Debug Information")]
+    [SerializeField] private bool _debug_questionShown = false;
+    [SerializeField] private string _debug_questionType = "None";
+    [SerializeField] private string _debug_questionDifficulty = "None";
+    [SerializeField] private bool _debug_isFinalTile = false;
+    [SerializeField] private bool _debug_isEffectMovement = false;
+    [SerializeField] private int _debug_playerPosition = -1;
+    [SerializeField] private string _debug_playerName = "None";
+
     private QuestionTile currentTile;
     private Question currentQuestion;
     public bool isProcessingQuestion = false;
@@ -158,6 +167,19 @@ public class QuestionUIManager : MonoBehaviour
 
     public void ShowUI(Question question, QuestionTile tile)
     {
+        Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
+        if (currentPlayer != null)
+        {
+            _debug_playerName = currentPlayer.gameObject.name;
+            _debug_playerPosition = currentPlayer.currentWaypointIndex;
+            _debug_isFinalTile = (currentPlayer.currentWaypointIndex >= 50);
+        }
+        _debug_isEffectMovement = GameManager.Instance.isEffectMovement;
+
+        // Critical debug log to track when UI is shown for questions
+        Debug.Log($"🔧 DEBUG ShowUI: Player: {_debug_playerName}, Position: {_debug_playerPosition}, " +
+                  $"IsFinalTile: {_debug_isFinalTile}, IsEffectMovement: {_debug_isEffectMovement}, " +
+                  $"QuestionType: {question.GetType().Name}, Difficulty: {question.Difficulty}");
         if (isProcessingQuestion)
         {
             Debug.LogWarning("⚠️ Already processing a question, ignoring new request");
@@ -167,6 +189,10 @@ public class QuestionUIManager : MonoBehaviour
         isProcessingQuestion = true;
         currentTile = tile;
         currentQuestion = question;
+
+        _debug_questionShown = true;
+        _debug_questionType = question.GetType().Name;
+        _debug_questionDifficulty = question.Difficulty;
         
         // Reset protection used flag
         protectionUsed = false;
@@ -383,12 +409,16 @@ public class QuestionUIManager : MonoBehaviour
     private async void ProcessPlayerAnswer(bool isCorrect)
     {
         Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
+        Debug.Log($"🔧 DEBUG ProcessPlayerAnswer: Player: {(currentPlayer != null ? currentPlayer.gameObject.name : "null")}, " +
+                  $"Position: {(currentPlayer != null ? currentPlayer.currentWaypointIndex : -1)}, " +
+                  $"IsFinalTile: {_debug_isFinalTile}, IsCorrect: {isCorrect}, " +
+                  $"QuestionType: {_debug_questionType}, Difficulty: {_debug_questionDifficulty}");
+
 
         // Reset ELO change values
         lastPlayerEloChange = 0;
         lastQuestionEloChange = 0;
 
-        // Check for second chance with PyroPlayer
         if (!isCorrect && currentPlayer is PyroPlayer pyroPlayer &&
             pyroPlayer.useSecondChance && !isSecondChance)
         {
@@ -401,7 +431,12 @@ public class QuestionUIManager : MonoBehaviour
                 resultPanel.SetActive(true);
                 resultText.text = "This sounds wrong!";
                 rewardText.text = " Second chance!";
-                Invoke("RetrySameQuestion", 1.5f);
+                
+                // Hide the exit button during second chance message
+                exitButton.gameObject.SetActive(false);
+                
+                // Automatically retry after a delay instead of requiring button press
+                Invoke("RetrySameQuestion", 2.5f);
                 return;
             }
         }
@@ -452,14 +487,49 @@ public class QuestionUIManager : MonoBehaviour
 
         // S'assurer que les boutons Skip sont cachés quand on affiche le résultat
         SetAllSkipButtonsActive(false);
+        bool isFinalTile = (currentPlayer != null && currentPlayer.currentWaypointIndex >= 50);
+
+        // DEBUGGING: Track final tile status
+        _debug_isFinalTile = isFinalTile;
+
+        // DEBUGGING: Log the result display
+        Debug.Log($"🔧 DEBUG ShowResult: Player: {(currentPlayer != null ? currentPlayer.gameObject.name : "null")}, " +
+                $"Position: {(currentPlayer != null ? currentPlayer.currentWaypointIndex : -1)}, " +
+                $"IsFinalTile: {isFinalTile}, IsCorrect: {isCorrect}, " +
+                $"QuestionType: {_debug_questionType}, Difficulty: {_debug_questionDifficulty}");
+
+        // CAS SPÉCIAL: Réponse correcte sur case finale → victoire immédiate !
+        if (isCorrect && isFinalTile)
+        {
+            Debug.Log("🏆 Réponse correcte sur case finale! Victoire immédiate!");
+
+            // Masquer tous les panneaux
+            isProcessingQuestion = false;
+            HideAllPanels();
+
+            // Appeler GameManager.ApplyQuestionResult pour déclencher la victoire
+            // C'est là que l'écran de victoire sera affiché via gameEndUIManager
+            GameManager.Instance.ApplyQuestionResult(currentPlayer, true, currentQuestion.Difficulty);
+
+            return; // Sortir de la méthode pour éviter d'afficher le panneau de récompense
+        }
 
         // Si réponse correcte OU 2ème échec
         resultPanel.SetActive(true);
         string effectDescription = GetEffectDescription(currentQuestion.Difficulty, isCorrect);
         
-
-        // Set the result text to show only if answer is correct or wrong
-        resultText.text = isCorrect ? "You got it right !!" : "This sounds wrong!";
+        // Get the correct answer text, with appropriate color based on result
+        string correctAnswerText = GetCorrectAnswerText(currentQuestion, isCorrect);
+        
+        // Set the result text with the answer included
+        if (isCorrect)
+        {
+            resultText.text = $"You got it right!!\n{correctAnswerText}";
+        }
+        else
+        {
+            resultText.text = $"This sounds wrong!\n{correctAnswerText}";
+        }
 
         // Check if protection should be used (only for incorrect answers)
         if (!isCorrect)
@@ -469,14 +539,12 @@ public class QuestionUIManager : MonoBehaviour
 
             if (protectionUsed)
             {
-                // Player was protected, show different result text
-                resultText.text = "This sounds wrong!";
+                // Player was protected, show different reward text
                 rewardText.text = "Protection activated! No penalty applied.";
             }
             else
             {
-                // Normal wrong answer handling - show the effect that will be applied
-                // Generate reward/penalty text
+                // Normal wrong answer handling - show the penalty that will be applied
                 string rewardBaseText = $"<b>Penalty:</b> {effectDescription}";
 
                 // Add ELO information if available and enabled
@@ -499,7 +567,7 @@ public class QuestionUIManager : MonoBehaviour
         }
         else
         {
-            // For correct answers, just show the reward description
+            // For correct answers on non-final tiles, just show the reward description
             string rewardBaseText = $"<b>Reward:</b> {effectDescription}";
 
             // Add ELO information if available and enabled
@@ -522,7 +590,7 @@ public class QuestionUIManager : MonoBehaviour
 
         isSecondChance = false;
 
-        if (currentPlayer != null)
+        if (currentPlayer != null && !isFinalTile)
         {
             currentPlayer.AnswerQuestion(isCorrect); // Appeler la méthode AnswerQuestion du joueur
         }
@@ -550,6 +618,58 @@ public class QuestionUIManager : MonoBehaviour
 
         // Focus on the exit button so Enter key works right away
         StartCoroutine(FocusExitButton());
+    }
+
+// Helper method to extract the correct answer based on question type
+private string GetCorrectAnswerText(Question question, bool isCorrect)
+{
+    string correctAnswer = "";
+    
+    if (question is OpenQuestion openQuestion)
+    {
+        correctAnswer = openQuestion.Answer;
+    }
+    else if (question is QCMQuestion qcmQuestion)
+    {
+        int correctIndex = qcmQuestion.CorrectChoice;
+        if (correctIndex >= 0 && correctIndex < qcmQuestion.Choices.Length)
+        {
+            correctAnswer = qcmQuestion.Choices[correctIndex];
+        }
+    }
+    else if (question is TrueFalseQuestion tfQuestion)
+    {
+        correctAnswer = tfQuestion.IsTrue ? "True" : "False";
+    }
+    
+    // Use green color for correct answers, red for incorrect
+    string colorCode = isCorrect ? "#4CAF50" : "#F44336";
+    return $"<color={colorCode}>Answer: {correctAnswer}</color>";
+}
+
+    // Helper method to extract the correct answer based on question type
+    private string GetCorrectAnswerText(Question question)
+    {
+        string correctAnswer = "";
+        
+        if (question is OpenQuestion openQuestion)
+        {
+            correctAnswer = openQuestion.Answer;
+        }
+        else if (question is QCMQuestion qcmQuestion)
+        {
+            int correctIndex = qcmQuestion.CorrectChoice;
+            if (correctIndex >= 0 && correctIndex < qcmQuestion.Choices.Length)
+            {
+                correctAnswer = qcmQuestion.Choices[correctIndex];
+            }
+        }
+        else if (question is TrueFalseQuestion tfQuestion)
+        {
+            correctAnswer = tfQuestion.IsTrue ? "True" : "False";
+        }
+        
+        return $"<color=#F44336>Answer: {correctAnswer}</color>";
     }
 
     private IEnumerator HideEloTextAfterDelay(float delay)
@@ -609,7 +729,6 @@ public class QuestionUIManager : MonoBehaviour
     {
         HideAllPanels();
 
-        // Now apply the game effects here, AFTER the panel is closed
         Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
         
         if (currentPlayer != null && !isRetrying)
@@ -652,6 +771,10 @@ public class QuestionUIManager : MonoBehaviour
     private void RetrySameQuestion()
     {
         resultPanel.SetActive(false);
+        
+        // Make sure exit button is active for future panels
+        exitButton.gameObject.SetActive(true);
+        
         if (currentQuestion is OpenQuestion)
             ShowOpenQuestion((OpenQuestion)currentQuestion);
         else if (currentQuestion is QCMQuestion)

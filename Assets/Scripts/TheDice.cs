@@ -16,6 +16,13 @@ public class theDice : MonoBehaviour
 
     // Propriété publique permettant de vérifier si le dé a fini de rouler
     public bool HasStopped => hasStopped;
+    
+    // Variables for landing sound
+    private bool isCurrentlyRolling = false; // Is this a current roll in progress
+    private bool hasPlayedLandingSound = false; // Has landing sound been played for this roll
+    private float landingThreshold = 0.8f; // Velocity threshold to detect a significant landing
+    private float lastVelocityMagnitude; // Store previous velocity to detect sudden changes
+    private float rollingDelay = 0.3f; // Short delay after roll starts before we detect landing
 
     // Méthode appelée au démarrage pour initialiser les variables
     private void Start()
@@ -28,12 +35,48 @@ public class theDice : MonoBehaviour
         Debug.Log($"Initial dice position saved: {initialPosition}");
     }
 
+    private void FixedUpdate()
+    {
+        // Only check for landing if we're in a rolling state and haven't played the sound yet
+        if (isCurrentlyRolling && !hasPlayedLandingSound && Time.timeSinceLevelLoad > rollingDelay)
+        {
+            DetectLanding();
+        }
+        
+        // Store current velocity for next frame comparison
+        lastVelocityMagnitude = rb.linearVelocity.magnitude;
+    }
+
+    // Improved landing detection that focuses on the impact moment
+    private void DetectLanding()
+    {
+        // Detect a significant decrease in velocity (impact with surface)
+        float velocityDelta = lastVelocityMagnitude - rb.linearVelocity.magnitude;
+        
+        // If we detect a sudden drop in velocity after being in motion, that's a landing
+        if (velocityDelta > landingThreshold && lastVelocityMagnitude > 1.0f)
+        {
+            if (DiceSound.Instance != null)
+            {
+                DiceSound.Instance.PlayDiceLanding();
+                hasPlayedLandingSound = true;
+                Debug.Log($"Die landed with impact! Delta: {velocityDelta}, Playing sound.");
+            }
+        }
+    }
+
     // Méthode pour lancer le dé
     public void RollTheDice()
     {
         // Réinitialisation de l'état du dé
         hasStopped = false;
         rollvalue = 0; // Réinitialisation de la valeur
+
+        // Reset landing sound variables
+        isCurrentlyRolling = true;
+        hasPlayedLandingSound = false;
+        lastVelocityMagnitude = 0f;
+        rollingDelay = Time.timeSinceLevelLoad + 0.3f; // Add a small delay
 
         // Appliquer une force vers le haut pour lancer le dé
         rb.AddForce(Vector3.up * throwStrength, ForceMode.Impulse);
@@ -63,6 +106,7 @@ public class theDice : MonoBehaviour
 
         // Indiquer que le dé s'est arrêté
         hasStopped = true;
+        isCurrentlyRolling = false;
 
         // Vérifier la valeur du dé lorsqu'il s'est arrêté
         CheckRoll();

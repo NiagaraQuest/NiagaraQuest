@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
@@ -10,26 +11,32 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
 
-    
-
     [Header("Audio Clips - Assign in Inspector")]
     [SerializeField] private AudioClip menuBackgroundSound;
     [SerializeField] private AudioClip rightAnswerSound;
     [SerializeField] private AudioClip wrongAnswerSound;
     [SerializeField] private AudioClip cardTileSound;
-    [SerializeField] private AudioClip movementSound;
-    [SerializeField] private AudioClip diceRollingSound;
     [SerializeField] private AudioClip winGameSound;
     [SerializeField] private AudioClip gameplayBackgroundSound;
+    [SerializeField] private AudioClip gameplayIntenseBackgroundSound; // New intense music for low lives/time running out
     [SerializeField] private AudioClip menuButtonSound;
     [SerializeField] private AudioClip bonusCardSound;
     [SerializeField] private AudioClip intersectionTileSound;
 
     [Header("Volume Settings")]
     [Range(0f, 1f)]
-    [SerializeField] private float musicVolume = 0.1f;
+    [SerializeField] public float musicVolume = 0.5f;
     [Range(0f, 1f)]
-    [SerializeField] private float sfxVolume = 0.5f;
+    [SerializeField] public float sfxVolume = 0.7f;
+
+    [Header("Gameplay Music Settings")]
+    [SerializeField] private float musicChangeTimeThreshold = 300f; // 5 minutes in seconds
+    [SerializeField] private int lowLifeThreshold = 1; // When a player has this many lives or fewer, change music
+
+    private float gameplayStartTime;
+    private bool isIntenseMusicPlaying = false;
+    private GameManager gameManager;
+    private bool isGameScene = false;
 
     private void Awake()
     {
@@ -46,7 +53,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-        private void OnEnable()
+    private void OnEnable()
     {
         // Register for scene change events
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -54,28 +61,35 @@ public class AudioManager : MonoBehaviour
     
     private void OnDisable()
     {
-
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-        private void PlayMusicForCurrentScene()
+    private void PlayMusicForCurrentScene()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
         
         // Check which scene is active
         if (currentSceneName == "MenuScene")
         {
+            isGameScene = false;
             TransitionToMenuMusic();
         }
         else // Assume it's the game scene
         {
+            isGameScene = true;
+            gameplayStartTime = Time.time;
             TransitionToGameplayMusic();
+            
+            // Try to find GameManager - it might not be initialized yet, so we'll also check in Update
+            if (GameManager.Instance != null)
+            {
+                gameManager = GameManager.Instance;
+            }
         }
     }
     
     private void Start()
     {
-
         PlayMusicForCurrentScene();
     }
 
@@ -84,6 +98,58 @@ public class AudioManager : MonoBehaviour
         PlayMusicForCurrentScene();
     }
     
+    private void Update()
+    {
+        // Only check for music change conditions in game scenes
+        if (!isGameScene) return;
+        
+        // If we don't have GameManager yet, try to find it
+        if (gameManager == null && GameManager.Instance != null)
+        {
+            gameManager = GameManager.Instance;
+        }
+        
+        // Skip if GameManager is still not available
+        if (gameManager == null) return;
+        
+        if (!isIntenseMusicPlaying)
+        {
+            bool shouldPlayIntense = false;
+            
+            // Check time condition
+            float timeElapsed = Time.time - gameplayStartTime;
+            if (timeElapsed >= musicChangeTimeThreshold)
+            {
+                Debug.Log($"Time threshold reached: {timeElapsed:F1} seconds. Switching to intense music.");
+                shouldPlayIntense = true;
+            }
+            
+            // Check player life condition
+            if (!shouldPlayIntense && gameManager.players != null)
+            {
+                foreach (GameObject playerObj in gameManager.players)
+                {
+                    if (playerObj != null)
+                    {
+                        Player player = playerObj.GetComponent<Player>();
+                        if (player != null && player.lives <= lowLifeThreshold)
+                        {
+                            Debug.Log($"Player {player.gameObject.name} has low life ({player.lives}). Switching to intense music.");
+                            shouldPlayIntense = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // Change music if needed
+            if (shouldPlayIntense)
+            {
+                TransitionToIntenseGameplayMusic();
+                isIntenseMusicPlaying = true;
+            }
+        }
+    }
 
     private float transitionDuration = 1.0f; // Adjust this for faster/slower transition
     
@@ -95,11 +161,32 @@ public class AudioManager : MonoBehaviour
     public void TransitionToGameplayMusic()
     {
         StartCoroutine(CrossFadeMusic(gameplayBackgroundSound));
+        isIntenseMusicPlaying = false;
+    }
+
+    public void TransitionToIntenseGameplayMusic()
+    {
+        if (gameplayIntenseBackgroundSound != null)
+        {
+            StartCoroutine(CrossFadeMusic(gameplayIntenseBackgroundSound));
+            isIntenseMusicPlaying = true;
+        }
+        else
+        {
+            Debug.LogWarning("No intense gameplay music assigned!");
+        }
     }
     
     // Coroutine for smooth music transition
     private System.Collections.IEnumerator CrossFadeMusic(AudioClip newClip)
     {
+        // Skip if the clip is null
+        if (newClip == null)
+        {
+            Debug.LogWarning("Tried to transition to a null audio clip");
+            yield break;
+        }
+        
         // Store the original volume
         float originalVolume = musicSource.volume;
         
@@ -155,6 +242,23 @@ public class AudioManager : MonoBehaviour
         }
     }
     
+    // Manually force switch to intense gameplay music
+    public void SwitchToIntenseMusic()
+    {
+        TransitionToIntenseGameplayMusic();
+    }
+    
+    // Reset the game timer - call this if game restarts
+    public void ResetGameTimer()
+    {
+        gameplayStartTime = Time.time;
+        isIntenseMusicPlaying = false;
+        if (isGameScene)
+        {
+            TransitionToGameplayMusic(); // Switch back to normal gameplay music
+        }
+    }
+    
     // Add these getter methods for UI
     public float GetMusicVolume()
     {
@@ -165,8 +269,6 @@ public class AudioManager : MonoBehaviour
     {
         return sfxVolume;
     }
-
-
 
     private void EnsureSingleAudioListener()
     {
@@ -218,6 +320,17 @@ public class AudioManager : MonoBehaviour
         {
             musicSource.clip = gameplayBackgroundSound;
             musicSource.Play();
+            isIntenseMusicPlaying = false;
+        }
+    }
+
+    public void PlayIntenseGameplayBackground()
+    {
+        if (gameplayIntenseBackgroundSound != null)
+        {
+            musicSource.clip = gameplayIntenseBackgroundSound;
+            musicSource.Play();
+            isIntenseMusicPlaying = true;
         }
     }
 
@@ -263,22 +376,12 @@ public class AudioManager : MonoBehaviour
         PlaySFX(cardTileSound);
     }
 
-    public void PlayMovement()
-    {
-        PlaySFX(movementSound);
-    }
-
-    public void PlayDiceRolling()
-    {
-        PlaySFX(diceRollingSound);
-    }
 
     public void PlayWinGame()
     {
         PlaySFX(winGameSound);
     }
     
-
     public void PlayMenuButton()
     {
         PlaySFX(menuButtonSound);
@@ -294,7 +397,6 @@ public class AudioManager : MonoBehaviour
         PlaySFX(intersectionTileSound);
     }
     
-
     private void PlaySFX(AudioClip clip)
     {
         if (clip != null)
