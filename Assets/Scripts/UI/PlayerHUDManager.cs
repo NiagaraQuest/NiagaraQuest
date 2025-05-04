@@ -252,8 +252,11 @@ public class PlayerHUDManager : MonoBehaviour
         // Update hearts based on current lives
         UpdateHearts(corner, playerScript.lives);
 
+        
     }
     
+    // Highlight the currently active player
+   
 
     // Update heart images based on current lives
     private void UpdateHearts(PlayerCorner corner, int currentLives)
