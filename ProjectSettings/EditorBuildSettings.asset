@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene.unity
     guid: 6668595cb98860143b6fcdac6919cbd3
   - enabled: 1
-    path: Assets/Scenes/Menus.unity
+    path: Assets/Scenes/MenuScene.unity
     guid: d79b20929813b9c49af5fd3150187bf7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
