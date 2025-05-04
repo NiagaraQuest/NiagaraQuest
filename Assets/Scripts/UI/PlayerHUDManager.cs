@@ -252,37 +252,8 @@ public class PlayerHUDManager : MonoBehaviour
         // Update hearts based on current lives
         UpdateHearts(corner, playerScript.lives);
 
-        // Highlight the current active player
-        HighlightActivePlayer();
     }
     
-    // Highlight the currently active player
-    private void HighlightActivePlayer()
-    {
-        if (gameManager.selectedPlayer == null) return;
-        
-        foreach (var entry in playerCornerMap)
-        {
-            GameObject player = entry.Key;
-            PlayerCorner corner = entry.Value;
-            
-            if (corner.cornerPanel != null)
-            {
-                bool isActive = (player == gameManager.selectedPlayer);
-                // Apply visual highlight to the active player's corner
-                if (isActive)
-                {
-                    // Scale up slightly
-                    corner.cornerPanel.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
-                }
-                else
-                {
-                    // Reset scale
-                    corner.cornerPanel.transform.localScale = Vector3.one;
-                }
-            }
-        }
-    }
 
     // Update heart images based on current lives
     private void UpdateHearts(PlayerCorner corner, int currentLives)
