@@ -2241,7 +2241,7 @@ GameObject:
   - component: {fileID: 100198470}
   - component: {fileID: 100198473}
   - component: {fileID: 100198472}
-  - component: {fileID: 100198471}
+  - component: {fileID: 100198474}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -2270,30 +2270,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1440, y: 960}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &100198471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100198469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbe98bed6e255744f8d215f842fedf6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSlider: {fileID: 2106112762}
-  sfxSlider: {fileID: 886813796}
-  musicPercentageText: {fileID: 1334040414}
-  sfxPercentageText: {fileID: 237800149}
-  profileContainer: {fileID: 0}
-  profileEntryPrefab: {fileID: 6404145805917762302, guid: fb82b7f61c3188648aa5637d77dcd2cf, type: 3}
-  settingsPanel: {fileID: 185884894}
-  editPanel: {fileID: 0}
-  editProfilesButton: {fileID: 0}
-  clearCacheButton: {fileID: 0}
-  closeButton: {fileID: 957231733}
-  returnToSettingsButton: {fileID: 0}
 --- !u!114 &100198472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2332,6 +2308,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100198469}
   m_CullTransparentMesh: 1
+--- !u!114 &100198474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100198469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bcda161ed798de43b7db175c0661512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSlider: {fileID: 2106112762}
+  sfxSlider: {fileID: 886813796}
+  musicPercentageText: {fileID: 1334040414}
+  sfxPercentageText: {fileID: 237800149}
+  settingsPanel: {fileID: 185884894}
+  closeButton: {fileID: 957231733}
 --- !u!1 &103475806
 GameObject:
   m_ObjectHideFlags: 0
@@ -6630,7 +6624,7 @@ GameObject:
   - component: {fileID: 359994337}
   - component: {fileID: 359994336}
   m_Layer: 0
-  m_Name: Music
+  m_Name: SoundFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21157,7 +21151,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ea8be0784d7476c40842c1862ce486ba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 30f524489f3715a448164a694c941929, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21623,7 +21617,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 31.17}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1387116344
