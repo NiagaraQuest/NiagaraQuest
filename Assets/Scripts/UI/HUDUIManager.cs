@@ -22,6 +22,11 @@ public class HUDUIManager : MonoBehaviour
     [Header("UI Scripts")]
     public CameraUIManager cameraUIManager;
     private bool isPaused = false;
+    
+    // Store the player's movement state before pausing
+    private bool wasPlayerMoving = false;
+    // Flag to track if dice were rolling when paused
+    private bool wereDiceRolling = false;
 
     private void Start()
     {
@@ -41,27 +46,45 @@ public class HUDUIManager : MonoBehaviour
     {
         // Pause button
         if (pauseButton != null)
-            pauseButton.onClick.AddListener(TogglePause);
+            pauseButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                TogglePause();
+            });
 
         // Resume button
         if (resumeButton != null)
-            resumeButton.onClick.AddListener(ResumeGame);
+            resumeButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                ResumeGame();
+            });
             
         // Restart button
         if (restartButton != null)
-            restartButton.onClick.AddListener(RestartGame);
+            restartButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                RestartGame();
+            });
 
         // Settings button
         if (settingsButton != null)
-            settingsButton.onClick.AddListener(OpenSettings);
+            settingsButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                OpenSettings();
+            });
 
         // Exit button
         if (exitButton != null)
-            exitButton.onClick.AddListener(ExitToMenu);
+            exitButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                ExitToMenu();
+            });
 
         // Close settings button
         if (closeSettingsButton != null)
-            closeSettingsButton.onClick.AddListener(CloseSettings);
+            closeSettingsButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                CloseSettings();
+            });
     }
 
     // Toggle pause state when the pause button is clicked
@@ -88,7 +111,16 @@ public class HUDUIManager : MonoBehaviour
         if (pausePanel != null)
             pausePanel.SetActive(true);
         
-        // Set time scale to 0 to pause game mechanics
+        // Store dice state before pausing
+        StoreDiceState();
+        
+        // Pause player movement
+        PausePlayerMovement();
+        
+        // Pause dice sounds
+        PauseDiceSounds();
+        
+        // Set time scale to 0 to pause game mechanics (do this last)
         Time.timeScale = 0f;
         
         // Disable dice roll button if it exists
@@ -101,7 +133,6 @@ public class HUDUIManager : MonoBehaviour
     public void ResumeGame()
     {
         isPaused = false;
-        CameraManager.Instance.EnableViewToggle();
         
         // Hide the pause panel
         if (pausePanel != null)
@@ -111,13 +142,113 @@ public class HUDUIManager : MonoBehaviour
         if (settingsPanel != null)
             settingsPanel.SetActive(false);
         
-        // Restore normal time scale
+        // Restore normal time scale first so any coroutines can continue
         Time.timeScale = 1f;
+        
+        CameraManager.Instance.EnableViewToggle();
+        
+        // Resume player movement if it was moving before
+        ResumePlayerMovement();
+        
+        // Resume dice sounds if they were rolling before
+        ResumeDiceSounds();
         
         // Re-enable dice roll button if it's the current player's turn
         EnableDiceRollButtonIfNeeded();
         
         Debug.Log("▶️ Game resumed");
+    }
+
+    // Store the dice state before pausing
+    private void StoreDiceState()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.diceManager != null)
+        {
+            // Check if dice are currently rolling using the DiceHaveFinishedRolling property
+            wereDiceRolling = !GameManager.Instance.diceManager.DiceHaveFinishedRolling;
+            Debug.Log($"Stored dice state: wereDiceRolling = {wereDiceRolling}");
+        }
+    }
+
+    // Pause player movement
+    private void PausePlayerMovement()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.selectedPlayer != null)
+        {
+            GameObject player = GameManager.Instance.selectedPlayer;
+            Player playerScript = player.GetComponent<Player>();
+            
+            if (playerScript != null)
+            {
+                // Store current movement state to restore later
+                wasPlayerMoving = playerScript.isMoving;
+                
+                // Stop movement
+                playerScript.isMoving = false;
+                
+                // Stop movement sound
+                if (PlayerSound.Instance != null)
+                {
+                    PlayerSound.Instance.StopMovementSound(player);
+                }
+                
+                Debug.Log($"Paused player movement (was moving: {wasPlayerMoving})");
+            }
+        }
+    }
+    
+    // Resume player movement if it was moving before
+    private void ResumePlayerMovement()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.selectedPlayer != null)
+        {
+            GameObject player = GameManager.Instance.selectedPlayer;
+            Player playerScript = player.GetComponent<Player>();
+            
+            if (playerScript != null && wasPlayerMoving)
+            {
+                // Restore movement state only if it was moving before
+                playerScript.isMoving = wasPlayerMoving;
+                
+                // Restart movement sound if needed
+                if (wasPlayerMoving && PlayerSound.Instance != null)
+                {
+                    PlayerSound.Instance.PlayMovementSound(player);
+                }
+                
+                Debug.Log($"Resumed player movement (was moving: {wasPlayerMoving})");
+                
+                // Reset the flag
+                wasPlayerMoving = false;
+            }
+        }
+    }
+    
+    // Pause dice sounds
+    private void PauseDiceSounds()
+    {
+        if (DiceSound.Instance != null)
+        {
+            // We need to stop dice sounds regardless of whether they were playing or not
+            DiceSound.Instance.StopDiceRolling();
+            
+            Debug.Log($"Paused dice sounds (were dice rolling: {wereDiceRolling})");
+        }
+    }
+    
+    // Resume dice sounds if they were playing
+    private void ResumeDiceSounds()
+    {
+        if (DiceSound.Instance != null && wereDiceRolling)
+        {
+            // Only restart the rolling sound if it was playing before
+            DiceSound.Instance.PlayDiceRolling();
+            
+            Debug.Log($"Resumed dice sounds (were rolling: {wereDiceRolling})");
+            
+            // Note: We don't reset the flag here, as the dice rolling coroutine
+            // will handle the end of rolling and triggering completion events
+        }
     }
 
     public void RestartGame()
@@ -209,7 +340,7 @@ public class HUDUIManager : MonoBehaviour
         }
     }
 
-    // Re-enable dice roll button when game is resumed (if it's the player's turn)
+    // Re-enable dice roll button when game is resumed (if it's the current player's turn)
     private void EnableDiceRollButtonIfNeeded()
     {
         if (GameManager.Instance != null && GameManager.Instance.diceManager != null)
@@ -228,6 +359,9 @@ public class HUDUIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            // Play button sound when ESC is pressed
+            PlayButtonSound();
+            
             // If settings panel is open, close it and return to pause menu
             if (settingsPanel != null && settingsPanel.activeSelf)
             {
@@ -248,5 +382,12 @@ public class HUDUIManager : MonoBehaviour
     {
         if (pauseButton != null)
             pauseButton.gameObject.SetActive(visible);
+    }
+
+    public void PlayButtonSound()
+    {
+        // Play button sound
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayMenuButton();
     }
 }

@@ -44,6 +44,7 @@ public class PlayerSound : MonoBehaviour
         StartCoroutine(InitializeWithDelay());
     }
     
+    
     private IEnumerator InitializeWithDelay()
     {
         yield return new WaitForSeconds(0.5f);
@@ -133,6 +134,14 @@ public class PlayerSound : MonoBehaviour
                 audioSource.Stop();
                 Debug.Log($"Stopped movement sound for {currentPlayer.name}");
             }
+        }
+
+        // Update the volume based on AudioManager settings
+        movementVolume = AudioManager.Instance.sfxVolume;
+        if (audioSource.volume != movementVolume)
+        {
+            audioSource.volume = movementVolume;
+            Debug.Log($"Updated volume for {currentPlayer.name} to {movementVolume}");
         }
     }
     

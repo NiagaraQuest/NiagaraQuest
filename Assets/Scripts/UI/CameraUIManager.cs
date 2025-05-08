@@ -43,6 +43,7 @@ public class CameraUIManager : MonoBehaviour
         if (mainCameraButton != null)
         {
             mainCameraButton.onClick.AddListener(() => {
+                PlayButtonSound();
                 cameraManager.SwitchToMainCamera();
                 HideCameraSelectionPanel();
             });
@@ -51,6 +52,7 @@ public class CameraUIManager : MonoBehaviour
         if (viewCameraButton != null)
         {
             viewCameraButton.onClick.AddListener(() => {
+                PlayButtonSound();
                 cameraManager.SwitchToMainCamera();
                 cameraManager.ToggleViewCamera();
                 HideCameraSelectionPanel();
@@ -60,6 +62,7 @@ public class CameraUIManager : MonoBehaviour
         if (vulkanCameraButton != null)
         {
             vulkanCameraButton.onClick.AddListener(() => {
+                PlayButtonSound();
                 Player currentPlayer = GameManager.Instance?.GetCurrentPlayer();
                 cameraManager.SwitchToRegionCamera(Tile.Region.Vulkan, currentPlayer);
                 HideCameraSelectionPanel();
@@ -69,6 +72,7 @@ public class CameraUIManager : MonoBehaviour
         if (atlantaCameraButton != null)
         {
             atlantaCameraButton.onClick.AddListener(() => {
+                PlayButtonSound();
                 Player currentPlayer = GameManager.Instance?.GetCurrentPlayer();
                 cameraManager.SwitchToRegionCamera(Tile.Region.Atlanta, currentPlayer);
                 HideCameraSelectionPanel();
@@ -78,6 +82,7 @@ public class CameraUIManager : MonoBehaviour
         if (celestyelCameraButton != null)
         {
             celestyelCameraButton.onClick.AddListener(() => {
+                PlayButtonSound();
                 Player currentPlayer = GameManager.Instance?.GetCurrentPlayer();
                 cameraManager.SwitchToRegionCamera(Tile.Region.Celestyel, currentPlayer);
                 HideCameraSelectionPanel();
@@ -87,6 +92,7 @@ public class CameraUIManager : MonoBehaviour
         if (bergCameraButton != null)
         {
             bergCameraButton.onClick.AddListener(() => {
+                PlayButtonSound();
                 Player currentPlayer = GameManager.Instance?.GetCurrentPlayer();
                 cameraManager.SwitchToRegionCamera(Tile.Region.Berg, currentPlayer);
                 HideCameraSelectionPanel();
@@ -95,7 +101,10 @@ public class CameraUIManager : MonoBehaviour
         
         if (returnButton != null)
         {
-            returnButton.onClick.AddListener(HideCameraSelectionPanel);
+            returnButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                HideCameraSelectionPanel();
+            });
         }
     }
     
@@ -119,8 +128,17 @@ public class CameraUIManager : MonoBehaviour
     {
         if (cameraSelectionPanel != null)
         {
+            PlayButtonSound();
             bool newState = !cameraSelectionPanel.activeSelf;
             cameraSelectionPanel.SetActive(newState);
         }
+    }
+    
+    // Method to play button sound
+    private void PlayButtonSound()
+    {
+        // Play button sound
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayMenuButton();
     }
 }

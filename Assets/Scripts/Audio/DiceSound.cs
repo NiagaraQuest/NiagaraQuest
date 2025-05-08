@@ -28,6 +28,29 @@ public class DiceSound : MonoBehaviour
         
         InitializeAudioSources();
     }
+
+    private void Update()
+    {
+        // Update volume if it changes in AudioManager
+        if (diceVolume != AudioManager.Instance.sfxVolume)
+        {
+            diceVolume = AudioManager.Instance.sfxVolume;
+            UpdateAudioSourceVolumes();
+        }
+    }
+
+    private void UpdateAudioSourceVolumes()
+    {
+        if (diceRollingSource != null)
+        {
+            diceRollingSource.volume = diceVolume;
+        }
+        
+        if (diceLandingSource != null)
+        {
+            diceLandingSource.volume = diceVolume;
+        }
+    }
     
     private void InitializeAudioSources()
     {
