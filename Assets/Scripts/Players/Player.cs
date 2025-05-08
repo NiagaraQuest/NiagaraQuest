@@ -98,7 +98,6 @@ public class Player : MonoBehaviour
             {
                 Tile tile = currentWaypoint.GetComponent<Tile>();
                 if (tile != null && CameraManager.Instance != null)
-                if (tile != null && CameraManager.Instance != null)
                 {
                     Camera activeCamera = CameraManager.Instance.GetActiveCamera();
                     if(activeCamera != CameraManager.Instance.mainCamera)

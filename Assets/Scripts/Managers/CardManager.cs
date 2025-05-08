@@ -54,7 +54,7 @@ public class CardManager : MonoBehaviour
     // Draw a random card and return its type
     public int DrawRandomCard()
     {
-        return 0;
+        return Random.Range(0, cardNames.Length);
     }
     
     // Get card name by type

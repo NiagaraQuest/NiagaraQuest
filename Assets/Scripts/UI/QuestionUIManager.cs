@@ -700,7 +700,7 @@ private string GetCorrectAnswerText(Question question, bool isCorrect)
                 if (isCorrect)
                     return "Move forward 2 spaces";
                 else
-                    return "Move back 6 spaces";
+                    return "Return to the tile you came from";
 
             case "MEDIUM":
                 if (isCorrect)

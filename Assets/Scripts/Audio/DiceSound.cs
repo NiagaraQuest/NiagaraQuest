@@ -12,8 +12,10 @@ public class DiceSound : MonoBehaviour
     [SerializeField] private AudioClip diceRollingSound;
     [SerializeField] private AudioClip diceLandingSound;
     
- 
-    private float diceVolume = AudioManager.Instance.sfxVolume;
+    [Header("Sound Settings")]
+    [SerializeField] private float defaultDiceVolume = 0.5f; // Fallback volume if AudioManager not found
+    private float diceVolume;
+    private AudioManager audioManager;
     
     private void Awake()
     {
@@ -24,82 +26,176 @@ public class DiceSound : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
+        
+        // Initialize with default volume
+        diceVolume = defaultDiceVolume;
         
         InitializeAudioSources();
     }
 
+    private void Start()
+    {
+        // Try to find AudioManager in Start (might not be available in Awake)
+        FindAudioManager();
+    }
+
+    private void FindAudioManager()
+    {
+        try
+        {
+            audioManager = AudioManager.Instance;
+            if (audioManager != null)
+            {
+                diceVolume = audioManager.sfxVolume;
+                UpdateAudioSourceVolumes();
+                Debug.Log("DiceSound: Found AudioManager, using sfxVolume: " + diceVolume);
+            }
+            else
+            {
+                Debug.LogWarning("DiceSound: AudioManager not found, using default volume: " + defaultDiceVolume);
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"DiceSound: Error finding AudioManager: {e.Message}");
+        }
+    }
+
     private void Update()
     {
-        // Update volume if it changes in AudioManager
-        if (diceVolume != AudioManager.Instance.sfxVolume)
+        try
         {
-            diceVolume = AudioManager.Instance.sfxVolume;
-            UpdateAudioSourceVolumes();
+            // Try to find AudioManager if it's null
+            if (audioManager == null)
+            {
+                FindAudioManager();
+            }
+            
+            // Update volume if it changes in AudioManager
+            if (audioManager != null && diceVolume != audioManager.sfxVolume)
+            {
+                diceVolume = audioManager.sfxVolume;
+                UpdateAudioSourceVolumes();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"DiceSound: Error in Update: {e.Message}");
         }
     }
 
     private void UpdateAudioSourceVolumes()
     {
-        if (diceRollingSource != null)
+        try
         {
-            diceRollingSource.volume = diceVolume;
+            if (diceRollingSource != null)
+            {
+                diceRollingSource.volume = diceVolume;
+            }
+            
+            if (diceLandingSource != null)
+            {
+                diceLandingSource.volume = diceVolume;
+            }
         }
-        
-        if (diceLandingSource != null)
+        catch (System.Exception e)
         {
-            diceLandingSource.volume = diceVolume;
+            Debug.LogError($"DiceSound: Error updating audio volumes: {e.Message}");
         }
     }
     
     private void InitializeAudioSources()
     {
-        // Setup rolling sound source
-        if (diceRollingSource == null)
+        try
         {
-            diceRollingSource = gameObject.AddComponent<AudioSource>();
-            diceRollingSource.volume = diceVolume;
+            // Setup rolling sound source
+            if (diceRollingSource == null)
+            {
+                diceRollingSource = gameObject.AddComponent<AudioSource>();
+                diceRollingSource.volume = diceVolume;
+            }
+            
+            // Setup landing sound source (separate so sounds can overlap)
+            if (diceLandingSource == null)
+            {
+                diceLandingSource = gameObject.AddComponent<AudioSource>();
+                diceLandingSource.volume = diceVolume;
+            }
         }
-        
-        // Setup landing sound source (separate so sounds can overlap)
-        if (diceLandingSource == null)
+        catch (System.Exception e)
         {
-            diceLandingSource = gameObject.AddComponent<AudioSource>();
-            diceLandingSource.volume = diceVolume;
+            Debug.LogError($"DiceSound: Error initializing audio sources: {e.Message}");
         }
     }
     
     public void PlayDiceRolling()
     {
-        if (diceRollingSound != null)
+        try
         {
-            diceRollingSource.Stop();
-            diceRollingSource.clip = diceRollingSound;
-            diceRollingSource.loop = false;
-            diceRollingSource.Play();
+            if (diceRollingSource == null)
+            {
+                diceRollingSource = gameObject.AddComponent<AudioSource>();
+                diceRollingSource.volume = diceVolume;
+            }
+            
+            if (diceRollingSound != null)
+            {
+                diceRollingSource.Stop();
+                diceRollingSource.clip = diceRollingSound;
+                diceRollingSource.loop = false;
+                diceRollingSource.Play();
+            }
+            else
+            {
+                Debug.LogWarning("DiceSound: Dice rolling sound clip not assigned!");
+            }
         }
-        else
+        catch (System.Exception e)
         {
-            Debug.LogWarning("Dice rolling sound clip not assigned!");
+            Debug.LogError($"DiceSound: Error playing dice rolling sound: {e.Message}");
         }
     }
     
     public void StopDiceRolling()
     {
-        diceRollingSource.Stop();
+        try
+        {
+            if (diceRollingSource != null)
+            {
+                diceRollingSource.Stop();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"DiceSound: Error stopping dice rolling sound: {e.Message}");
+        }
     }
     
     public void PlayDiceLanding()
     {
-        if (diceLandingSound != null)
+        try
         {
-            // Use PlayOneShot to allow multiple landing sounds to overlap
-            diceLandingSource.PlayOneShot(diceLandingSound);
+            if (diceLandingSource == null)
+            {
+                diceLandingSource = gameObject.AddComponent<AudioSource>();
+                diceLandingSource.volume = diceVolume;
+            }
+            
+            if (diceLandingSound != null)
+            {
+                // Use PlayOneShot to allow multiple landing sounds to overlap
+                diceLandingSource.PlayOneShot(diceLandingSound);
+            }
+            else
+            {
+                Debug.LogWarning("DiceSound: Dice landing sound clip not assigned!");
+            }
         }
-        else
+        catch (System.Exception e)
         {
-            Debug.LogWarning("Dice landing sound clip not assigned!");
+            Debug.LogError($"DiceSound: Error playing dice landing sound: {e.Message}");
         }
     }
-    
 }

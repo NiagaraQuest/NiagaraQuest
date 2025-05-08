@@ -30,9 +30,19 @@ public class IntersectionUIManager : MonoBehaviour
     public void ShowUI(Player player)
     {
         playerScript = player;
-
-        // Get available paths at this intersection
         GameObject currentWaypoint = playerScript.GetCurrentWaypoint();
+        Tile tile = currentWaypoint.GetComponent<Tile>();
+        if (tile != null && CameraManager.Instance != null)
+        {
+            Camera activeCamera = CameraManager.Instance.GetActiveCamera();
+            if(activeCamera != CameraManager.Instance.mainCamera)
+            {
+            // Immediately switch to the region camera based on current tile
+            CameraManager.Instance.OnPlayerLandedOnTile(playerScript, tile.region);
+            Debug.Log($"🎥 Switching camera to {tile.region} region as player starts moving");
+            }
+        }
+
         if (currentWaypoint == null)
         {
             Debug.LogError("❌ No current waypoint found!");
@@ -65,11 +75,13 @@ public class IntersectionUIManager : MonoBehaviour
     {
         intersectionPanel.SetActive(false);
         playerScript.ResumeMovement(null, true);
+        DiceManager.Instance.EnableRollButton();
     }
 
     // Handler for selecting a different path
     private void SelectPath(int pathIndex)
     {
+        DiceManager.Instance.EnableRollButton();
         if (pathIndex >= 0 && pathIndex < availablePaths.Count)
         {
             intersectionPanel.SetActive(false);

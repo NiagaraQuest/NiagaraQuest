@@ -5143,12 +5143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -6554,6 +6554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSound: {fileID: 8300000, guid: 75a4e9ff97983444599bbd68e0afd069, type: 3}
+  defaultMovementVolume: 0.5
   minDistance: 1
   maxDistance: 20
   spatialBlend: 1
@@ -7688,7 +7689,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 33
   type: 2
-  region: 4
+  region: 2
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -8098,7 +8099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 26
   type: 2
-  region: 4
+  region: 1
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -10150,6 +10151,7 @@ MonoBehaviour:
   diceLandingSource: {fileID: 0}
   diceRollingSound: {fileID: 8300000, guid: 957c8fdb6b1d0f24cb6bf149acc091fa, type: 3}
   diceLandingSound: {fileID: 8300000, guid: b57005fede6f5df45b8ed185164ea26f, type: 3}
+  defaultDiceVolume: 0.5
 --- !u!1 &639843352
 GameObject:
   m_ObjectHideFlags: 0
@@ -10255,7 +10257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 0
   type: 2
-  region: 4
+  region: 0
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -10956,7 +10958,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 26
   type: 2
-  region: 4
+  region: 2
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -11650,7 +11652,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 0
   type: 2
-  region: 4
+  region: 0
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -14178,7 +14180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 38
   type: 2
-  region: 4
+  region: 3
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -14512,7 +14514,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 0
   type: 2
-  region: 4
+  region: 2
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -17097,7 +17099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 47
   type: 2
-  region: 4
+  region: 1
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -19166,7 +19168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 36
   type: 2
-  region: 4
+  region: 0
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -23030,7 +23032,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 32
   type: 2
-  region: 4
+  region: 1
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -28232,7 +28234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 48
   type: 2
-  region: 4
+  region: 0
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -30161,7 +30163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 38
   type: 2
-  region: 4
+  region: 1
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -31352,7 +31354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 48
   type: 2
-  region: 4
+  region: 2
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -32084,7 +32086,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 25
   type: 2
-  region: 4
+  region: 3
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
@@ -34957,7 +34959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: 31
   type: 2
-  region: 4
+  region: 3
   pathName: 
   _debug_isEffectMovement: 0
   _debug_isFinalTile: 0
