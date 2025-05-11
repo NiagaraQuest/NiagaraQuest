@@ -6,9 +6,9 @@ public class GameEndUIManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject endPanel;
-    public TextMeshProUGUI titleText;       // Title TMP text for "VICTORY" or "DEFEAT"
-    public TextMeshProUGUI subtitleText;    // New subtitle text for "You made it!" or "Better luck next time!"
-    public TextMeshProUGUI endMessageText;  // Detailed message with player name
+    public TextMeshProUGUI titleText;  
+    public TextMeshProUGUI subtitleText;    
+    public TextMeshProUGUI endMessageText;
     public Button exitButton;
     public Button playAgainButton;
 
@@ -143,6 +143,7 @@ public class GameEndUIManager : MonoBehaviour
     // Show defeat screen with custom message
     public void ShowDefeatScreen(Player losingPlayer)
     {
+        AudioManager.Instance.PlayLoseGame(); // Play defeat sound
         if (endPanel == null)
         {
             Debug.LogError("❌ End panel not assigned in GameEndUIManager!");
@@ -178,7 +179,7 @@ public class GameEndUIManager : MonoBehaviour
         // Update message text
         if (endMessageText != null)
         {
-            string playerName = losingPlayer != null ? losingPlayer.gameObject.name.Replace("Player", "") : "Someone";
+            string playerName = losingPlayer != null ? losingPlayer.playerProfile.Username : "Someone";
             endMessageText.text = $"{playerName} has lost all lives!";
         }
     }
@@ -186,6 +187,7 @@ public class GameEndUIManager : MonoBehaviour
     // Show victory screen with custom message
     public void ShowVictoryScreen(Player winningPlayer)
     {
+        AudioManager.Instance.PlayWinGame(); // Play victory sound
         if (endPanel == null)
         {
             Debug.LogError("❌ End panel not assigned in GameEndUIManager!");
@@ -221,7 +223,7 @@ public class GameEndUIManager : MonoBehaviour
         // Update message text
         if (endMessageText != null)
         {
-            string playerName = winningPlayer != null ? winningPlayer.gameObject.name.Replace("Player", "") : "Someone";
+            string playerName = winningPlayer != null ? winningPlayer.playerProfile.Username : "Someone";
             endMessageText.text = $"Won with the help of {playerName}!";
         }
     }

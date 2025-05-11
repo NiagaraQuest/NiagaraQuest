@@ -17,6 +17,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip wrongAnswerSound;
     [SerializeField] private AudioClip cardTileSound;
     [SerializeField] private AudioClip winGameSound;
+    [SerializeField] private AudioClip loseGameSound;
+
     [SerializeField] private AudioClip gameplayBackgroundSound;
     [SerializeField] private AudioClip gameplayIntenseBackgroundSound; // New intense music for low lives/time running out
     [SerializeField] private AudioClip menuButtonSound;
@@ -380,6 +382,11 @@ public class AudioManager : MonoBehaviour
     public void PlayWinGame()
     {
         PlaySFX(winGameSound);
+    }
+
+    public void PlayLoseGame()
+    {
+        PlaySFX(loseGameSound); 
     }
     
     public void PlayMenuButton()

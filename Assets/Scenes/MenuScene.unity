@@ -6543,7 +6543,8 @@ MonoBehaviour:
   rightAnswerSound: {fileID: 8300000, guid: f47a9711e85b790498f58234a2173efd, type: 3}
   wrongAnswerSound: {fileID: 8300000, guid: 3bda65431c300f1409f2767f2cbf2320, type: 3}
   cardTileSound: {fileID: 8300000, guid: 3e737b535bec91148a367538821fa786, type: 3}
-  winGameSound: {fileID: 8300000, guid: d769f115aa8e5b04280c6082d8c38c4d, type: 3}
+  winGameSound: {fileID: 8300000, guid: 36efa7205d384ca45adf741ab7ea59af, type: 3}
+  loseGameSound: {fileID: 8300000, guid: b7695d2d540b8af46be6aaf3ea2d35a1, type: 3}
   gameplayBackgroundSound: {fileID: 8300000, guid: 28cf51c66d2604e48a65267596170bc9, type: 3}
   gameplayIntenseBackgroundSound: {fileID: 8300000, guid: c57e0976cf469ba4e98e448f803534a3, type: 3}
   menuButtonSound: {fileID: 8300000, guid: 176ce210092302c43a208c6af21ab396, type: 3}
