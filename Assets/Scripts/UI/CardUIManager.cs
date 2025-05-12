@@ -322,7 +322,7 @@ public class CardUIManager : MonoBehaviour
     {
         // Hide the result panel
         gambleResultPanel.SetActive(false);
-        EnableRollButton();
+        diceManager.EnableAndSwitchToMainCamera();
         CameraManager.Instance.EnableViewToggle();
 
         // Move player if needed
@@ -345,7 +345,7 @@ public class CardUIManager : MonoBehaviour
     {
         // Close the selection UI
         playerSelectionPanel.SetActive(false);
-        EnableRollButton();
+        diceManager.EnableAndSwitchToMainCamera();
         CameraManager.Instance.EnableViewToggle();
 
         // Perform the swap
@@ -368,7 +368,7 @@ public class CardUIManager : MonoBehaviour
             autoCloseCoroutine = null;
         }
         if (CardManager.Instance.DrawRandomCard() != 3){
-            EnableRollButton();
+        diceManager.EnableAndSwitchToMainCamera();
             CameraManager.Instance.EnableViewToggle();
         }
 
@@ -396,29 +396,6 @@ public class CardUIManager : MonoBehaviour
         }
     }
 
-        public void DisableRollButton()
-    {
-        if (diceManager != null)
-        {
-            diceManager.DisableRollButton();
-            Debug.Log("Roll button disabled during question");
-        }
-        else
-        {
-            Debug.LogWarning("❌ Cannot disable roll button: diceManager is null");
-        }
-    }
 
-    // Méthode pour activer le bouton de lancement de dé
-    public void EnableRollButton()
-    {
-        if (diceManager != null)
-        {
-            diceManager.EnableAndSwitchToMainCamera();
-        }
-        else
-        {
-            Debug.LogWarning("❌ Cannot enable roll button: diceManager is null");
-        }
-    }
+
 }
