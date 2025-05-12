@@ -677,7 +677,7 @@ public class GameManager : MonoBehaviour
 
                     isEffectMovement = true;
                     _debug_effectSource = "EASY-Correct";
-                    player.MovePlayer(2); // CHANGED FROM 50 TO 2 (This was likely a bug in original code!)
+                    player.MovePlayer(2);
                 }
                 else
                 {

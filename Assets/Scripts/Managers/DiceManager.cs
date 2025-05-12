@@ -59,7 +59,7 @@ public class DiceManager : MonoBehaviour
     {
         rollButton.interactable = false;
         DiceHaveFinishedRolling = false;
-        sumText.text = "Lancer en cours...";
+        sumText.text = "Dice is being rolled...";
         
         // Fire event that dice have started rolling (for camera switching)
         if (OnDiceRollStart != null)
@@ -94,7 +94,7 @@ public class DiceManager : MonoBehaviour
         
         // Get the sum of the dice values
         LastRollSum = dice1.GetRollValue() + dice2.GetRollValue();
-        sumText.text = "Somme : " + LastRollSum;
+        sumText.text = "Steps : " + LastRollSum;
         
         // Short delay to view the final dice positions before processing results
         yield return new WaitForSeconds(0.7f);

@@ -17,11 +17,15 @@ public class CardTile : Tile
             Debug.LogWarning("⚠️ Already processing a card");
             return;
         }
-        
-        isProcessingCard = true;
-        
+
         // Get the player who landed on this tile
         Player currentPlayer = FindPlayerOnTile();
+        if (currentPlayer.isMoving){
+            Debug.LogWarning("⚠️ Player is still moving, cannot draw a card");
+            return;
+        }
+        isProcessingCard = true;
+        
         
         if (currentPlayer == null)
         {
@@ -50,8 +54,8 @@ public class CardTile : Tile
         else
         {
             Debug.LogError("❌ CardManager not found!");
-            isProcessingCard = false;
         }
+
     }
     
     private Player FindPlayerOnTile()

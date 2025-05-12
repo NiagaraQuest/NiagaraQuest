@@ -7895,7 +7895,6 @@ GameObject:
   m_Component:
   - component: {fileID: 291504405}
   - component: {fileID: 291504407}
-  - component: {fileID: 291504406}
   m_Layer: 5
   m_Name: PanelChoices
   m_TagString: Untagged
@@ -7915,6 +7914,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1838131874}
   - {fileID: 552886626}
   - {fileID: 59521146}
   - {fileID: 1733566590}
@@ -7925,36 +7925,6 @@ RectTransform:
   m_AnchoredPosition: {x: -21, y: 176}
   m_SizeDelta: {x: 850, y: 221}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &291504406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 291504404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2b36d4827c307af49b081071cbfa11e5, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &291504407
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10934,9 +10904,9 @@ MonoBehaviour:
     paths:
     - fromPath: {fileID: 1817235643}
       toPaths:
-      - toPath: {fileID: 600345986}
-        moveForward: 0
       - toPath: {fileID: 1387116344}
+        moveForward: 0
+      - toPath: {fileID: 600345986}
         moveForward: 0
 --- !u!1 &424147748
 GameObject:
@@ -15399,7 +15369,7 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 650744940}
     paths:
-    - fromPath: {fileID: 1089242059}
+    - fromPath: {fileID: 1866229983}
       toPaths:
       - toPath: {fileID: 583660990}
         moveForward: 0
@@ -16100,7 +16070,7 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 691417444}
     paths:
-    - fromPath: {fileID: 1556519441}
+    - fromPath: {fileID: 809272827}
       toPaths:
       - toPath: {fileID: 1122163571}
         moveForward: 0
@@ -16438,9 +16408,9 @@ MonoBehaviour:
     paths:
     - fromPath: {fileID: 1676757089}
       toPaths:
-      - toPath: {fileID: 1611316761}
-        moveForward: 0
       - toPath: {fileID: 615547368}
+        moveForward: 0
+      - toPath: {fileID: 1611316761}
         moveForward: 0
 --- !u!114 &710462976
 MonoBehaviour:
@@ -16970,9 +16940,9 @@ MonoBehaviour:
     paths:
     - fromPath: {fileID: 124554369}
       toPaths:
-      - toPath: {fileID: 345680727}
-        moveForward: 0
       - toPath: {fileID: 64976309}
+        moveForward: 0
+      - toPath: {fileID: 345680727}
         moveForward: 0
 --- !u!1 &745217850
 GameObject:
@@ -20208,7 +20178,7 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 841139410}
     paths:
-    - fromPath: {fileID: 1308916708}
+    - fromPath: {fileID: 1674765597}
       toPaths:
       - toPath: {fileID: 848089441}
         moveForward: 0
@@ -20542,7 +20512,7 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 847127836}
     paths:
-    - fromPath: {fileID: 1122163571}
+    - fromPath: {fileID: 990764831}
       toPaths:
       - toPath: {fileID: 1556519441}
         moveForward: 0
@@ -23943,7 +23913,7 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 998987728}
     paths:
-    - fromPath: {fileID: 1704777114}
+    - fromPath: {fileID: 247963464}
       toPaths:
       - toPath: {fileID: 1940016537}
         moveForward: 0
@@ -27466,11 +27436,11 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 1128612865}
     paths:
-    - fromPath: {fileID: 583660990}
+    - fromPath: {fileID: 2090692276}
       toPaths:
-      - toPath: {fileID: 1866229983}
-        moveForward: 0
       - toPath: {fileID: 1089242059}
+        moveForward: 0
+      - toPath: {fileID: 1866229983}
         moveForward: 0
 --- !u!1 &1130612357
 GameObject:
@@ -33407,11 +33377,11 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 1415307115}
     paths:
-    - fromPath: {fileID: 1940016537}
+    - fromPath: {fileID: 223432591}
       toPaths:
-      - toPath: {fileID: 247963464}
-        moveForward: 0
       - toPath: {fileID: 1704777114}
+        moveForward: 0
+      - toPath: {fileID: 247963464}
         moveForward: 0
 --- !u!1 &1418860157
 GameObject:
@@ -37745,6 +37715,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2088630595}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -261.16}
+--- !u!1 &1601934483
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1601934484}
+  - component: {fileID: 1601934486}
+  - component: {fileID: 1601934485}
+  m_Layer: 5
+  m_Name: Decor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1601934484
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601934483}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1838131874}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.000015259, y: 0}
+  m_SizeDelta: {x: 704.5647, y: 704.5647}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1601934485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601934483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 2b36d4827c307af49b081071cbfa11e5, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1601934486
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601934483}
+  m_CullTransparentMesh: 1
 --- !u!1 &1601937920
 GameObject:
   m_ObjectHideFlags: 0
@@ -40900,11 +40945,11 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 1683387221}
     paths:
-    - fromPath: {fileID: 64976309}
+    - fromPath: {fileID: 345680727}
       toPaths:
-      - toPath: {fileID: 124554369}
-        moveForward: 0
       - toPath: {fileID: 2021757559}
+        moveForward: 0
+      - toPath: {fileID: 124554369}
         moveForward: 0
 --- !u!1 &1684736966
 GameObject:
@@ -44803,6 +44848,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1832426038}
   m_CullTransparentMesh: 1
+--- !u!1 &1838131873
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1838131874}
+  - component: {fileID: 1838131876}
+  - component: {fileID: 1838131875}
+  m_Layer: 5
+  m_Name: Title
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1838131874
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838131873}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1601934484}
+  m_Father: {fileID: 291504405}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 425, y: -209}
+  m_SizeDelta: {x: 625.3869, y: 104.2312}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1838131875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838131873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: b2329b4d6b2646f4f8f3e87f4c1bb8da, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1838131876
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838131873}
+  m_CullTransparentMesh: 1
 --- !u!1 &1843120571
 GameObject:
   m_ObjectHideFlags: 0
@@ -45444,7 +45565,7 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 1864444334}
     paths:
-    - fromPath: {fileID: 1387116344}
+    - fromPath: {fileID: 600345986}
       toPaths:
       - toPath: {fileID: 1321647450}
         moveForward: 0
@@ -46758,7 +46879,7 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 1900307860}
     paths:
-    - fromPath: {fileID: 848089441}
+    - fromPath: {fileID: 1702010091}
       toPaths:
       - toPath: {fileID: 1308916708}
         moveForward: 0
@@ -48227,7 +48348,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -149, y: 355.4}
+  m_AnchoredPosition: {x: -152, y: -305}
   m_SizeDelta: {x: 1497.5225, y: 135.1488}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1959981252
@@ -51963,7 +52084,7 @@ MonoBehaviour:
         moveForward: 0
   - intersectionPoint: {fileID: 2139488861}
     paths:
-    - fromPath: {fileID: 615547368}
+    - fromPath: {fileID: 1611316761}
       toPaths:
       - toPath: {fileID: 565796170}
         moveForward: 0

@@ -109,6 +109,7 @@ public class Player : MonoBehaviour
                 }
             }
             CameraManager.Instance.DisableViewToggle();
+            DiceManager.Instance.DisableRollButton();
             if (targetWaypointIndex < 0)
             {
                 Debug.LogWarning($"⚠️ ATTENTION: Index -1 détecté à l'étape {remainingSteps}. Chemin: {currentPath}, Index actuel: {currentWaypointIndex}, Target: {targetWaypointIndex}");
@@ -176,8 +177,9 @@ public class Player : MonoBehaviour
                         {
                             StopMoving();
                             if(GameManager.Instance.isEffectMovement){
-                                CameraManager.Instance.SwitchToMainCamera();
+                                DiceManager.Instance.EnableRollButton();
                             }
+                            CameraManager.Instance.SwitchToMainCamera();
                             CameraManager.Instance.EnableViewToggle();
 
                             // Important: Update previous landing BEFORE displaying current region
