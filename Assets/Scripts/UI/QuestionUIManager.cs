@@ -54,6 +54,10 @@ public class QuestionUIManager : MonoBehaviour
     private int lastPlayerEloChange = 0;
     private int lastQuestionEloChange = 0;
     private bool protectionUsed = false; // Track if protection was used
+    
+    // Add fields to track initial ELO values
+    private int initialPlayerElo = 0;
+    private int finalPlayerElo = 0;
 
     [Header("Dice Control")]
     private DiceManager diceManager; // Référence au DiceManager
@@ -155,7 +159,7 @@ public class QuestionUIManager : MonoBehaviour
         qcmQuestionPanel.SetActive(false);
         tfQuestionPanel.SetActive(false);
         resultPanel.SetActive(false);
-        if (cameraUIManager.cameraSelectionPanel.activeSelf)
+        if (cameraUIManager != null && cameraUIManager.cameraSelectionPanel != null && cameraUIManager.cameraSelectionPanel.activeSelf)
         {
             cameraUIManager.HideCameraSelectionPanel();
         }
@@ -197,6 +201,14 @@ public class QuestionUIManager : MonoBehaviour
         // Reset protection used flag
         protectionUsed = false;
 
+        // Store initial ELO when question is shown
+        Player player = GameManager.Instance.GetCurrentPlayer();
+        if (player != null && player.playerProfile != null)
+        {
+            initialPlayerElo = player.playerProfile.Elo;
+            Debug.Log($"Initial player ELO: {initialPlayerElo}");
+        }
+
         // Désactiver le bouton de lancement de dé pendant qu'une question est traitée
         DisableRollButton();
 
@@ -204,7 +216,7 @@ public class QuestionUIManager : MonoBehaviour
         openQuestionPanel.SetActive(false);
         qcmQuestionPanel.SetActive(false);
         tfQuestionPanel.SetActive(false);
-        if(cameraUIManager.cameraSelectionPanel.activeInHierarchy)
+        if(cameraUIManager.cameraSelectionPanel != null && cameraUIManager.cameraSelectionPanel.activeInHierarchy)
         {
             cameraUIManager.HideCameraSelectionPanel();
         }
@@ -414,7 +426,6 @@ public class QuestionUIManager : MonoBehaviour
                   $"IsFinalTile: {_debug_isFinalTile}, IsCorrect: {isCorrect}, " +
                   $"QuestionType: {_debug_questionType}, Difficulty: {_debug_questionDifficulty}");
 
-
         // Reset ELO change values
         lastPlayerEloChange = 0;
         lastQuestionEloChange = 0;
@@ -441,25 +452,24 @@ public class QuestionUIManager : MonoBehaviour
             }
         }
 
-        // Capture initial ELO values for display
-        int initialPlayerElo = 0;
-        int initialQuestionElo = 0;
+        // Store initial ELO values for display
+        int initialQuestionElo = currentQuestion?.Elo ?? 0;
 
         if (currentPlayer != null && currentPlayer.playerProfile != null && currentQuestion != null)
         {
-            initialPlayerElo = currentPlayer.playerProfile.Elo;
-            initialQuestionElo = currentQuestion.Elo;
-
             try
             {
                 // Record the answer and update ELO values
                 await QuestionManager.Instance.RecordPlayerAnswer(currentPlayer.playerProfile, currentQuestion, isCorrect);
 
-                // Calculate the ELO changes
-                lastPlayerEloChange = currentPlayer.playerProfile.Elo - initialPlayerElo;
+                // Get the final player ELO after update
+                finalPlayerElo = currentPlayer.playerProfile.Elo;
+                
+                // Calculate the ELO changes - Ensure we're using the stored initial value
+                lastPlayerEloChange = finalPlayerElo - initialPlayerElo;
                 lastQuestionEloChange = currentQuestion.Elo - initialQuestionElo;
 
-                Debug.Log($" ELO Change - Player: {initialPlayerElo} → {currentPlayer.playerProfile.Elo} " +
+                Debug.Log($"ELO Change - Player: {initialPlayerElo} → {finalPlayerElo} " +
                          $"({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}), " +
                          $"Question: {initialQuestionElo} → {currentQuestion.Elo} " +
                          $"({(lastQuestionEloChange >= 0 ? "+" : "")}{lastQuestionEloChange})");
@@ -497,6 +507,9 @@ public class QuestionUIManager : MonoBehaviour
                 $"Position: {(currentPlayer != null ? currentPlayer.currentWaypointIndex : -1)}, " +
                 $"IsFinalTile: {isFinalTile}, IsCorrect: {isCorrect}, " +
                 $"QuestionType: {_debug_questionType}, Difficulty: {_debug_questionDifficulty}");
+
+        // Debugging ELO values
+        Debug.Log($"ELO DISPLAY VALUES - Initial: {initialPlayerElo}, Final: {finalPlayerElo}, Change: {lastPlayerEloChange}");
 
         // CAS SPÉCIAL: Réponse correcte sur case finale → victoire immédiate !
         if (isCorrect && isFinalTile)
@@ -550,13 +563,10 @@ public class QuestionUIManager : MonoBehaviour
                 // Add ELO information if available and enabled
                 if (showEloChanges && currentPlayer != null && currentPlayer.playerProfile != null)
                 {
-                    int currentElo = currentPlayer.playerProfile.Elo;
-                    int previousElo = currentElo - lastPlayerEloChange;
-
                     string eloColorStart = lastPlayerEloChange >= 0 ? "<color=#4CAF50>" : "<color=#F44336>";
                     string eloColorEnd = "</color>";
 
-                    string eloChangeDisplay = $"\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
+                    string eloChangeDisplay = $"\nELO: {initialPlayerElo} → {finalPlayerElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
                     rewardText.text = rewardBaseText + eloChangeDisplay;
                 }
                 else
@@ -573,13 +583,10 @@ public class QuestionUIManager : MonoBehaviour
             // Add ELO information if available and enabled
             if (showEloChanges && currentPlayer != null && currentPlayer.playerProfile != null)
             {
-                int currentElo = currentPlayer.playerProfile.Elo;
-                int previousElo = currentElo - lastPlayerEloChange;
-
                 string eloColorStart = lastPlayerEloChange >= 0 ? "<color=#4CAF50>" : "<color=#F44336>";
                 string eloColorEnd = "</color>";
 
-                string eloChangeDisplay = $"\nELO: {previousElo} → {currentElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
+                string eloChangeDisplay = $"\nELO: {initialPlayerElo} → {finalPlayerElo} ({eloColorStart}{(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}{eloColorEnd})";
                 rewardText.text = rewardBaseText + eloChangeDisplay;
             }
             else
@@ -598,11 +605,8 @@ public class QuestionUIManager : MonoBehaviour
         // Show separate ELO change text if it exists
         if (eloChangeText != null && showEloChanges && currentPlayer != null && currentPlayer.playerProfile != null)
         {
-            int currentElo = currentPlayer.playerProfile.Elo;
-            int previousElo = currentElo - lastPlayerEloChange;
-
             eloChangeText.gameObject.SetActive(true);
-            eloChangeText.text = $"ELO: {previousElo} → {currentElo} ({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange})";
+            eloChangeText.text = $"ELO: {initialPlayerElo} → {finalPlayerElo} ({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange})";
 
             // Set color based on change
             if (lastPlayerEloChange > 0)
@@ -620,35 +624,8 @@ public class QuestionUIManager : MonoBehaviour
         StartCoroutine(FocusExitButton());
     }
 
-// Helper method to extract the correct answer based on question type
-private string GetCorrectAnswerText(Question question, bool isCorrect)
-{
-    string correctAnswer = "";
-    
-    if (question is OpenQuestion openQuestion)
-    {
-        correctAnswer = openQuestion.Answer;
-    }
-    else if (question is QCMQuestion qcmQuestion)
-    {
-        int correctIndex = qcmQuestion.CorrectChoice;
-        if (correctIndex >= 0 && correctIndex < qcmQuestion.Choices.Length)
-        {
-            correctAnswer = qcmQuestion.Choices[correctIndex];
-        }
-    }
-    else if (question is TrueFalseQuestion tfQuestion)
-    {
-        correctAnswer = tfQuestion.IsTrue ? "True" : "False";
-    }
-    
-    // Use green color for correct answers, red for incorrect
-    string colorCode = isCorrect ? "#4CAF50" : "#F44336";
-    return $"<color={colorCode}>Answer: {correctAnswer}</color>";
-}
-
     // Helper method to extract the correct answer based on question type
-    private string GetCorrectAnswerText(Question question)
+    private string GetCorrectAnswerText(Question question, bool isCorrect)
     {
         string correctAnswer = "";
         
@@ -669,7 +646,9 @@ private string GetCorrectAnswerText(Question question, bool isCorrect)
             correctAnswer = tfQuestion.IsTrue ? "True" : "False";
         }
         
-        return $"<color=#F44336>Answer: {correctAnswer}</color>";
+        // Use green color for correct answers, red for incorrect
+        string colorCode = isCorrect ? "#4CAF50" : "#F44336";
+        return $"<color={colorCode}>Answer: {correctAnswer}</color>";
     }
 
     private IEnumerator HideEloTextAfterDelay(float delay)

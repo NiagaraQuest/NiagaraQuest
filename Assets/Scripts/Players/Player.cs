@@ -134,8 +134,12 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    currentWaypointIndex = targetWaypointIndex;
-                    Debug.Log($"📍 Waypoint Atteint: {currentWaypointIndex}");
+                    if(currentWaypointIndex < 50)
+                    {
+                        currentWaypointIndex = targetWaypointIndex;
+                        Debug.Log($"📍 Waypoint Atteint: {currentWaypointIndex}");
+                    }
+
 
                     if (targetWaypoint.CompareTag("Intersection"))
                     {
