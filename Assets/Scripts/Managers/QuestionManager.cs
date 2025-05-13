@@ -269,7 +269,10 @@ public class QuestionManager
         // Calculate ELO changes
         int playerEloChange = player.CalculateEloChange(question, isCorrect);
         int questionEloChange = CalculateQuestionEloChange(question, player, isCorrect);
-        
+        if (player.Elo + playerEloChange < 1000 )
+        {
+            playerEloChange = 1000 - player.Elo;
+        }
         // Apply ELO changes
         player.ApplyEloChange(playerEloChange);
         question.Elo += questionEloChange;
