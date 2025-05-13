@@ -274,6 +274,8 @@ public class CardUIManager : MonoBehaviour
     {
         // Hide the choice panel
         gambleChoicePanel.SetActive(false);
+        diceManager.EnableAndSwitchToMainCamera();
+        CameraManager.Instance.EnableViewToggle();
 
         // Continue game flow
         if (currentTile != null)

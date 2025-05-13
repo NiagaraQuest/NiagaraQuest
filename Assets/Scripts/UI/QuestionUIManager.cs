@@ -422,9 +422,9 @@ public class QuestionUIManager : MonoBehaviour
     {
         Player currentPlayer = GameManager.Instance.GetCurrentPlayer();
         Debug.Log($"🔧 DEBUG ProcessPlayerAnswer: Player: {(currentPlayer != null ? currentPlayer.gameObject.name : "null")}, " +
-                  $"Position: {(currentPlayer != null ? currentPlayer.currentWaypointIndex : -1)}, " +
-                  $"IsFinalTile: {_debug_isFinalTile}, IsCorrect: {isCorrect}, " +
-                  $"QuestionType: {_debug_questionType}, Difficulty: {_debug_questionDifficulty}");
+                $"Position: {(currentPlayer != null ? currentPlayer.currentWaypointIndex : -1)}, " +
+                $"IsFinalTile: {_debug_isFinalTile}, IsCorrect: {isCorrect}, " +
+                $"QuestionType: {_debug_questionType}, Difficulty: {_debug_questionDifficulty}");
 
         // Reset ELO change values
         lastPlayerEloChange = 0;
@@ -446,13 +446,13 @@ public class QuestionUIManager : MonoBehaviour
                 // Hide the exit button during second chance message
                 exitButton.gameObject.SetActive(false);
                 
-                // Automatically retry after a delay instead of requiring button press
+                // Automatically retry after a delay
                 Invoke("RetrySameQuestion", 2.5f);
                 return;
             }
         }
 
-        // Store initial ELO values for display
+        // Store initial ELO values
         int initialQuestionElo = currentQuestion?.Elo ?? 0;
 
         if (currentPlayer != null && currentPlayer.playerProfile != null && currentQuestion != null)
@@ -462,17 +462,23 @@ public class QuestionUIManager : MonoBehaviour
                 // Record the answer and update ELO values
                 await QuestionManager.Instance.RecordPlayerAnswer(currentPlayer.playerProfile, currentQuestion, isCorrect);
 
-                // Get the final player ELO after update
+                // Clamp player ELO to a minimum of 1000
+                if (currentPlayer.playerProfile.Elo < 1000)
+                {
+                    currentPlayer.playerProfile.Elo = 1000;
+                }
+
+                // Get the final player ELO after clamping
                 finalPlayerElo = currentPlayer.playerProfile.Elo;
-                
-                // Calculate the ELO changes - Ensure we're using the stored initial value
+
+                // Calculate ELO changes
                 lastPlayerEloChange = finalPlayerElo - initialPlayerElo;
                 lastQuestionEloChange = currentQuestion.Elo - initialQuestionElo;
 
                 Debug.Log($"ELO Change - Player: {initialPlayerElo} → {finalPlayerElo} " +
-                         $"({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}), " +
-                         $"Question: {initialQuestionElo} → {currentQuestion.Elo} " +
-                         $"({(lastQuestionEloChange >= 0 ? "+" : "")}{lastQuestionEloChange})");
+                        $"({(lastPlayerEloChange >= 0 ? "+" : "")}{lastPlayerEloChange}), " +
+                        $"Question: {initialQuestionElo} → {currentQuestion.Elo} " +
+                        $"({(lastQuestionEloChange >= 0 ? "+" : "")}{lastQuestionEloChange})");
             }
             catch (System.Exception ex)
             {
@@ -482,6 +488,7 @@ public class QuestionUIManager : MonoBehaviour
 
         ShowResult(isCorrect);
     }
+
 
     private void ShowResult(bool isCorrect)
     {
